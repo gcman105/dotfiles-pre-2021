@@ -1,0 +1,4 @@
+# name: it should validate_presence_of
+# key: isvp
+# --
+it { should validate_presence_of(:$1)$2 }$0

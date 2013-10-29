@@ -1,0 +1,7 @@
+# contributor: Gary Cheeseman <gary@radi8.co.uk>
+# name: console.log
+# key: cl
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+console.log(`yas/selected-text`$1)
+$0
