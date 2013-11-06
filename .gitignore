@@ -38,7 +38,7 @@ COPYING
 .org-id-locations
 /snippets-default   
 .emacs.d/tramp
-.emacd.d/ede-projects.el
+.emacs.d/ede-projects.el
 .emacs.d/recentf
 .emacs.d/.mc-lists.el
 .emacs.d/ido.last

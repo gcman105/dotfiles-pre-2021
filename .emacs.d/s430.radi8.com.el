@@ -1,18 +1,18 @@
-;;; package --- t430.radi8.net.el local settings
+;;; package --- s430.radi8.com.el local settings
 
 ;;; Commentary:
 
 ;;; Code:
 
 (setq default-frame-alist
-      '((top . 1) (left . 45)
-        (width . 185) (height . 44)
+      '((top . 2) (left . 45)
+        (width . 191) (height . 44)
         (font . "Source Code Pro 10")))
 
 ;; Save place in file when I exit
 (require 'saveplace)
 (setq-default save-place t)
-(setq save-place-file "~/.emacs.d/t430/places")
+(setq save-place-file "~/.emacs.d/s430/places")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode
@@ -20,7 +20,7 @@
 (require 'ido)
 (ido-mode 'both) ;; for buffers and files
 (setq
- ido-save-directory-list-file "~/.emacs.d/t430/ido.last"
+ ido-save-directory-list-file "~/.emacs.d/s430/ido.last"
   ido-ignore-buffers ;; ignore these guys
   '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
      "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
@@ -47,8 +47,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'recentf)
-    (setq recentf-load-file "~/.emacs.d/t430/recentf")
-    (setq recentf-save-file "~/.emacs.d/t430/recentf")
+    (setq recentf-load-file "~/.emacs.d/s430/recentf")
+    (setq recentf-save-file "~/.emacs.d/s430/recentf")
     (recentf-mode 1)
     (setq recentf-max-menu-items 25)
     (global-set-key (kbd "<f9>") 'recentf-open-files)
@@ -57,4 +57,4 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;;; t430.radi8.net.el ends here
+;;; s430.radi8.com.el ends here

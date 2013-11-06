@@ -75,7 +75,7 @@
 
 ;; Deft config for nvALT files with md extension ----------------------------
 (defvar deft-extension "md")
-(defvar deft-directory "~/Dropbox/MarkDown")
+(defvar deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
 (defvar deft-text-mode 'markdown-mode)
 (defvar deft-use-filename-as-title t)
 (global-set-key [f8] 'deft)
@@ -126,21 +126,19 @@
 (define-key global-map "\C-ca" 'org-agenda)
 
 ;; Set to the location of your Org files on your local system
-(defvar org-directory "~/Dropbox/org")
+(defvar org-directory (expand-file-name "org" grc-dropbox-folder))
 ;; Set to the name of the file where new notes will be stored
-(defvar org-mobile-inbox-for-pull "~/Dropbox/org/flagged.org")
+(defvar org-mobile-inbox-for-pull (expand-file-name "flagged.org" org-directory))
 ;; Set to <your Dropbox root directory>/MobileOrg.
-(defvar org-mobile-directory "~/Dropbox/MobileOrg")
-
-(defvar org-directory "~/Dropbox/org/")
-(defvar remember-data-file "~/Dropbox/org/journal.org")
-(defvar org-default-notes-file "~/Dropbox/org/journal.org")
+(defvar org-mobile-directory (expand-file-name "Apps/MobileOrg" grc-dropbox-folder))
+(defvar remember-data-file (expand-file-name "journal.org" org-directory))
+(defvar org-default-notes-file (expand-file-name "journal.org" org-directory))
 (defvar remember-annotation-functions '(org-remember-annotation))
 (defvar remember-handler-functions '(org-remember-handler))
 (add-hook 'remember-mode-hook 'org-remember-apply-template)
 
-'(org-refile-targets (quote (("~/Dropbox/org/gtd.org" :maxlevel . 1) 
-                              ("~/Dropbox/org/someday.org" :level . 2))))
+'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1) 
+                              ((expand-file-name "someday.org" org-directory) :level . 2))))
 
 (setq org-remember-templates
     '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/Dropbox/org/gtd.org" "Tasks")

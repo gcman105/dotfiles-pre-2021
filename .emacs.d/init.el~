@@ -1,0 +1,172 @@
+;;; Code:
+(require 'cl)
+
+;; On OS X Emacs doesn't use the shell PATH if it's not started from
+;; the shell. If you're using homebrew modifying the PATH is essential.
+(if (eq system-type 'darwin)
+    (push "/usr/local/bin" exec-path))
+
+;; enable mouse reporting for terminal emulators
+(unless (display-graphic-p)
+  (menu-bar-mode -1)
+  (xterm-mouse-mode 1))
+
+;; I like my cursor to blink
+(blink-cursor-mode t)
+
+(require 'package)
+;;(add-to-list 'package-archives
+;;             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;; Add in your own as you wish:
+(defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings)
+  "A list of packages to ensure are installed at launch.")
+
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
+;; Set up some grc file and directory stuff
+(setq grc-emacs-init-file "~/.emacs.d/init.el")
+(setq grc-backups-folder "~/backups/") 
+(setq grc-emacs-config-dir
+      (file-name-directory grc-emacs-init-file))
+
+(setq user-emacs-directory grc-emacs-config-dir)
+
+(setq backup-directory-alist
+      (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
+
+;; setup yasnippet  ---------------------------------------------------------
+;;(require 'yasnippet)
+(yas-global-mode 1)
+
+(setq yas/snippet-dirs
+      '("~/.emacs.d/snippets"            ;; personal snippets
+;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
+;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
+        "~/.emacs.d/snippets-default"    ;; the default collection
+        ))
+
+;; Set up 'custom' system ---------------------------------------------------
+(setq custom-file (expand-file-name "emacs-customizations.el" grc-emacs-config-dir))
+(load custom-file)
+
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "gcman105@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      smtpmail-local-domain "server.local")
+
+;; (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\”]\”[#’()]")
+;; (setq gnus-large-newsgroup 20)
+
+;; (setq gnus-select-method
+;; '(nnimap "gmail"
+;;         (nnimap-address "imap.gmail.com")
+;;         (nnimap-server-port 993)
+;;         (nnimap-stream ssl)))
+
+;; setup org-mode -----------------------------------------------------------
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/Dropbox/org")
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/Dropbox/org/flagged.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
+
+(setq org-directory "~/Dropbox/org/")
+(setq remember-data-file "~/Dropbox/org/journal.org")
+(setq org-default-notes-file "~/Dropbox/org/journal.org")
+(setq remember-annotation-functions '(org-remember-annotation))
+(setq remember-handler-functions '(org-remember-handler))
+(add-hook 'remember-mode-hook 'org-remember-apply-template)
+
+'(org-refile-targets (quote (("~/Dropbox/org/gtd.org" :maxlevel . 1) 
+                              ("~/Dropbox/org/someday.org" :level . 2))))
+
+;; Deft config for nvALT files with md extension ----------------------------
+(setq deft-extension "md")
+(setq deft-directory "~/Dropbox/MarkDown")
+(setq deft-text-mode 'markdown-mode)
+(setq deft-use-filename-as-title t)
+(global-set-key [f8] 'deft)
+
+;; Stop markdown-mode interfeering with yasnippet
+(defun markdown-unset-tab ()
+  "markdown-mode-hook"
+  (define-key markdown-mode-map (kbd "<tab>") nil))
+
+(add-hook 'markdown-mode-hook '(lambda() (markdown-unset-tab)))
+
+(define-key global-map "\C-cr" 'org-remember)
+(define-key global-map "\C-ca" 'org-agenda)
+
+;; Unset Arrow keys, this should help force me to learn the Emacs keys!
+(global-unset-key (kbd "<left>"))
+(global-unset-key (kbd "<right>"))
+(global-unset-key (kbd "<up>"))
+(global-unset-key (kbd "<down>"))
+
+;; Setup GLOBAL keys
+(global-set-key (kbd "<C-f7>") 'bm-next)
+(global-set-key (kbd "<f7>")   'bm-toggle)
+(global-set-key (kbd "<S-f7>") 'bm-previous)
+(global-set-key (kbd "<M-f7>") 'bm-show-all)
+(global-set-key (kbd "<S-f6>") 'move-text-up)
+(global-set-key (kbd "<C-f6>") 'move-text-down)
+
+(setq org-remember-templates
+    '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/Dropbox/org/gtd.org" "Tasks")
+      ("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
+      ("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
+      ("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
+      ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
+         "~/Dropbox/org/journal.org")
+          ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
+         "~/Dropbox/org/journal.org")
+      ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
+         "~/Dropbox/org/journal.org")
+      ("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
+      ("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")
+     )
+   )
+
+;; Allow hash to be entered
+(if (eq system-type 'darwin)
+    (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#"))))
+
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+;; Tabs and Indents
+(setq c-basic-offset 2)
+(setq tab-width 2)
+(setq indent-tabs-mode nil)
+(setq scroll-bar-mode nil)
+
+;; Minor Mode Hooks
+(add-hook 'html-mode-hook 'turn-off-auto-fill)
+(add-hook 'html-mode-hook 'turn-off-flyspell)
+(add-hook 'org-mode-hook 'turn-off-flyspell)
+
+;; Rake files are ruby, too, as are gemspecs, rackup files, etc.
+(add-to-list 'auto-mode-alist '("\.rake$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\.gemspec$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\.ru$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile$" . ruby-mode))
+
+;; SCSS options
+(setq scss-compile-at-save nil)
