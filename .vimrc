@@ -106,6 +106,7 @@ syntax enable
 
 "Set the color scheme.
 set background=dark
+set cul
 if has("gui_running")    
   let base16colorspace=256
   colorscheme base16-tomorrow
@@ -117,9 +118,20 @@ if has("gui_running")
     set mouse=c
   end
 else
-  colorscheme solarized
+  autocmd InsertLeave * set cul
+  autocmd InsertEnter * set nocul
+  if exists('$TMUX')
+    colorscheme lucius
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  else
+    colorscheme solarized
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  endif
   set mouse=c
 end
+
 "Show lines numbers
 set number
 
@@ -157,9 +169,9 @@ set hidden
 set backspace=2
 
 "Tab and space stuff
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 
 "Better line wrapping 
@@ -313,7 +325,9 @@ let g:vimfiler_as_default_explorer = 1
 "Unite.vim {{{2
 "------------------------"
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nmap <silent> ss :Unite buffer file file_mru bookmark<cr>
+nmap <silent> ss :Unite file file_mru bookmark buffer<cr>
+nmap <silent> Ss :Unite buffer bookmark file_mru<cr>
+nmap <silent> sb :Unite bookmark<cr>
 nmap <silent> sS :Unite grep:.<cr>
 nmap <silent> SS :Unite -start-insert file_rec/async<cr>
 nmap <C-p> :Unite -quick-match buffer<cr>
@@ -335,9 +349,9 @@ let g:syntastic_quite_warnings = 0
 let g:syntastic_enable_signs = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_mode_map = {
-    \ 'mode': 'active',
-    \ 'active_filetypes': ['php'],
-    \ 'passive_filetypes': ['html','python'] }
+      \ 'mode': 'active',
+      \ 'active_filetypes': ['php'],
+      \ 'passive_filetypes': ['html','python'] }
 "let g:syntastic_python_checkers=['flake8']
 "let g:syntastic_python_checker_args = '--ignore=E127'
 "let g:syntastic_python_checker_args = '--ignore=W0401'
