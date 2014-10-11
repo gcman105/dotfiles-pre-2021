@@ -1,15 +1,13 @@
-;;; package --- t430.radi8.net.el local settings
+;;; package --- mms.local local settings
 
 ;;; Commentary:
 
 ;;; Code:
 
-(setq multi-term-program "/bin/bash")
-
 (setq default-frame-alist
-      '((top . 1) (left . 45)
-        (width . 187) (height . 45)
-        (font . "Source Code Pro 10")))
+      '((top . 0) (left . 0)
+        (width . 236) (height . 73)
+        (font . "SourceCodePro-10")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode
@@ -17,11 +15,11 @@
 (require 'ido)
 (ido-mode 'both) ;; for buffers and files
 (setq
- ido-save-directory-list-file "~/.emacs.d/t430.radi8.net/ido.last"
+ ido-save-directory-list-file "~/.emacs.d/Garys-Mac-mini.local/ido.last"
   ido-ignore-buffers ;; ignore these guys
   '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
      "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
-  ido-work-directory-list '("~/" "~/devel" "~/Documents" "~src")
+  ido-work-directory-list '("~/" "~/Desktop" "~/Documents" "~src")
   ido-case-fold  t                 ; be case-insensitive
   ido-enable-last-directory-history t ; remember last used dirs
   ido-max-work-directory-list 30   ; should be enough
@@ -43,8 +41,10 @@
       (defvar resize-minibuffer-window-max-height 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq markdown-command "~/Markdown.pl")
+
 ;; HAD TO MOVE THE NEXT 2 LINES OUT FROM THE init.el FILE
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;;; t430.radi8.net.el ends here
+;;; mms.local ends here

@@ -30,6 +30,18 @@ if has("autocmd")
 endif
 
 "-----------------------------------------------------------------------------
+" Custom autocmds {{{1
+"-----------------------------------------------------------------------------
+augroup vimrcEx
+  " Clear all autocmds in the group
+  autocmd!
+  " Jump to last cursor position unless it's invalid or in an event handler
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+"-----------------------------------------------------------------------------
 " File stuff {{{1
 "-----------------------------------------------------------------------------
 "Enable filetypes
@@ -106,6 +118,7 @@ syntax enable
 
 "Set the color scheme.
 set background=dark
+set cul
 if has("gui_running")    
   let base16colorspace=256
   colorscheme base16-tomorrow
@@ -117,9 +130,20 @@ if has("gui_running")
     set mouse=c
   end
 else
-  colorscheme solarized
+  autocmd InsertLeave * set cul
+  autocmd InsertEnter * set nocul
+  if exists('$TMUX')
+    colorscheme lucius
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  else
+    colorscheme solarized
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  endif
   set mouse=c
 end
+
 "Show lines numbers
 set number
 
@@ -157,9 +181,9 @@ set hidden
 set backspace=2
 
 "Tab and space stuff
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 
 "Better line wrapping 
@@ -202,6 +226,9 @@ set formatprg=par
 "-----------------------------------------------------------------------------
 "Set wildmenu to on
 set wildmenu
+
+"Auto-completion menu
+"set wildmode=list:longest
 
 "Set incremental searching"
 set incsearch
@@ -247,6 +274,81 @@ nnoremap <leader>v <C-w>v<C-w>l
 "Split windows below the current window.
 set splitbelow              
 
+"Map escape key to jj -- much faster
+imap jj <esc>
+cmap jj <esc>
+
+"Delete all buffers (via Derek Wyatt)
+nmap <silent> ,da :exec "1," . bufnr('$') . "bd"<cr>
+
+"Bubble single lines (kicks butt)
+"http://vimcasts.org/episodes/bubbling-text/
+nmap <C-Up> ddkP
+nmap <C-Down> ddp
+
+"Bubble multiple lines
+vmap <C-Up> xkP`[V`]
+vmap <C-Down> xp`[V`]
+
+"Saves time; maps the spacebar to colon
+nmap <space> :
+
+"Map code completion to , + tab
+imap <leader><tab> <C-x><C-o>
+
+" Insert a hash rocket with <c-l>
+imap <c-l> <space>=><space>
+
+" Align selected lines
+vnoremap <leader>ib :!align<cr>
+
+" Use CTRL-s for saving, also in instert mode
+noremap <silent> <C-s> :w<CR>
+inoremap <silent> <C-s> <Esc>:w<CR>a
+vnoremap <silent> <C-s> <C-c>:update<CR>
+
+"-----------------------------------------------------------------------------
+" MULTIPURPOSE TAB KEY {{{2
+" Indent if we're at the beginning of a line. Else, do completion.
+"-----------------------------------------------------------------------------
+function! InsertTabWrapper()
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
+
+"-----------------------------------------------------------------------------
+" RENAME CURRENT FILE {{{2
+"-----------------------------------------------------------------------------
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+map <leader>n :call RenameFile()<cr>
+
+"-----------------------------------------------------------------------------
+" PROMOTE VARIABLE TO RSPEC LETm {{{2
+"-----------------------------------------------------------------------------
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
+  :normal ==
+endfunction
+:command! PromoteToLet :call PromoteToLet()
+:map <leader>p :PromoteToLet<cr>
+
 "-----------------------------------------------------------------------------
 " Session stuff {{{1
 "-----------------------------------------------------------------------------
@@ -264,36 +366,8 @@ nmap <leader>sv :so $MYVIMRC<CR>
 nmap <leader>cd :lcd %:h<CR>
 nmap <leader>md :!mkdir -p %:p:h<CR>
 
-"Saves time; maps the spacebar to colon
-nmap <space> :
-
 "Automatically change current directory to that of the file in the buffer
 " autocmd BufEnter * cd %:p:h
-
-"Map code completion to , + tab
-imap <leader><tab> <C-x><C-o>
-
-" More useful command-line completion
-" set wildmenu
-
-"Auto-completion menu
-" set wildmode=list:longest
-
-"Map escape key to jj -- much faster
-imap jj <esc>
-cmap jj <esc>
-
-"Delete all buffers (via Derek Wyatt)
-nmap <silent> ,da :exec "1," . bufnr('$') . "bd"<cr>
-
-"Bubble single lines (kicks butt)
-"http://vimcasts.org/episodes/bubbling-text/
-nmap <C-Up> ddkP
-nmap <C-Down> ddp
-
-"Bubble multiple lines
-vmap <C-Up> xkP`[V`]
-vmap <C-Down> xp`[V`]
 
 "-----------------------------------------------------------------------------
 " Plugin stuff {{{1
@@ -313,8 +387,10 @@ let g:vimfiler_as_default_explorer = 1
 "Unite.vim {{{2
 "------------------------"
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nmap <silent> ss :Unite buffer file file_mru bookmark<cr>
-nmap <silent> sS :Unite grep:.<cr>
+nmap <silent> ss :Unite file file_mru bookmark buffer<cr>
+nmap <silent> sS :Unite buffer bookmark file_mru<cr>
+nmap <silent> sb :Unite bookmark<cr>
+nmap <silent> Ss :Unite grep:.<cr>
 nmap <silent> SS :Unite -start-insert file_rec/async<cr>
 nmap <C-p> :Unite -quick-match buffer<cr>
 
@@ -335,9 +411,9 @@ let g:syntastic_quite_warnings = 0
 let g:syntastic_enable_signs = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_mode_map = {
-    \ 'mode': 'active',
-    \ 'active_filetypes': ['php'],
-    \ 'passive_filetypes': ['html','python'] }
+      \ 'mode': 'active',
+      \ 'active_filetypes': ['php'],
+      \ 'passive_filetypes': ['html','python'] }
 "let g:syntastic_python_checkers=['flake8']
 "let g:syntastic_python_checker_args = '--ignore=E127'
 "let g:syntastic_python_checker_args = '--ignore=W0401'
@@ -364,6 +440,7 @@ let g:snippets_dir = '$HOME/.vim/ultisnips-snippets/'
 
 "Change emmet coding plugin expansion key
 "let g:user_emmet_leader_key = '<F5>'
+let g:user_emmet_leader_key = '<c-y>'
 
 "------------------------"
 "python-mode {{{2
@@ -396,5 +473,7 @@ imap <c-g>u <c-r>=system('$HOME/.py-scripts/get_uuid.py')<cr>
 " Source Personal stuff from local file. I store a file for each system {{{2
 " in Dropbox and symlink .vimlocal to it. (.vimlocal_t430 for example)
 "-----------------------------------------------------------------------------
+
 source $HOME/.vimlocal
 
+" .vimrc

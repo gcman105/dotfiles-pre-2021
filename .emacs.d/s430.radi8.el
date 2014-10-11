@@ -4,15 +4,12 @@
 
 ;;; Code:
 
-(setq default-frame-alist
-      '((top . 2) (left . 45)
-        (width . 191) (height . 44)
-        (font . "Source Code Pro 10")))
+(setq multi-term-program "/bin/bash")
 
-;; Save place in file when I exit
-(require 'saveplace)
-(setq-default save-place t)
-(setq save-place-file "~/.emacs.d/s430/places")
+(setq default-frame-alist
+      '((top . 1) (left . 32)
+        (width . 191) (height . 51)
+        (font . "Source Code Pro 10")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode
@@ -20,7 +17,7 @@
 (require 'ido)
 (ido-mode 'both) ;; for buffers and files
 (setq
- ido-save-directory-list-file "~/.emacs.d/s430/ido.last"
+ ido-save-directory-list-file "~/.emacs.d/s430.radi8/ido.last"
   ido-ignore-buffers ;; ignore these guys
   '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
      "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
@@ -45,13 +42,6 @@
       (make-local-variable 'resize-minibuffer-window-max-height)
       (defvar resize-minibuffer-window-max-height 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'recentf)
-    (setq recentf-load-file "~/.emacs.d/s430/recentf")
-    (setq recentf-save-file "~/.emacs.d/s430/recentf")
-    (recentf-mode 1)
-    (setq recentf-max-menu-items 25)
-    (global-set-key (kbd "<f9>") 'recentf-open-files)
 
 ;; HAD TO MOVE THE NEXT 2 LINES OUT FROM THE init.el FILE
 (require 'yasnippet)

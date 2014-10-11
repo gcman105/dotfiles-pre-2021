@@ -16,8 +16,13 @@
 
 (package-initialize)
 
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)
+
+(evil-mode 1)        ;; enable evil-mode
+
 (when (not package-archive-contents)
-  (package-refresh-contents))
+  (package-refesh-contents))
 
 ;; Add in your own as you wish:
 ;; (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings)
@@ -166,6 +171,8 @@
 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
+(define-key global-map (kbd "<f2>") 'ispell-word)
+
 ;; Tabs and Indents
 (setq tab-width 4)
 (setq indent-tabs-mode nil)
@@ -173,8 +180,6 @@
 
 ;; Minor Mode Hooks
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
-(add-hook 'html-mode-hook 'turn-off-flypell)
-(add-hook 'org-mode-hook 'turn-off-flyspell)
 
 ;; Flymake
 ;; (require 'flymake)
@@ -184,6 +189,7 @@
 
 ;; Flycheck mode
 ;; Enable flymake for all files
+(require 'flycheck)
 (add-hook 'find-file-hook 'flycheck-mode)
 
 ;; Rake files are ruby, too, as are gemspecs, rackup files, etc.
@@ -214,6 +220,36 @@
   (setenv "PATH" path-from-shell)
   (setq exec-path (split-string path-from-shell path-separator)))
 
+(evilnc-default-hotkeys)
+(global-evil-leader-mode)
+(evil-leader/set-leader ",")
+(evil-leader/set-key
+  "e" 'find-file
+  "j" 'ace-jump-mode
+  "b" 'switch-to-buffer
+  "k" 'kill-buffer)
+
+(setq evil-default-cursor t)
+(set-cursor-color "orange")
+
+;;Exit insert mode by pressing j and then j quickly
+(defvar key-chord-two-keys-delay 0.5)
+(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+(key-chord-mode 1)
+
+(defun scroll-down-in-place (n)
+  (interactive "p")
+  (previous-line n)
+  (scroll-down n))
+
+(defun scroll-up-in-place (n)
+  (interactive "p")
+  (next-line n)
+  (scroll-up n))
+
+(global-set-key [M-up] 'scroll-down-in-place)
+(global-set-key [M-down] 'scroll-up-in-place)
+
 ;; Get current system's name
 (defun insert-system-name()
   (interactive)
@@ -227,4 +263,8 @@
   "Get current system type"
   (insert (format "%s" system-type))
   )
+
+;; Turn off flyspell
+(setq-default flyspell-mode nil)
+
 ;;; init.el ends here

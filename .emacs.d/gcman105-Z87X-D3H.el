@@ -1,15 +1,15 @@
-;;; package --- t430.radi8.net.el local settings
+;;; package --- fed20.radi8.com.el local settings
 
 ;;; Commentary:
 
 ;;; Code:
 
-(setq multi-term-program "/bin/bash")
-
 (setq default-frame-alist
-      '((top . 1) (left . 45)
-        (width . 187) (height . 45)
-        (font . "Source Code Pro 10")))
+      '((top . 2) (left . 45)
+        (width . 191) (height . 44)
+        ;;(font . "Source Code Pro 10")))
+        (font . "Liberation Mono 10")))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode
@@ -17,11 +17,11 @@
 (require 'ido)
 (ido-mode 'both) ;; for buffers and files
 (setq
- ido-save-directory-list-file "~/.emacs.d/t430.radi8.net/ido.last"
+ ido-save-directory-list-file "~/.emacs.d/gcman105-Z87X-D3H/ido.last"
   ido-ignore-buffers ;; ignore these guys
   '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
      "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
-  ido-work-directory-list '("~/" "~/devel" "~/Documents" "~src")
+  ido-work-directory-list '("~/" "~/Desktop" "~/Documents" "~src")
   ido-case-fold  t                 ; be case-insensitive
   ido-enable-last-directory-history t ; remember last used dirs
   ido-max-work-directory-list 30   ; should be enough
@@ -33,7 +33,7 @@
   ido-confirm-unique-completion t) ; wait for RET, even with unique completion
 
 ;; when using ido, the confirmation is rather annoying...
- (setq confirm-nonexistent-file-or-buffer nil)
+(setq confirm-nonexistent-file-or-buffer nil)
 
 ;; increase minibuffer size when ido completion is active
 (add-hook 'ido-minibuffer-setup-hook
@@ -47,4 +47,4 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;;; t430.radi8.net.el ends here
+;;; fed20.radi8.com.el ends here
