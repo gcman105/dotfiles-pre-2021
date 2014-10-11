@@ -1,42 +1,45 @@
+# file patterns --------------------------
+
+**/.DS_Store
+**/*.tar
+**/.smex*
+**/session.*
+**/ido.last
+**/places
+**/pg_hba.conf
+**/#*#
+
+# top level ------------------------------
+
 tmp/*
 alfred/
 dash/
-.netrwbook
-.netrwhist
+.authinfo
+.directory
+.gnus
 .viminfo
-dict.txt
-bundle/
 en.utf-8.add
 en.utf-8.add.sql
 .vim-fuf-data/
+
+# .vim directory -------------------------
+
+.vim/.netrwbook
+.vim/.netrwhist
+.vim/dict.txt
+.vim/bundle/
 .vim/colors/
 
-elpa/
-auto-save-list/
-backup/
-backups/
-eshell/
-modules/
-snippets-default/
-var/
+# .emacs.d directory ---------------------
 
-.DS_Store
-
-starter-kit-2.*
-*.tar
-
-.smex*
-session.*
-places*
-pg_hba.conf
-
-#*#
-*/#*#
-
-bookmarks
-COPYING
-.org-id-locations
-/snippets-default   
+.emacs.d/elpa/
+.emacs.d/auto-save-list/
+.emacs.d/backups/
+.emacs.d/cloned/
+.emacs.d/el-get
+.emacs.d/snippets-default/
+.emacs.d/url/
+.emacs.d/var/
 .emacs.d/tramp
 .emacs.d/ede-projects.el
 .emacs.d/recentf
@@ -45,3 +48,5 @@ COPYING
 .emacs.d/oauth2.plstore
 .emacs.d/t430/
 .emacs.d/s430/
+.emacs.d/Garys-Mac-mini/
+.emacs.d/gcman105-Z87X-D3H/
