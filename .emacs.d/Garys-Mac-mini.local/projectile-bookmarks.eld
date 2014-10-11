@@ -1,1 +1,1 @@
-("~/Dropbox/_configs/" "~/webs/joomla/voxpop/")
+("~/Dropbox/_configs/")
