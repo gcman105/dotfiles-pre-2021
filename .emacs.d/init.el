@@ -223,10 +223,6 @@
 (global-set-key (kbd "C-|") 'split-window-right)
 
 ;; org-mode settings --------------------------------------------------------
-(push "~/.emacs.d/cloned/org-toodledo" load-path)
-(require 'org-toodledo)
-(setq org-toodledo-userid "td4b0512dd78ea8")
-(setq org-toodledo-password "whouse105")
 
 ;; Useful key bindings for org-mode
 (add-hook 'org-mode-hook

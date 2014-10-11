@@ -6,6 +6,9 @@
 **/session.*
 **/ido.last
 **/places
+**/recentf*
+**/ac-comphist.dat
+**/projectile.cache
 **/pg_hba.conf
 **/#*#
 
@@ -46,7 +49,7 @@ en.utf-8.add.sql
 .emacs.d/.mc-lists.el
 .emacs.d/ido.last
 .emacs.d/oauth2.plstore
-.emacs.d/t430/
-.emacs.d/s430/
-.emacs.d/Garys-Mac-mini/
+.emacs.d/t430.radi8.net/
+.emacs.d/s430.radi8/
+.emacs.d/Garys-Mac-mini.local/
 .emacs.d/gcman105-Z87X-D3H/
