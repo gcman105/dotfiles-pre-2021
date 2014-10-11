@@ -6,8 +6,9 @@
 **/session.*
 **/ido.last
 **/places
-**/recentf*
+**/recentf.*
 **/ac-comphist.dat
+**/.bm-repository
 **/projectile.cache
 **/projectile-bookmarks.eld
 **/pg_hba.conf
