@@ -131,7 +131,7 @@
       '("~/.emacs.d/snippets"            ;; personal snippets
 	;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
 	;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
-        "~/.emacs.d/snippets-default"    ;; the default collection
+        "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
 
 ;; Deft config for nvALT files with md extension ----------------------------

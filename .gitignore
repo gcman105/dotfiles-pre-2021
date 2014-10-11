@@ -1,6 +1,7 @@
 # file patterns --------------------------
 
 **/.DS_Store
+**/.nosearch
 **/*.tar
 **/.smex*
 **/session.*
@@ -13,6 +14,7 @@
 **/projectile-bookmarks.eld
 **/pg_hba.conf
 **/#*#
+**/.yas-compiled-snippets.el
 
 # top level ------------------------------
 
@@ -42,7 +44,7 @@ en.utf-8.add.sql
 .emacs.d/backups/
 .emacs.d/cloned/
 .emacs.d/el-get
-.emacs.d/snippets-default/
+.emacs.d/yasnippet-snippets/
 .emacs.d/url/
 .emacs.d/var/
 .emacs.d/tramp
