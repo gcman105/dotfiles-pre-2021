@@ -1,0 +1,30 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/gcman105/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/gcman105/.emacs.d/"
+ "~/"
+ "~/devel"
+ "~/Documents"
+ "~src"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "t430.radi8.net.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/gcman105/.emacs.d/" (21583 32627 316267 615000) "projectile.cache" "yasnippet-snippets/" "url/" "elpa/" "ac-comphist.dat" ".org-id-locations" "auto-save-list/" "session.2e79946fd-70d0-491b-826c-e38fb10bd345" "Garys-Mac-mini.local.el" "README.markdown" "t430.radi8.net/" "t430.radi8.net.el" "eshell/" "emacs-customizations.el" "../" "init.el" "gcman105-Z87X-D3H/" "./" "bookmarks" "t430/" "session.10f4b531b4f1c52d68141355023550969400000024140065" "gcman105-Z87X-D3H.el" "s430.radi8.el" "snippets/" "s430.radi8/" "session.28529b662-28cd-4d91-9136-ec4f720bcddc" "menu_log.notes" "Garys-Mac-mini.local/")
+
+ ("/home/gcman105/" (21583 32677 945117 39000) ".py-scripts/" ".ICEauthority" ".tmuxoldconfig" ".npm/" "color_schemes/" "colortest.py" "apps/" ".bash_logout" ".zshrc.pre-oh-my-zsh" ".heroku/" ".filezilla/" "dotdeb.gpg" ".cache/" "devel/" "Videos/" ".tmux.conf" ".pgadmin3" ".pgpass" ".zlogin" ".bash_history" "Downloads/" ".WebIde60/" ".el4r/" "Desktop/" ".ssh/" ".spring/" ".reportbugrc~" "Pictures/" ".RubyMine60/" ".vim-fuf-data/" ".gnome2/" ".zsh-update" ".mozilla/" ".gtk-bookmarks" ".mysql_history" ".rvmrc" ".terminfo/" ".NERDTreeBookmarks" ".dropbox-dist/" "VirtualBox VMs/" ".rvm/" ".VirtualBox/" ".vimfiler.tar.gz" ".rediscli_history" ".reportbugrc" "ve/" ".npmrc" ".cola" ".aqbanking/" "SublimeTextProjects/" ".berkshelf/" ".gimp-2.8/" ".emacs.d/" "Music/" "pgadmin.log" ".coffee_history" ".pip/" "RubymineProjects/" ".shotwell/" ".neocomplcache/" ".vim/" "tmp/" "xfce_apps/" ".profile" ".xscreensaver" ".PyCharm30/" ".fontconfig/" ".tmuxinator/" ".node-gyp/" "../" "backups/" ".gnash/" ".lesshst" "dumps/" "uw_march_2014.pdf" "PhpstormProjects/" ".gvfs/" ".xsession-errors.old" ".pulse-cookie" "./" "Documents/" "256colors2.pl" ".zcompdump-t430-4.3.17" ".composer/" ".psql_history" ".vimlocal" ".emacs_jeg2.d" ".icedove/" ".mysql/" ".gnome2_private/" ".gconf/" ".oh-my-zsh/" "tmux-client-16983.log" ".gnome/" ".guard_history" ".irb-history" "tmux-client-16705.log" ".bash_profile" ".nvm/" ".speech-dispatcher/" ".xsession-errors" ".gnucash/" ".dbus/" ".pry_history" "Templates/" ".pulse/" "regexpal/" ".java/" "#.zshrc#" ".gksu.lock" ".gstreamer-0.10/" ".bashrc" "SpringLobby/" ".springrc" ".pki/" "kde_apps/" ".dropbox/" ".gitconfig" ".gem/" "Mail/" "libpeerconnection.log" ".vimfiler/" ".unite/" ".bundler/" ".vimrc" ".viminfo" ".mission-control/" ".config/" ".xmodmap" ".netrc" "Public/" ".thumbnails/" ".springlobby/" "Dropbox/" ".WebIde70/" ".local/" "CMS/" ".virtualenvs/" "vm/" "tmux-server-16985.log" ".zsh_history" ".zshrc" ".gist-vim" ".vagrant.d/" "temp/" ".gitk" ".el4rrc.rb")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

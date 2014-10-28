@@ -1,0 +1,33 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/gcman105/devel/mm/smacss/source/" . "layouts/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/gcman105/devel/mm/smacss/source/layouts/"
+ "/home/gcman105/devel/mm/smacss/source/"
+ "~/"
+ "~/Desktop"
+ "~/Documents"
+ "~src"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "layout.slim"
+ "_footer.slim"
+ "index.html.slim"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/gcman105/devel/mm/smacss/source/layouts/" (21562 57772 991455 214000) "../" "./" "layout.haml")
+
+ ("/home/gcman105/devel/mm/smacss/source/" (21566 54832 66100 3000) "layouts/" "_footer.haml" ".#_footer.haml" "index.html.slim" "../" "./" "index.html.haml" "stylesheets/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

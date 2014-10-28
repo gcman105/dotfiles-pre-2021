@@ -97,6 +97,10 @@
 (global-set-key (kbd "C-c h") 'helm-projectile)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
+;; setup magit --------------------------------------------------------------
+(require 'magit)
+(global-set-key (kbd "C-c s") 'magit-status)
+
 (require 'recentf)
 (setq recentf-load-file (concatenate 'string custom-system-path "recentf"))
 (setq recentf-save-file (concatenate 'string custom-system-path "recentf"))

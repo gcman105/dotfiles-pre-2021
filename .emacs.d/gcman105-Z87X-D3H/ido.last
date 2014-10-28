@@ -1,0 +1,94 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ (#("/home/gcman105/.emacs.d/snippets/" 15 24 (face flx-highlight-face)) . "php-mode/")
+ (#("/home/gcman105/.emacs.d/" 15 24 (face flx-highlight-face)) . "snippets/")
+ ("/home/gcman105/devel/joomla/" . "gibbonsroscoe/")
+ ("/home/gcman105/.middleman/middleman-joomla/source/" . "layouts/")
+ ("/home/gcman105/.middleman/middleman-joomla/" . "source/")
+ ("/home/gcman105/.middleman/" . "middleman-joomla/")
+ ("/home/gcman105/devel/mm/middleman-bss/source/" . "css/")
+ ("/home/gcman105/devel/mm/middleman-bss/" . "source/")
+ ("/home/gcman105/devel/mm/" . "gr/")
+ ("/home/gcman105/devel/" . "joomla/")
+ ("/home/gcman105/" . ".middleman/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/gcman105/.middleman/middleman-joomla/source/"
+ "/home/gcman105/.middleman/middleman-joomla/"
+ "/home/gcman105/devel/joomla/gibbonsroscoe/"
+ "/home/gcman105/devel/mm/gr/"
+ "/home/gcman105/.middleman/middleman-joomla/source/layouts/"
+ "/home/gcman105/devel/mm/middleman-bss/source/css/"
+ "~/"
+ "~/Desktop"
+ "~/Documents"
+ "~src"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "environment_variables.rb"
+ "config.rb"
+ "templateDetails.xml"
+ "jui_index.php"
+ "index.php"
+ "index.html"
+ "layout.haml"
+ "main.scss"
+ "init.el"
+ "gcman105-Z87X-D3H.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/gcman105/.middleman/middleman-joomla/" (21582 31690 742684 808000) "config.rb" "Gemfile.lock" "source/" "./" "LICENSE" ".projectile" "Gemfile" ".git/" ".gitignore" "../" "joomla/" "README.md")
+
+ ("/home/gcman105/" (21582 31598 258687 476000) ".xsession-errors" ".gem/" ".gstreamer-0.10/" ".zshrc" ".vimlocal" ".jitsi/" ".color/" "Downloads/" ".ssh/" ".dvdcss/" ".zsh_history" ".gitconfig" ".bash_history" ".pki/" ".thumbnails/" "ve/" ".zsh-update" "RubymineProjects/" ".thunderbird/" ".ICEauthority" ".cache/" "Mail/" "apps/" ".filezilla/" "backups/" ".Skype/" ".dbus/" ".mozilla/" ".zlogin" ".dropbox/" "./" ".bashrc" ".oh-my-zsh/" ".kde/" "tmp/" ".gnome/" ".npmrc" ".gnupg/" "examples.desktop" ".Xauthority" ".compiz/" ".macromedia/" "npm/" ".dropbox-dist/" ".bash_profile" ".emacs.d/" ".rvm/" ".muttrc" ".java/" ".adobe/" ".gnome2_private/" ".Xmodmap" "webs/" "Videos/" "Music/" ".vimrc" "devel/" ".esd_auth" ".zshrc.pre-oh-my-zsh" ".profile~" ".middleman/" ".neocomplcache/" ".tmuxORG.conf" ".dmrc" "VirtualBox VMs/" ".xinputrc" ".viminfo" ".gconf/" ".config/" ".zcompdump-gcman105-Z87X-D3H-5.0.2" "Public/" ".nv/" "Templates/" ".unite/" "vm/" "../" "Pictures/" "Documents/" ".gimp-2.8/" ".ido.last" ".zcompdump" "Dropbox/" ".gnome2/" ".vim/" ".profile" ".vagrant.d/" ".bash_logout" ".local/" "256colors2.pl" "temp/" ".irb-history" ".tmux.conf" "Desktop/" ".tmuxinator/" ".xsession-errors.old" ".RubyMine60/" ".npm/")
+
+ ("/home/gcman105/devel/joomla/gibbonsroscoe/" (21582 31177 998699 600000) "html/" "mm_index.html" "template_thumbnail.png" "gibbonsroscoe.zip" "./" "index.php" "css/" "template_preview.png" "images/" "favicon.ico" "js/" "img/" "templateDetails.xml" "jui_index.php" "../")
+
+ ("/home/gcman105/.emacs.d/snippets/php-mode/" (21582 27757 146798 289000) "jdinc" "./" "joomod" "../")
+
+ ("~/Documents" (21575 42729 580730 859000) "./" "Learning/" "../")
+
+ ("~/Desktop" (21330 41294 992634 971000) "./" "../")
+
+ ("~/" (21582 25278 502869 796000) ".xsession-errors" ".gem/" ".gstreamer-0.10/" ".zshrc" ".vimlocal" ".jitsi/" ".color/" "Downloads/" ".ssh/" ".dvdcss/" ".zsh_history" ".gitconfig" ".bash_history" ".pki/" ".thumbnails/" "ve/" ".zsh-update" "RubymineProjects/" ".thunderbird/" ".ICEauthority" ".cache/" "Mail/" "apps/" ".filezilla/" "backups/" ".Skype/" ".dbus/" ".mozilla/" ".zlogin" ".dropbox/" "./" ".bashrc" ".oh-my-zsh/" ".kde/" "tmp/" ".gnome/" ".npmrc" ".gnupg/" "examples.desktop" ".Xauthority" ".compiz/" ".macromedia/" "npm/" ".dropbox-dist/" ".bash_profile" ".emacs.d/" ".rvm/" ".muttrc" ".java/" ".adobe/" ".gnome2_private/" ".Xmodmap" "webs/" "Videos/" "Music/" ".vimrc" "devel/" ".esd_auth" ".zshrc.pre-oh-my-zsh" ".profile~" ".middleman/" ".neocomplcache/" ".tmuxORG.conf" ".dmrc" "VirtualBox VMs/" ".xinputrc" ".viminfo" ".gconf/" ".config/" ".zcompdump-gcman105-Z87X-D3H-5.0.2" "Public/" ".nv/" "Templates/" ".unite/" "vm/" "../" "Pictures/" "Documents/" ".gimp-2.8/" ".ido.last" ".zcompdump" "Dropbox/" ".gnome2/" ".vim/" ".profile" ".vagrant.d/" ".bash_logout" ".local/" "256colors2.pl" "temp/" ".irb-history" ".tmux.conf" "Desktop/" ".tmuxinator/" ".xsession-errors.old" ".RubyMine60/" ".npm/")
+
+ ("/home/gcman105/.middleman/middleman-joomla/source/layouts/" (21582 23235 406928 737000) "layout.haml" "./" "../")
+
+ (#("/home/gcman105/.emacs.d/snippets/" 15 24 (face flx-highlight-face)) (21582 2673 708651 835000) "markdown-mode/" "coffee-mode/" "./" "ruby-mode/" "../" "php-mode/")
+
+ (#("/home/gcman105/.emacs.d/" 15 24 (face flx-highlight-face)) (21580 63815 770669 254000) "eshell/" "session.10f4b531b4f1c52d68141355023550969400000024140065" "Garys-Mac-mini.local.el" "ac-comphist.dat" "emacs-customizations.el" "url/" ".org-id-locations" "yasnippet-snippets/" "t430.radi8.net/" "bookmarks" "auto-save-list/" "t430.radi8.net.el" "./" "init.el" "projectile.cache" "snippets/" "gcman105-Z87X-D3H.el" "Garys-Mac-mini.local/" "README.markdown" "session.28529b662-28cd-4d91-9136-ec4f720bcddc" "s430.radi8.el" "s430.radi8/" "../" "menu_log.notes" "t430/" "gcman105-Z87X-D3H/" "elpa/")
+
+ ("/home/gcman105/devel/mm/gr/" (21582 25649 242859 100000) "config.rb" "Gemfile.lock" "build/" "source/" "./" "LICENSE" ".projectile" "Gemfile" ".git/" ".gitignore" "../" "README.md")
+
+ ("/home/gcman105/devel/joomla/" (21582 3448 288629 489000) "./" "gibbonsroscoe/" "../")
+
+ ("/home/gcman105/devel/mm/" (21582 24005 374906 524000) "gr/" "ips/" "./" "gcman105-blog/" "middleman-bss/" "voxpop/" "myblog/" "../")
+
+ ("/home/gcman105/.middleman/middleman-joomla/source/css/" (21582 22795 274941 435000) "css3-mixins.scss" "mixins.scss" "joomla3.scss" "./" "normalize.css" "../" "main.scss")
+
+ ("/home/gcman105/devel/mm/middleman-bss/source/css/" (21582 20090 251019 472000) "html5.scss" "css3-mixins.scss" "mixins.scss" "joomla3.scss" "./" "normalize.css" "../" "main.scss")
+
+ ("/home/gcman105/.middleman/middleman-bss/" (21582 4426 40601 282000) "config.rb" "Gemfile.lock" "source/" "./" "license.txt" "Gemfile" ".git/" ".gitignore" "../" "README.md")
+
+ ("/home/gcman105/devel/mm/middleman-bss/source/" (21567 52072 238956 808000) "environment_variables.sample" "layouts/" "404.html" "humans.txt" "sidebar.slim" "crossdomain.xml" "./" "robots.txt" "jui/" ".htaccess" "css/" "environment_variables.rb" "js/" "img/" "favicon_template.png" "_partials/" "../" "index.slim")
+
+ ("/home/gcman105/devel/mm/middleman-bss/" (21567 56718 222822 775000) "config.rb" "Gemfile.lock" "build/" "source/" "./" "license.txt" ".projectile" "Gemfile" ".git/" ".gitignore" "../" "README.md" ".ruby-version")
+
+ ("/home/gcman105/devel/" (21582 3427 800630 81000) "sinatra/" "mm/" "./" "me/" "assets/" "voxpop/" "../" "rwaf/" "rails/" "joomla/")
+
+ ("/home/gcman105/.middleman/" (21582 4044 528612 288000) "./" "middleman-bss/" "middleman-neat/" "middleman-joomla/" "../")
+
+ ("/home/gcman105/.middleman/middleman-joomla/source/" (21582 11118 480408 211000) "environment_variables.sample" "layouts/" "404.html" "humans.txt" "crossdomain.xml" "./" "robots.txt" "jui/" "index.haml" ".htaccess" "css/" "sidebar.haml" "environment_variables.rb" "js/" "img/" "favicon_template.png" "_partials/" "../")
+
+ ("/home/gcman105/devel/rwaf/" (21559 41709 742099 730000) ".rspec" "Gemfile.lock" "Guardfile" "app/" "vendor/" "db/" "wafapp2.org" "README.rdoc" "./" "test/" "log/" "script/" "lib/" "config.ru" "config/" "features/" "Rakefile" ".projectile" "public/" "Gemfile" ".git/" "Procfile" ".gitignore" "../" "README.md" "bin/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

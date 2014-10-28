@@ -1,0 +1,29 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/Users/gcman105/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "~/"
+ "~/Desktop"
+ "~/Documents"
+ "~src"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "init.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/Users/gcman105/.emacs.d/" (21561 17949 0 0) "url/" "t430.radi8.net.el" "t430.radi8.net/" "snippets/" "s430.radi8.el" "s430.radi8/" "README.markdown" "menu_log.notes" "init.elorg" "init.el" "gcman105-Z87X-D3H.el" "Garys-Mac-mini.local.el" "Garys-Mac-mini.local/" "eshell/" "emacs-customizations.el" "elpa/" "bookmarks" ".org-id-locations" "../" "./")
+
+ ("/Users/gcman105/" (21561 18028 0 0) "webs/" "voxpop_1.png" "vm/" "VirtualBox VMs/" "temp/" "SublimeProjects/" "source-install.log" "RubymineProjects/" "Public/" "Pictures/" "PhpstormProjects/" "One Vision Creator Projects/" "Music/" "Movies/" "loginWindow.plist" "Library/" "Google Drive/" "gcman105/" "FiledDocuments/" "Dropbox/" "Downloads/" "Documents/" "Desktop/" "dart/" "Creative Cloud Files/" "ChromeDev/" "backups/" "Applications/" "ABBYY/" "_dotfiles/" "8.2file_local/" "4_Archive_local/" "4_Archive" "3_CurrentProjects_local/" "3_CurrentProjects" "2_Pending" "1_Assets" "0_Inbox_local/" "0_Inbox" ".WebIde80/" ".viminfo" ".vagrant.d/" ".Trash/" ".subversion/" ".subtlepatterns/" ".ssh/" ".ScanSnap/" ".ROESEngineCache/" ".roescache/" ".rnd" ".MultiPrint/" ".local/" ".license_key_EQ-500" ".license_key_DYN-500" ".gitconfig" ".gem/" ".emacs.d/" ".DS_Store" ".dropbox/" ".cups/" ".csshat/" ".config/" ".CFUserTextEncoding" ".cache/" ".bash_profile" ".bash_history" ".adobe/" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

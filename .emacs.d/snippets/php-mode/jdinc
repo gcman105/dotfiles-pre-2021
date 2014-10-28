@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name:  jdoc:include html5
+# key: jdinc
+# binding: direct-keybinding
+# --
+<jdoc:include type="modules" name="$1" style="html5" />$0
