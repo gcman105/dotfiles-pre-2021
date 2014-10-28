@@ -9,9 +9,9 @@
  (position . 12827))
 ("org-capture-last-stored"
  (filename . "~/Dropbox/org/gtd.org")
- (front-context-string . "** TODO Testing ")
- (rear-context-string . "C82293\n   :END:\n")
- (position . 9715))
+ (front-context-string . "** TODO brief de")
+ (rear-context-string . "43d44ca37556e21\n")
+ (position . 9912))
 ("org-remember-last-stored"
  (filename . "~/Dropbox/org/gtd.org")
  (front-context-string . "** TODO Testing ")

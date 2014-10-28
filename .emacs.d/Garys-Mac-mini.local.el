@@ -47,4 +47,15 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
+;; Set up 'multi-term' ------------------------------------------------------
+(setq multi-term-program "/bin/zsh")
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq term-buffer-maximum-size 10000)
+            (setq show-trailing-whitespace nil)
+            (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+            (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
+            (yas-minor-mode -1)
+            ))
+
 ;;; mms.local ends here

@@ -1,2 +1,4 @@
-((("org-toodledo" .
+((("haml-mode" .
+   [1 0 0 0 0 0 0 0 0])
+  ("org-toodledo" .
    [1 0 0 0 0 0 0 0 0 0 0 0])))

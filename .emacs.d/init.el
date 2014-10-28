@@ -16,38 +16,39 @@
 ;; Guarantee all packages are installed on start
 (defvar packages-list
   '(evil evil-leader evil-numbers evil-indent-textobject
-	 evil-matchit evil-nerd-commenter
-	 evil-exchange evil-visualstar
-	 key-chord deft markdown-mode markdown-mode+
-	 ample-zen-theme subatomic256-theme
-	 magit multi-term
-	 flx flx-ido
-	 move-text
-	 http-post-simple eredis projectile
-	 helm
-	 helm-ag helm-css-scss helm-emmet helm-rails helm-rb
-	 helm-bm helm-dash helm-helm-commands helm-projectile
-	 helm-swoop
-	 heroku
-	 coffee-mode js3-mode slim-mode feature-mode
-	 emmet-mode auto-complete
-	 yaml-mode
-	 ag ac-emmet ac-helm ac-ispell
-	 multiple-cursors
-	 php-mode ruby-mode regex-tool
-	 xclip yasnippet ace-jump-mode
-	 ace-isearch
-	 guide-key
-	 smartparens
-	 bm scss-mode
-	 expand-region
-	 rainbow-mode
-	 fill-column-indicator
-	 clojure-mode
-	 handlebars-mode
-	 cursor-chg
-	 highlight-symbol
-	 rvm)
+   evil-matchit evil-nerd-commenter
+   evil-exchange evil-visualstar
+   key-chord deft markdown-mode markdown-mode+
+   ample-zen-theme subatomic256-theme
+   color-theme-solarized
+   magit multi-term
+   flx flx-ido
+   move-text
+   http-post-simple eredis projectile
+   helm
+   helm-ag helm-css-scss helm-emmet helm-rails helm-rb
+   helm-bm helm-dash helm-helm-commands helm-projectile
+   helm-swoop
+   heroku
+   coffee-mode js3-mode slim-mode haml-mode feature-mode
+   emmet-mode auto-complete
+   yaml-mode
+   ag ac-emmet ac-helm ac-ispell
+   multiple-cursors
+   php-mode ruby-mode
+   xclip yasnippet
+   ace-jump-mode ace-isearch ace-window
+   guide-key
+   smartparens
+   bm scss-mode
+   expand-region
+   rainbow-mode
+   fill-column-indicator
+   clojure-mode
+   handlebars-mode
+   cursor-chg
+   highlight-symbol
+   rvm)
   "List of packages needs to be installed at launch")
 
 (defun has-package-not-installed ()
@@ -115,12 +116,19 @@
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
+(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+               "*Messages*" "Async Shell Command" "*Compile-Log*"
+               "*Customize"))
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
 (require 'ace-isearch)
 (global-ace-isearch-mode +1)
+
+(require 'ace-window)
+(global-set-key (kbd "M-p") 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 ;; setup yasnippet  ---------------------------------------------------------
 ;; HAD TO MOVE THE NEXT 2 LINES INTO THE SYSTEM FILE FOR EACH SYSTEM
@@ -129,8 +137,8 @@
 
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets"            ;; personal snippets
-	;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
-	;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
+  ;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
+  ;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
 
@@ -203,6 +211,10 @@
 (global-set-key (kbd "<S-f6>") 'move-text-up)
 (global-set-key (kbd "<C-f6>") 'move-text-down)
 
+;; set keys for multi-term
+(require 'multi-term)
+(global-set-key (kbd "C-c m") 'multi-term)
+
 ;; set keys for multiple-cursors.el
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -226,18 +238,18 @@
 
 ;; Useful key bindings for org-mode
 (add-hook 'org-mode-hook
-	  (lambda ()
-	    (local-unset-key "\C-c")
-	    (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
-	    (local-set-key "\C-cs" 'org-toodledo-sync)
-	    )
-	  )
+    (lambda ()
+      (local-unset-key "\C-c")
+      (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
+      (local-set-key "\C-cs" 'org-toodledo-sync)
+      )
+    )
 (add-hook 'org-agenda-mode-hook
-	  (lambda ()
-	    (local-unset-key "\C-c")
-	    (local-set-key "\C-cd" 'org-toodledo-agenda-mark-task-deleted)
-	    )
-	  )
+    (lambda ()
+      (local-unset-key "\C-c")
+      (local-set-key "\C-cd" 'org-toodledo-agenda-mark-task-deleted)
+      )
+    )
 
 (define-key global-map "\C-ct" 'org-capture)
 (define-key global-map "\C-ca" 'org-agenda)
@@ -255,29 +267,29 @@
 ;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
 
 '(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1) 
-			     ((expand-file-name "someday.org" org-directory) :level . 2))))
+           ((expand-file-name "someday.org" org-directory) :level . 2))))
 
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
-	 ;;"* TODO %^{Brief Description} %^g\n%?\nAdded: %U")
-	 "* TODO %^{Brief Description} %^g\n  %?\n  %i\n  Added: %U")
+   ;;"* TODO %^{Brief Description} %^g\n%?\nAdded: %U")
+   "* TODO %^{Brief Description} %^g\n  %?\n  %i\n  Added: %U")
         ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-	 "* %?\nEntered on %U\n  %i\n  %a")))
+   "* %?\nEntered on %U\n  %i\n  %a")))
 
 ;; (setq org-remember-templates
 ;;       '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/Dropbox/org/gtd.org" "Tasks")
-;; 	("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
-;; 	("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
-;; 	("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
-;; 	("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
+;;  ("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
+;;  ("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
+;;  ("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
+;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
 ;;          "~/Dropbox/org/journal.org")
-;; 	("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
+;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
 ;;          "~/Dropbox/org/journal.org")
-;; 	("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
+;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
 ;;          "~/Dropbox/org/journal.org")
-;; 	("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
-;; 	("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")
-;; 	)
+;;  ("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
+;;  ("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")
+;;  )
 ;;       )
 
 (setq org-agenda-files (quote ("~/Dropbox/org/birthday.org" "~/Dropbox/org/gtd.org" "~/Dropbox/org/emails.org" "~/Dropbox/org/finances.org")))
@@ -300,11 +312,6 @@
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 (define-key global-map (kbd "<f2>") 'ispell-word)
-
-;; Tabs and Indents
-(setq tab-width 2)
-(setq indent-tabs-mode nil)
-(setq scroll-bar-mode nil)
 
 ;; Minor Mode Hooks
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
@@ -426,7 +433,7 @@
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
 (setq guide-key/recursive-key-sequence-flag t)
-(guide-key-mode 1)  ; Enable guide-key-mode
+(guide-key-mode 1)                           ; Enable guide-key-mode
 (setq guide-key/highlight-command-regexp "rectangle")
 
 ;; Get current system's name
@@ -447,16 +454,20 @@
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
-(setq tab-width 2)
+
+;; Tabs and Indents
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+(setq scroll-bar-mode nil)
 
 ;; key bindings
-(when (eq system-type 'darwin) ;; mac specific settings
+(when (eq system-type 'darwin)               ; mac specific settings
   (setq mac-option-modifier 'alt)
   (setq mac-command-modifier 'meta)
-  (global-set-key [kp-delete] 'delete-char) ;; sets fn-delete to be right-delete
+  (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
   )
 
-;;(global-hl-line-mode)                        ; highlight current line
+;;(global-hl-line-mode)                      ; highlight current line
 (global-linum-mode t)                        ; add line numbers on the left
 (setq linum-format "%7d ")
 
@@ -466,15 +477,11 @@
 (evil-exchange-install)
 (evilnc-default-hotkeys)
 
+;; garbage collection tuning
+(setq gc-cons-threshold 20000000)
+
 ;; setup theme --------------------------------------------------------------
 ;; load theme depening on window type
-(when (eq window-system nil)
-  (load-theme 'ample-zen t)
-  (global-hl-line-mode)                        ; highlight current line
-  (blink-cursor-mode)
-  (setq x-stretch-cursor t)
-;;  (load-theme 'subatomic256 t)
-  )
 (when (eq window-system 'x)
 ;;  (load-theme 'ample-zen t)
   (load-theme 'subatomic256 t)
@@ -483,9 +490,14 @@
   (load-theme 'ample-zen t)
 ;;  (load-theme 'afternoon t)
   )
-
-;; garbage collection tuning
-(setq gc-cons-threshold 20000000)
+(when (eq window-system nil)
+  (load-theme 'ample-zen t)
+;;  (load-theme 'solarized-light t)
+  (global-hl-line-mode)                      ; highlight current line
+  (blink-cursor-mode)
+  (setq x-stretch-cursor t)
+;;  (load-theme 'subatomic256 t)
+  )
 
 ;; Set up 'custom' emacs ----------------------------------------------------
 (setq custom-file (expand-file-name "emacs-customizations.el" grc-emacs-config-dir))

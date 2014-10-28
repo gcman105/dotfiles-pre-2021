@@ -1,25 +1,3 @@
-xiki
-bundle
-ls
-cd apps/vline/beautywithin/
-bundle
-gem install bundler
-bundle
-ruby -v
-rake
-ruby -v
-bundle
-gem install bundler
-bundle
-ruby -v
-bundle
-gem install bundler
-bundler -v
-bundler
-sudo gem install bundler
-bundler
-rake
-rake --trace
 export LC_CTYPE="utf-8"
 bundler -v
 gem install bundler
@@ -126,3 +104,25 @@ sips -Z 500 *jpg
 sips -c 500 500 -s dpiHeight 72.0 -s dpiWidth 72.0 --padColor FFFFFF *.jpg
 exit
 ls
+git status
+exit
+git status
+ir
+rdoc
+ri
+ls >> #<buffer *scratch*>
+ls - la >> #<buffer *scratch*>
+ls -la >> #<buffer *scratch*>
+git status
+ri
+echo *
+echo *(:U)
+echo *
+echo *(^/)
+echo *(^/) >> /dev/clip
+echo *(^/) >> /dev/eshell
+echo *(^/) >> /dev/kill
+echo * #<buffer *scratch*>
+echo * >> #<buffer *scratch*>
+exit
+bundle install

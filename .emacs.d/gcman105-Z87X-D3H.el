@@ -43,8 +43,24 @@
       (defvar resize-minibuffer-window-max-height 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq deft-directory (expand-file-name "markdown" grc-dropbox-folder))
+
 ;; HAD TO MOVE THE NEXT 2 LINES OUT FROM THE init.el FILE
 (require 'yasnippet)
 (yas-global-mode 1)
+
+(add-to-list 'load-path
+             "/usr/share/emacs/site-lisp/dictionaries-common" t)
+
+;; Set up 'multi-term' ------------------------------------------------------
+(setq multi-term-program "/bin/zsh")
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq term-buffer-maximum-size 10000)
+            (setq show-trailing-whitespace nil)
+            (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+            (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
+            (yas-minor-mode -1)
+            ))
 
 ;;; fed20.radi8.com.el ends here
