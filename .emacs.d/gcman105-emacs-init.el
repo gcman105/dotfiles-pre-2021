@@ -59,15 +59,6 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-(global-linum-mode t)                        ; add line numbers on the left
-(set-scroll-bar-mode nil)                    ; hide scroll bars
-
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-
-(setq user-full-name "Gary Cheeseman"
-      user-mail-address "gary@cheeseman.me.uk")
-
 (defvar grc-emacs-init-file "~/.emacs.d/init.el")
 (defvar grc-backups-folder "~/backups/")
 (defvar grc-dropbox-folder "~/Dropbox/")
@@ -78,13 +69,10 @@
 (setq backup-directory-alist
       (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
 
-;; Set up 'custom' system file and directory---------------------------------
 (setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
 (setq custom-system-path (file-name-as-directory custom-system-file))
-
 (setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
 
-;; Projectile
 (setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
 (setq projectile-known-projects-file (concatenate 'string custom-system-path "projectile-bookmarks.eld"))
 (require 'projectile)
@@ -93,7 +81,6 @@
 (setq projectile-enable-caching t)
 (setq projectile-switch-project-action 'helm-projectile-find-file)
 
-;; setup helm ---------------------------------------------------------------
 (require 'helm-projectile)
 (helm-projectile-on)
 (require 'helm-config)
@@ -105,7 +92,6 @@
 
 (require 'helm-dictionary)
 
-;; setup magit --------------------------------------------------------------
 (require 'magit)
 (global-set-key (kbd "C-c s") 'magit-status)
 
@@ -115,6 +101,28 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key (kbd "<f9>") 'recentf-open-files)
+
+(require 'smartparens-config)
+(smartparens-global-mode t)
+;; highlights matching pairs
+(show-smartparens-global-mode t)
+
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
+(setq guide-key/recursive-key-sequence-flag t)
+(guide-key-mode 1)                           ; Enable guide-key-mode
+(setq guide-key/highlight-command-regexp "rectangle")
+
+(global-linum-mode t)                        ; add line numbers on the left
+(setq scroll-bar-mode -1)                    ; hide scroll bars
+(setq org-src-fonfify-natively t)            ; fontify code in code blocks
+(org-src-fontify-buffer)
+
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+
+(setq user-full-name "Gary Cheeseman"
+      user-mail-address "gary@cheeseman.me.uk")
 
 (require 'auto-complete-config)
 (setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
@@ -445,19 +453,6 @@
 
 ;; Show keystrokes in progress
 (setq echo-keystrokes 0.1)
-
-;; Smartparens
-(require 'smartparens-config)
-(smartparens-global-mode t)
-;; highlights matching pairs
-(show-smartparens-global-mode t)
-
-;; Guide-key
-(require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
-(setq guide-key/recursive-key-sequence-flag t)
-(guide-key-mode 1)                           ; Enable guide-key-mode
-(setq guide-key/highlight-command-regexp "rectangle")
 
 ;; Get current system's name
 (defun insert-system-name()

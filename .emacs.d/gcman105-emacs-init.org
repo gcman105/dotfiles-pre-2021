@@ -161,13 +161,178 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
 #+end_src
 
+** Configure Packages
+*** flx-ido
+#+begin_src emacs-lisp
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+               "*Messages*" "Async Shell Command" "*Compile-Log*"
+               "*Customize"))
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+#+end_src
+
+*** projectile
+#+begin_src emacs-lisp
+(setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
+(setq projectile-known-projects-file (concatenate 'string custom-system-path "projectile-bookmarks.eld"))
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-use-native-indexing t)
+(setq projectile-enable-caching t)
+(setq projectile-switch-project-action 'helm-projectile-find-file)
+#+end_src
+
+*** helm
+#+begin_src emacs-lisp
+(require 'helm-projectile)
+(helm-projectile-on)
+(require 'helm-config)
+
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+
+(require 'helm-dictionary)
+#+end_src
+
+*** magit
+#+begin_src emacs-lisp
+(require 'magit)
+(global-set-key (kbd "C-c s") 'magit-status)
+#+end_src
+
+*** recentf
+#+begin_src emacs-lisp
+(require 'recentf)
+(setq recentf-load-file (concatenate 'string custom-system-path "recentf"))
+(setq recentf-save-file (concatenate 'string custom-system-path "recentf"))
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+#+end_src
+
+*** smartparens
+    Highlights matching pairs
+#+begin_src emacs-lisp
+(require 'smartparens-config)
+(smartparens-global-mode t)
+(show-smartparens-global-mode t)
+#+end_src
+
+*** guide-key
+#+begin_src emacs-lisp
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
+(setq guide-key/recursive-key-sequence-flag t)
+(guide-key-mode 1)                           ; Enable guide-key-mode
+(setq guide-key/highlight-command-regexp "rectangle")
+#+end_src
+
+*** auto-complete
+#+begin_src emacs-lisp
+(require 'auto-complete-config)
+(setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+(global-auto-complete-mode 1)
+#+end_src
+
+*** ace-isearch
+#+begin_src emacs-lisp
+(require 'ace-isearch)
+(global-ace-isearch-mode +1)
+#+end_src
+
+*** ace-window
+#+begin_src emacs-lisp
+(require 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+#+end_src
+
+*** evil-surround
+#+begin_src emacs-lisp
+(require 'evil-surround)
+(global-evil-matchit-mode 1)
+#+end_src
+
+*** evil-exchange
+#+begin_src emacs-lisp
+(require 'evil-exchange)
+(setq evil-exchange-key (kbd "zx"))
+(evil-exchange-install)
+#+end_src
+
+*** yasnippet
+#+begin_src emacs-lisp
+;; HAD TO MOVE THE NEXT 2 LINES INTO THE SYSTEM FILE FOR EACH SYSTEM
+;;(require 'yasnippet)
+;;(yas-global-mode 1)
+
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"            ;; personal snippets
+  ;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
+  ;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
+        "~/.emacs.d/yasnippet-snippets"    ;; the default collection
+        ))
+#+end_src
+    
+*** saveplace
+    Save place in file when I exit
+#+begin_src emacs-lisp
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file (concatenate 'string custom-system-path "places"))
+#+end_src
+
+*** bm
+    bookmarks
+#+begin_src emacs-lisp
+(setq bm-repository-file (concatenate 'string custom-system-path ".bm-repository"))
+(setq-default bm-restore-repository-on-load t)
+(require 'bm)
+(setq-default bm-buffer-persistence t)       ; make bookmarks persistent as default
+#+end_src
+*** deft
+    Deft config for nvALT files with md extension ----------------------------
+#+begin_src emacs-lisp
+(setq deft-extension "md")
+(setq deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
+(setq deft-text-mode 'markdown-mode)
+(setq deft-use-filename-as-title 1)
+#+end_src
+
+** Hooks
+*** deft mode hook
+    Turn off evil-mode in a deft buffer
+#+begin_src emacs-lisp
+(defun gcman-deft-mode-hook ()
+  "deft-mode-hook"
+  (turn-off-evil-mode))
+(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook))) 
+#+end_src
+
+** Key bindings
+*** global key bindings
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c h") 'helm-projectile)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "<f9>") 'recentf-open-files)
+(global-set-key (kbd "M-p") 'ace-window)
+(global-set-key [f8] 'deft)
+(global-set-key [S-f8] 'deft-new-file-named)
+#+end_src
+    
 ** Global defaults
 *** Sensible defaults
 
 #+begin_src emacs-lisp
 (global-linum-mode t)                        ; add line numbers on the left
-(set-scroll-bar-mode nil)                    ; hide scroll bars
+(setq scroll-bar-mode -1)                    ; hide scroll bars
 (setq org-src-fonfify-natively t)            ; fontify code in code blocks
+(org-src-fontify-buffer)
 #+end_src
 *** Tabs and Indents
 
@@ -183,105 +348,9 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 * My old configuration
-  I will move stuff from here to the correct place above as needed
+  *I will move stuff from here to the correct place above as needed*
 
 #+begin_src emacs-lisp
-
-
-;; Set up 'custom' system file and directory---------------------------------
-
-;; Projectile
-(setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
-(setq projectile-known-projects-file (concatenate 'string custom-system-path "projectile-bookmarks.eld"))
-(require 'projectile)
-(projectile-global-mode)
-(setq projectile-use-native-indexing t)
-(setq projectile-enable-caching t)
-(setq projectile-switch-project-action 'helm-projectile-find-file)
-
-;; setup helm ---------------------------------------------------------------
-(require 'helm-projectile)
-(helm-projectile-on)
-(require 'helm-config)
-(global-set-key (kbd "C-c h") 'helm-projectile)
-(global-set-key (kbd "M-x") 'helm-M-x)
-
-(require 'helm-descbinds)
-(helm-descbinds-mode)
-
-(require 'helm-dictionary)
-
-;; setup magit --------------------------------------------------------------
-(require 'magit)
-(global-set-key (kbd "C-c s") 'magit-status)
-
-(require 'recentf)
-(setq recentf-load-file (concatenate 'string custom-system-path "recentf"))
-(setq recentf-save-file (concatenate 'string custom-system-path "recentf"))
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key (kbd "<f9>") 'recentf-open-files)
-
-(require 'auto-complete-config)
-(setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
-(global-auto-complete-mode 1)
-
-;; enable ido-mode with flex matching
-;;(flx-ido-mode t)
-(require 'flx-ido)
-(ido-mode 1)
-(ido-everywhere 1)
-(flx-ido-mode 1)
-(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
-               "*Messages*" "Async Shell Command" "*Compile-Log*"
-               "*Customize"))
-;; disable ido faces to see flx highlights.
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
-
-(require 'ace-isearch)
-(global-ace-isearch-mode +1)
-
-(require 'evil-surround)
-(global-evil-matchit-mode 1)
-
-(require 'evil-exchange)
-;; change default key bindings (if you want) HERE
-(setq evil-exchange-key (kbd "zx"))
-(evil-exchange-install)
-
-(require 'ace-window)
-(global-set-key (kbd "M-p") 'ace-window)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-;; setup yasnippet  ---------------------------------------------------------
-;; HAD TO MOVE THE NEXT 2 LINES INTO THE SYSTEM FILE FOR EACH SYSTEM
-;;(require 'yasnippet)
-;;(yas-global-mode 1)
-
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"            ;; personal snippets
-  ;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
-  ;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
-        "~/.emacs.d/yasnippet-snippets"    ;; the default collection
-        ))
-
-;; Deft config for nvALT files with md extension ----------------------------
-(setq deft-extension "md")
-(setq deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
-(setq deft-text-mode 'markdown-mode)
-(setq deft-use-filename-as-title 1)
-(global-set-key [f8] 'deft)
-(global-set-key [S-f8] 'deft-new-file-named)
-
-;; gcman Deft mode hook -----------------------------------------------------
-;; Turn off evil-mode in a deft buffer
-(defun gcman-deft-mode-hook ()
-  "deft-mode-hook"
-  (turn-off-evil-mode))
-(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook))) 
 
 ;; gcman Markdown mode hook -------------------------------------------------
 ;; Stop markdown-mode interfeering with yasnippet
@@ -296,21 +365,11 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;; (global-unset-key (kbd "<up>"))
 ;; (global-unset-key (kbd "<down>"))
 
-;; Save place in file when I exit
-(require 'saveplace)
-(setq-default save-place t)
-(setq save-place-file (concatenate 'string custom-system-path "places"))
-
 ;; set bookmarking keys
-(setq bm-repository-file (concatenate 'string custom-system-path ".bm-repository"))
-(setq-default bm-restore-repository-on-load t)
-(require 'bm)
 (global-set-key (kbd "<C-f7>") 'bm-next)
 (global-set-key (kbd "<f7>")   'bm-toggle)
 (global-set-key (kbd "<S-f7>") 'bm-previous)
 (global-set-key (kbd "<M-f7>") 'bm-show-all)
-;; make bookmarks persistent as default
-(setq-default bm-buffer-persistence t)
  
 ;; Loading the repository from file when on start up.
 (add-hook' after-init-hook 'bm-repository-load)
@@ -551,19 +610,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 ;; Show keystrokes in progress
 (setq echo-keystrokes 0.1)
-
-;; Smartparens
-(require 'smartparens-config)
-(smartparens-global-mode t)
-;; highlights matching pairs
-(show-smartparens-global-mode t)
-
-;; Guide-key
-(require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
-(setq guide-key/recursive-key-sequence-flag t)
-(guide-key-mode 1)                           ; Enable guide-key-mode
-(setq guide-key/highlight-command-regexp "rectangle")
 
 ;; Get current system's name
 (defun insert-system-name()
