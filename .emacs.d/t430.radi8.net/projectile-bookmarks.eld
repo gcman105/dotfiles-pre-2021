@@ -1,1 +1,0 @@
-("~/Dropbox/org/" "~/Dropbox/_configs/" "~/.oh-my-zsh/" "~/devel/rwaf/")
