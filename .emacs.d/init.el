@@ -15,9 +15,10 @@
 
 ;; Guarantee all packages are installed on start
 (defvar packages-list
-  '(evil evil-leader evil-numbers evil-indent-textobject
+  '(evil evil-leader evil-numbers
    evil-matchit evil-nerd-commenter
    evil-exchange evil-visualstar
+   evil-surround
    key-chord deft markdown-mode markdown-mode+
    ample-zen-theme subatomic256-theme
    color-theme-solarized
@@ -28,7 +29,7 @@
    helm
    helm-ag helm-css-scss helm-emmet helm-rails helm-rb
    helm-bm helm-dash helm-helm-commands helm-projectile
-   helm-swoop
+   helm-swoop helm-descbinds helm-dictionary
    heroku
    coffee-mode js3-mode slim-mode haml-mode feature-mode
    emmet-mode auto-complete
@@ -97,6 +98,11 @@
 (global-set-key (kbd "C-c h") 'helm-projectile)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+
+(require 'helm-dictionary)
+
 ;; setup magit --------------------------------------------------------------
 (require 'magit)
 (global-set-key (kbd "C-c s") 'magit-status)
@@ -129,6 +135,14 @@
 
 (require 'ace-isearch)
 (global-ace-isearch-mode +1)
+
+(require 'evil-surround)
+(global-evil-matchit-mode 1)
+
+(require 'evil-exchange)
+;; change default key bindings (if you want) HERE
+(setq evil-exchange-key (kbd "zx"))
+(evil-exchange-install)
 
 (require 'ace-window)
 (global-set-key (kbd "M-p") 'ace-window)
@@ -368,6 +382,9 @@
   "o" 'helm-occur
   "v" 'helm-projectile
   "h" 'helm-man-woman
+  "," 'helm-resume
+  "." 'helm-calcul-expression
+  "d" 'helm-descbinds
   "m" 'helm-mini
   "i" 'helm-semantic-or-imenu
   "p" 'ffap
@@ -483,6 +500,13 @@
 
 ;; garbage collection tuning
 (setq gc-cons-threshold 20000000)
+
+;; xmpfilter and rcodetools
+(require 'rcodetools)
+(require 'ruby-mode)
+(require 'ruby-mode-expansions)
+(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
 
 ;; setup theme --------------------------------------------------------------
 ;; load theme depening on window type

@@ -53,3 +53,4 @@ en.utf-8.add.sql
 .emacs.d/ede-projects.el
 .emacs.d/.mc-lists.el
 .emacs.d/oauth2.plstore
+.emacs.d/**/.bm-repository
