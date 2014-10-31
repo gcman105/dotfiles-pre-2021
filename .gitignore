@@ -54,3 +54,9 @@ en.utf-8.add.sql
 .emacs.d/.mc-lists.el
 .emacs.d/oauth2.plstore
 .emacs.d/**/.bm-repository
+.emacs.d/**/ido.last
+.emacs.d/**/projectile.cache
+.emacs.d/**/projectile-bookmarks.eld
+.emacs.d/**/ac-comphist.dat
+.emacs.d/**/places
+.emacs.d/**/recentf
