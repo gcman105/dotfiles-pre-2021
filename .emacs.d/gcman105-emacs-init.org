@@ -6,16 +6,14 @@
 ** About this file
 <<babel-init>>
 
-Inspired by the [[http://eschulte.me/emacs24-starter-kit/#installation][Emacs Starter Kit]], I set up my configuration file
-using Org-babel. Because my username is Sacha, I can save this as
-Sacha.org in my =~/.emacs.d= directory to have it automatically load.
+Inspired by the [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Sacha Chua's config]], I set up my configuration file
+using Org-babel. This file is saved as gcman105-emacs-init.org in
+my =~/.emacs.d= directory to have it automatically load.
 You could load it with =(org-babel-load-file "/path/to/file")=,
 changing the path appropriately, but you'll probably want to tweak it
-extensively first. 
+extensively first.
 
-This page: [[http://sachac.github.io/.emacs.d/Sacha.html][HTML]] - [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Org]] - [[https://dl.dropbox.com/u/3968124/sacha-emacs.el][.el]] - [[http://github.com/sachac/.emacs.d/][Github]] - also, http://sach.ac/dotemacs
-
-To be precise, this is what's in the first part of my =~/.emacs.d/init.el= (what used to be the =~/.emacs= file):
+[[https://github.com/gcman105/dotfiles/blob/master/.emacs.d/gcman105-emacs-init.org][This File]] on Github
 
 #+begin_src emacs-lisp  :tangle no
 ;;; init.el --- Where all the magic begins
@@ -294,6 +292,22 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq-default bm-restore-repository-on-load t)
 (require 'bm)
 (setq-default bm-buffer-persistence t)       ; make bookmarks persistent as default
+
+;; Loading the repository from file when on start up.
+(add-hook' after-init-hook 'bm-repository-load)
+ 
+;; Restoring bookmarks when on file find.
+(add-hook 'find-file-hooks 'bm-buffer-restore)
+ 
+;; Saving bookmark data on killing a buffer
+(add-hook 'kill-buffer-hook 'bm-buffer-save)
+ 
+;; Saving the repository to file when on exit.
+;; kill-buffer-hook is not called when emacs is killed, so we
+;; must save all bookmarks first.
+(add-hook 'kill-emacs-hook '(lambda nil
+                              (bm-buffer-save-all)
+                              (bm-repository-save)))
 #+end_src
 *** deft
     Deft config for nvALT files with md extension ----------------------------
@@ -323,6 +337,12 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (global-set-key (kbd "M-p") 'ace-window)
 (global-set-key [f8] 'deft)
 (global-set-key [S-f8] 'deft-new-file-named)
+
+;; set bookmarking keys
+(global-set-key (kbd "<C-f7>") 'bm-next)
+(global-set-key (kbd "<f7>")   'bm-toggle)
+(global-set-key (kbd "<S-f7>") 'bm-previous)
+(global-set-key (kbd "<M-f7>") 'bm-show-all)
 #+end_src
     
 ** Global defaults
@@ -365,27 +385,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;; (global-unset-key (kbd "<up>"))
 ;; (global-unset-key (kbd "<down>"))
 
-;; set bookmarking keys
-(global-set-key (kbd "<C-f7>") 'bm-next)
-(global-set-key (kbd "<f7>")   'bm-toggle)
-(global-set-key (kbd "<S-f7>") 'bm-previous)
-(global-set-key (kbd "<M-f7>") 'bm-show-all)
  
-;; Loading the repository from file when on start up.
-(add-hook' after-init-hook 'bm-repository-load)
- 
-;; Restoring bookmarks when on file find.
-(add-hook 'find-file-hooks 'bm-buffer-restore)
- 
-;; Saving bookmark data on killing a buffer
-(add-hook 'kill-buffer-hook 'bm-buffer-save)
- 
-;; Saving the repository to file when on exit.
-;; kill-buffer-hook is not called when emacs is killed, so we
-;; must save all bookmarks first.
-(add-hook 'kill-emacs-hook '(lambda nil
-                              (bm-buffer-save-all)
-                              (bm-repository-save)))
 
 ;; Setup GLOBAL keys --------------------------------------------------------
 
