@@ -1,0 +1,8 @@
+# name: babel emacs lisp 
+# key: #bel
+# binding: direct-keybinding
+# --
+#+begin_src emacs-lisp
+$1
+#+end_src
+$0

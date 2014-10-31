@@ -1,23 +1,27 @@
 ;;; init.el --- Where all the magic begins
 ;;
-;; This file loads both
-;; - Org-mode : http://orgmode.org/ and
-;; - Org-babel: http://orgmode.org/worg/org-contrib/babel/org-babel.php#library-of-babel
-;;
-;; It then loads the rest of our Emacs initialization from Emacs lisp
+;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
 ;; embedded in literate Org-mode files.
 
-;; Load up Org Mode and Org Babel for elisp embedded in Org Mode files
+;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
 (setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
 
-;; setting el-get packaged org-mode to initial load path, should fail
-;; safely to builtin org
-(let* ((org-dir (expand-file-name "org" (expand-file-name "el-get" dotfiles-dir)))
-       (load-path (append (list org-dir) (or load-path nil))))
-  (require 'org-id)
-  (require 'org-element)
-  ;;TODO make bug report, this contains defcustom definitions that are needed during tangle operations... 
-  (require 'org)
-  (mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$")))
+(let* ((org-dir (expand-file-name
+                 "lisp" (expand-file-name
+                         "org" (expand-file-name
+                                "src" dotfiles-dir))))
+       (org-contrib-dir (expand-file-name
+                         "lisp" (expand-file-name
+                                 "contrib" (expand-file-name
+                                            ".." org-dir))))
+       (load-path (append (list org-dir org-contrib-dir)
+                          (or load-path nil))))
+  ;; load up Org-mode and Org-babel
+  (require 'org-install)
+  (require 'ob-tangle))
+
+;; load up all literate org-mode files in this directory
+(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
 
 ;;; init.el ends here
+

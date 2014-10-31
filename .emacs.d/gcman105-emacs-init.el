@@ -1,19 +1,12 @@
-;;; Package --- gcman105's emacs init.el
 
-;;; Commentary:
-
-;;; Code:
 (require 'cl)
-
 (require 'package)
-
 (dolist (repo '(("elpa"    . "http://tromey.com/elpa/")
                 ("melpa"   . "http://melpa.milkbox.net/packages/")))
   (add-to-list 'package-archives repo))
 
 (package-initialize)
 
-;; Guarantee all packages are installed on start
 (defvar packages-list
   '(evil evil-leader evil-numbers
    evil-matchit evil-nerd-commenter
@@ -65,6 +58,15 @@
   (dolist (p packages-list)
     (when (not (package-installed-p p))
       (package-install p))))
+
+(global-linum-mode t)                        ; add line numbers on the left
+(set-scroll-bar-mode nil)                    ; hide scroll bars
+
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+
+(setq user-full-name "Gary Cheeseman"
+      user-mail-address "gary@cheeseman.me.uk")
 
 (defvar grc-emacs-init-file "~/.emacs.d/init.el")
 (defvar grc-backups-folder "~/backups/")
@@ -475,11 +477,6 @@
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
-
-;; Tabs and Indents
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-(set-scroll-bar-mode nil)
 
 ;; key bindings
 (when (eq system-type 'darwin)               ; mac specific settings

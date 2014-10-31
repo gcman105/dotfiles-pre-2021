@@ -44,6 +44,7 @@ en.utf-8.add.sql
 .emacs.d/auto-save-list/
 .emacs.d/backups/
 .emacs.d/cloned/
+.emacs.d/src/
 .emacs.d/el-get
 .emacs.d/yasnippet-snippets/
 .emacs.d/url/

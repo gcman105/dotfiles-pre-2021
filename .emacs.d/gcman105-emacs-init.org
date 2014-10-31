@@ -1,19 +1,85 @@
-;;; Package --- gcman105's emacs init.el
+#+TITLE: gcman105's Emacs configuration
+#+OPTIONS: toc:4 h:4
 
-;;; Commentary:
 
-;;; Code:
+* Configuration
+** About this file
+<<babel-init>>
+
+Inspired by the [[http://eschulte.me/emacs24-starter-kit/#installation][Emacs Starter Kit]], I set up my configuration file
+using Org-babel. Because my username is Sacha, I can save this as
+Sacha.org in my =~/.emacs.d= directory to have it automatically load.
+You could load it with =(org-babel-load-file "/path/to/file")=,
+changing the path appropriately, but you'll probably want to tweak it
+extensively first. 
+
+This page: [[http://sachac.github.io/.emacs.d/Sacha.html][HTML]] - [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Org]] - [[https://dl.dropbox.com/u/3968124/sacha-emacs.el][.el]] - [[http://github.com/sachac/.emacs.d/][Github]] - also, http://sach.ac/dotemacs
+
+To be precise, this is what's in the first part of my =~/.emacs.d/init.el= (what used to be the =~/.emacs= file):
+
+#+begin_src emacs-lisp  :tangle no
+;;; init.el --- Where all the magic begins
+;;
+;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
+;; embedded in literate Org-mode files.
+
+;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
+(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
+
+(let* ((org-dir (expand-file-name
+                 "lisp" (expand-file-name
+                         "org" (expand-file-name
+                                "src" dotfiles-dir))))
+       (org-contrib-dir (expand-file-name
+                         "lisp" (expand-file-name
+                                 "contrib" (expand-file-name
+                                            ".." org-dir))))
+       (load-path (append (list org-dir org-contrib-dir)
+                          (or load-path nil))))
+  ;; load up Org-mode and Org-babel
+  (require 'org-install)
+  (require 'ob-tangle))
+
+;; load up all literate org-mode files in this directory
+(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
+
+;;; init.el ends here
+#+end_src
+
+If you're new to Emacs Lisp, you probably don't want to copy and paste
+large chunks of this code. Instead, copy small parts of it (always
+making sure to copy a complete set of parentheses) into your
+=*scratch*= buffer or some other buffer in =emacs-lisp-mode=. Use =M-x
+eval-buffer= to evaluate the code and see if you like the way that
+Emacs behaves. See [[https://www.gnu.org/software/emacs/manual/html_mono/eintr.html][An Introduction to Programming in Emacs Lisp]] for more details on Emacs Lisp. You can also find the manual by using =C-h i= (=info=) and choosing "Emacs Lisp Intro".
+
+I've installed a lot of packages. See the [[*Add%20package%20sources][package sources]] section to
+add the repositories to your configuration. When you see =use-package=
+and a package name you might like, you can use =M-x package-install=
+to install the package of that name. Note that use-package is itself
+provided by a package, so you'll probably want to install that and
+=bind-key=.
+
+If you're viewing the Org file, you can open source code blocks (those are the ones in begin_src) in a separate buffer by moving your point inside them and typing C-c ' (=org-edit-special=). This opens another buffer in =emacs-lisp-mode=, so you can use =M-x eval-buffer= to load the changes. If you want to explore how functions work, use =M-x edebug-defun= to set up debugging for that function, and then call it. You can learn more about edebug in the [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html][Emacs Lisp]] manual.
+
+I like using =(setq ...)= more than Customize because I can neatly organize my configuration that way. 
+
+** Package management
+*** Setup package management
+    
+#+begin_src emacs-lisp
 (require 'cl)
-
 (require 'package)
-
 (dolist (repo '(("elpa"    . "http://tromey.com/elpa/")
                 ("melpa"   . "http://melpa.milkbox.net/packages/")))
   (add-to-list 'package-archives repo))
 
 (package-initialize)
+#+end_src
 
-;; Guarantee all packages are installed on start
+*** Guarantee these packages are installed on start
+
+#+begin_src emacs-lisp
 (defvar packages-list
   '(evil evil-leader evil-numbers
    evil-matchit evil-nerd-commenter
@@ -51,7 +117,11 @@
    highlight-symbol
    rvm)
   "List of packages needs to be installed at launch")
+#+end_src
 
+*** Install packages if they are not already installed
+    
+#+begin_src emacs-lisp
 (defun has-package-not-installed ()
   (loop for p in packages-list
         when (not (package-installed-p p)) do (return t)
@@ -65,22 +135,60 @@
   (dolist (p packages-list)
     (when (not (package-installed-p p))
       (package-install p))))
+#+end_src
 
+** Setup directories
+*** Define vars
+#+begin_src emacs-lisp
 (defvar grc-emacs-init-file "~/.emacs.d/init.el")
 (defvar grc-backups-folder "~/backups/")
 (defvar grc-dropbox-folder "~/Dropbox/")
 (defvar grc-emacs-config-dir
   (file-name-directory grc-emacs-init-file))
+#+end_src
 
+*** Set directories
+#+begin_src emacs-lisp
 (setq user-emacs-directory grc-emacs-config-dir)
 (setq backup-directory-alist
       (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
+#+end_src
 
-;; Set up 'custom' system file and directory---------------------------------
+*** Set system specific directories
+#+begin_src emacs-lisp
 (setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
 (setq custom-system-path (file-name-as-directory custom-system-file))
-
 (setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
+#+end_src
+
+** Global defaults
+*** Sensible defaults
+
+#+begin_src emacs-lisp
+(global-linum-mode t)                        ; add line numbers on the left
+(set-scroll-bar-mode nil)                    ; hide scroll bars
+(setq org-src-fonfify-natively t)            ; fontify code in code blocks
+#+end_src
+*** Tabs and Indents
+
+#+begin_src emacs-lisp
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+#+end_src
+** Personal information
+
+#+begin_src emacs-lisp
+  (setq user-full-name "Gary Cheeseman"
+        user-mail-address "gary@cheeseman.me.uk")
+#+end_src
+
+* My old configuration
+  I will move stuff from here to the correct place above as needed
+
+#+begin_src emacs-lisp
+
+
+;; Set up 'custom' system file and directory---------------------------------
 
 ;; Projectile
 (setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
@@ -476,11 +584,6 @@
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
 
-;; Tabs and Indents
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-(set-scroll-bar-mode nil)
-
 ;; key bindings
 (when (eq system-type 'darwin)               ; mac specific settings
   (setq mac-option-modifier 'alt)
@@ -535,3 +638,4 @@
 (load custom-system-file)
 
 ;;; init.el ends here
+#+end_src
