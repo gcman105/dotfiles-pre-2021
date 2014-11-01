@@ -1,8 +1,8 @@
 #+TITLE: gcman105's Emacs configuration
 #+OPTIONS: toc:4 h:4
 
-
 * Configuration
+
 ** About this file
 <<babel-init>>
 
@@ -62,7 +62,33 @@ If you're viewing the Org file, you can open source code blocks (those are the o
 
 I like using =(setq ...)= more than Customize because I can neatly organize my configuration that way. 
 
+** Setup directories
+
+*** Define vars
+#+begin_src emacs-lisp
+(defvar grc-emacs-init-file "~/.emacs.d/init.el")
+(defvar grc-backups-folder "~/backups/")
+(defvar grc-dropbox-folder "~/Dropbox/")
+(defvar grc-emacs-config-dir
+  (file-name-directory grc-emacs-init-file))
+#+end_src
+
+*** Set directories
+#+begin_src emacs-lisp
+(setq user-emacs-directory grc-emacs-config-dir)
+(setq backup-directory-alist
+      (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
+#+end_src
+
+*** Set system specific directories
+#+begin_src emacs-lisp
+(setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
+(setq custom-system-path (file-name-as-directory custom-system-file))
+(setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
+#+end_src
+
 ** Package management
+
 *** Setup package management
     
 #+begin_src emacs-lisp
@@ -135,31 +161,22 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
       (package-install p))))
 #+end_src
 
-** Setup directories
-*** Define vars
-#+begin_src emacs-lisp
-(defvar grc-emacs-init-file "~/.emacs.d/init.el")
-(defvar grc-backups-folder "~/backups/")
-(defvar grc-dropbox-folder "~/Dropbox/")
-(defvar grc-emacs-config-dir
-  (file-name-directory grc-emacs-init-file))
-#+end_src
+** Custom Functions
 
-*** Set directories
+*** my custom functions
 #+begin_src emacs-lisp
-(setq user-emacs-directory grc-emacs-config-dir)
-(setq backup-directory-alist
-      (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
-#+end_src
-
-*** Set system specific directories
-#+begin_src emacs-lisp
-(setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
-(setq custom-system-path (file-name-as-directory custom-system-file))
-(setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
+(defun scroll-down-in-place (n)
+  (interactive "p")
+  (previous-line n)
+  (scroll-down n))
+(defun scroll-up-in-place (n)
+  (interactive "p")
+  (next-line n)
+  (scroll-up n))
 #+end_src
 
 ** Configure Packages
+
 *** flx-ido
 #+begin_src emacs-lisp
 (require 'flx-ido)
@@ -309,8 +326,9 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
                               (bm-buffer-save-all)
                               (bm-repository-save)))
 #+end_src
+
 *** deft
-    Deft config for nvALT files with md extension ----------------------------
+    Deft config for nvALT files with md extension 
 #+begin_src emacs-lisp
 (setq deft-extension "md")
 (setq deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
@@ -318,7 +336,30 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq deft-use-filename-as-title 1)
 #+end_src
 
+*** move-text
+#+begin_src emacs-lisp
+(require 'move-text)
+;;(move-text-default-bindings)
+#+end_src
+
+*** multi-term
+#+begin_src emacs-lisp
+(require 'multi-term)
+#+end_src
+
+*** multiple-cursors
+#+begin_src emacs-lisp
+(require 'multiple-cursors)
+#+end_src
+
+*** eredis
+#+begin_src emacs-lisp
+;;(add-to-list 'load-path "~/.emacs.d/elpa/eredis*")
+(require 'eredis)
+#+end_src
+
 ** Hooks
+
 *** deft mode hook
     Turn off evil-mode in a deft buffer
 #+begin_src emacs-lisp
@@ -329,6 +370,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 ** Key bindings
+
 *** global key bindings
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c h") 'helm-projectile)
@@ -337,71 +379,23 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (global-set-key (kbd "M-p") 'ace-window)
 (global-set-key [f8] 'deft)
 (global-set-key [S-f8] 'deft-new-file-named)
+(global-set-key [C-return] 'emmet-expand-line)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "<f2>") 'ispell-word)
 
 ;; set bookmarking keys
 (global-set-key (kbd "<C-f7>") 'bm-next)
 (global-set-key (kbd "<f7>")   'bm-toggle)
 (global-set-key (kbd "<S-f7>") 'bm-previous)
 (global-set-key (kbd "<M-f7>") 'bm-show-all)
-#+end_src
-    
-** Global defaults
-*** Sensible defaults
 
-#+begin_src emacs-lisp
-(global-linum-mode t)                        ; add line numbers on the left
-(setq scroll-bar-mode -1)                    ; hide scroll bars
-(setq org-src-fonfify-natively t)            ; fontify code in code blocks
-(org-src-fontify-buffer)
-#+end_src
-*** Tabs and Indents
-
-#+begin_src emacs-lisp
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-#+end_src
-** Personal information
-
-#+begin_src emacs-lisp
-  (setq user-full-name "Gary Cheeseman"
-        user-mail-address "gary@cheeseman.me.uk")
-#+end_src
-
-* My old configuration
-  *I will move stuff from here to the correct place above as needed*
-
-#+begin_src emacs-lisp
-
-;; gcman Markdown mode hook -------------------------------------------------
-;; Stop markdown-mode interfeering with yasnippet
-(defun gcman-markdown-mode-hook ()
-  "markdown-mode-hook"
-  (define-key markdown-mode-map (kbd "<tab>") nil))
-(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
-
-;; Unset Arrow keys, this should help force me to learn the Emacs keys!
-;; (global-unset-key (kbd "<left>"))
-;; (global-unset-key (kbd "<right>"))
-;; (global-unset-key (kbd "<up>"))
-;; (global-unset-key (kbd "<down>"))
-
- 
-
-;; Setup GLOBAL keys --------------------------------------------------------
-
-;; move text
-(require 'move-text)
-;;(move-text-default-bindings)
-;; set block bubble keys
+;; set move-text block bubble keys
 (global-set-key (kbd "<S-f6>") 'move-text-up)
 (global-set-key (kbd "<C-f6>") 'move-text-down)
 
-;; set keys for multi-term
-(require 'multi-term)
 (global-set-key (kbd "C-c m") 'multi-term)
 
-;; set keys for multiple-cursors.el
-(require 'multiple-cursors)
+;; set multiple-cursors.el keys
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -419,9 +413,25 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (global-set-key (kbd "C-\\") 'split-window-below)
 (global-set-key (kbd "C-|") 'split-window-right)
 
-;; org-mode settings --------------------------------------------------------
+;; set org-mode global keys
+(define-key global-map "\C-ct" 'org-capture)
+(define-key global-map "\C-ca" 'org-agenda)
 
-;; Useful key bindings for org-mode
+;; Unset Arrow keys, this should help force me to learn the Emacs keys!
+;; (global-unset-key (kbd "<left>"))
+;; (global-unset-key (kbd "<right>"))
+;; (global-unset-key (kbd "<up>"))
+;; (global-unset-key (kbd "<down>"))
+
+;; set custom function keys
+(global-set-key [M-up] 'scroll-down-in-place)
+(global-set-key [M-down] 'scroll-up-in-place)
+#+end_src
+    
+*** set mode specific keys
+
+**** org-mode
+#+begin_src emacs-lisp
 (add-hook 'org-mode-hook
     (lambda ()
       (local-unset-key "\C-c")
@@ -429,15 +439,52 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
       (local-set-key "\C-cs" 'org-toodledo-sync)
       )
     )
+#+end_src
+
+**** org-agenda-mode
+#+begin_src emacs-lisp
 (add-hook 'org-agenda-mode-hook
     (lambda ()
       (local-unset-key "\C-c")
       (local-set-key "\C-cd" 'org-toodledo-agenda-mark-task-deleted)
       )
     )
+#+end_src
 
-(define-key global-map "\C-ct" 'org-capture)
-(define-key global-map "\C-ca" 'org-agenda)
+** Global defaults
+
+*** Sensible defaults
+#+begin_src emacs-lisp
+(global-linum-mode t)                        ; add line numbers on the left
+(setq scroll-bar-mode -1)                    ; hide scroll bars
+(setq org-src-fonfify-natively t)            ; fontify code in code blocks
+(org-src-fontify-buffer)
+#+end_src
+
+*** Tabs and Indents
+#+begin_src emacs-lisp
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+#+end_src
+
+** Personal information
+#+begin_src emacs-lisp
+  (setq user-full-name "Gary Cheeseman"
+        user-mail-address "gary@cheeseman.me.uk")
+#+end_src
+
+* My old configuration
+  *I will move stuff from here to the correct place above as needed*
+
+#+begin_src emacs-lisp
+;; gcman Markdown mode hook -------------------------------------------------
+;; Stop markdown-mode interfeering with yasnippet
+(defun gcman-markdown-mode-hook ()
+  "markdown-mode-hook"
+  (define-key markdown-mode-map (kbd "<tab>") nil))
+(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
+
+;; org-mode settings --------------------------------------------------------
 
 ;; Set to the location of your Org files on your local system
 (setq org-directory (expand-file-name "org" grc-dropbox-folder))
@@ -481,10 +528,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 (setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
 
-;; setup eredis ---------------------------------------------------------------
-(add-to-list 'load-path "~/.emacs.d/elpa/eredis*")
-(require 'eredis)
-
 ;; On OS X Emacs doesn't use the shell PATH if it's not started from
 ;; the shell. If you're using homebrew modifying the PATH is essential.
 ;; Also allow hash to be entered
@@ -494,9 +537,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
       (setq osx-pseudo-daemon-mode t)
       (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))))
 
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-
-(define-key global-map (kbd "<f2>") 'ispell-word)
 
 ;; Minor Mode Hooks
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
@@ -572,20 +612,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-mode 1)
 
-(defun scroll-down-in-place (n)
-  (interactive "p")
-  (previous-line n)
-  (scroll-down n))
-
-(defun scroll-up-in-place (n)
-  (interactive "p")
-  (next-line n)
-  (scroll-up n))
-
-(global-set-key [M-up] 'scroll-down-in-place)
-(global-set-key [M-down] 'scroll-up-in-place)
-
-(global-set-key [C-return] 'emmet-expand-line)
 
 ;; Turn off flyspell
 (setq-default flyspell-mode nil)

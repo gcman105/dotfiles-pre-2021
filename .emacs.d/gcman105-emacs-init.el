@@ -73,6 +73,17 @@
 (setq custom-system-path (file-name-as-directory custom-system-file))
 (setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
 
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+               "*Messages*" "Async Shell Command" "*Compile-Log*"
+               "*Customize"))
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+
 (setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
 (setq projectile-known-projects-file (concatenate 'string custom-system-path "projectile-bookmarks.eld"))
 (require 'projectile)
@@ -84,8 +95,6 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 (require 'helm-config)
-(global-set-key (kbd "C-c h") 'helm-projectile)
-(global-set-key (kbd "M-x") 'helm-M-x)
 
 (require 'helm-descbinds)
 (helm-descbinds-mode)
@@ -100,11 +109,9 @@
 (setq recentf-save-file (concatenate 'string custom-system-path "recentf"))
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(global-set-key (kbd "<f9>") 'recentf-open-files)
 
 (require 'smartparens-config)
 (smartparens-global-mode t)
-;; highlights matching pairs
 (show-smartparens-global-mode t)
 
 (require 'guide-key)
@@ -113,52 +120,25 @@
 (guide-key-mode 1)                           ; Enable guide-key-mode
 (setq guide-key/highlight-command-regexp "rectangle")
 
-(global-linum-mode t)                        ; add line numbers on the left
-(setq scroll-bar-mode -1)                    ; hide scroll bars
-(setq org-src-fonfify-natively t)            ; fontify code in code blocks
-(org-src-fontify-buffer)
-
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-
-(setq user-full-name "Gary Cheeseman"
-      user-mail-address "gary@cheeseman.me.uk")
-
 (require 'auto-complete-config)
 (setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (global-auto-complete-mode 1)
 
-;; enable ido-mode with flex matching
-;;(flx-ido-mode t)
-(require 'flx-ido)
-(ido-mode 1)
-(ido-everywhere 1)
-(flx-ido-mode 1)
-(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
-               "*Messages*" "Async Shell Command" "*Compile-Log*"
-               "*Customize"))
-;; disable ido faces to see flx highlights.
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
-
 (require 'ace-isearch)
 (global-ace-isearch-mode +1)
+
+(require 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 (require 'evil-surround)
 (global-evil-matchit-mode 1)
 
 (require 'evil-exchange)
-;; change default key bindings (if you want) HERE
 (setq evil-exchange-key (kbd "zx"))
 (evil-exchange-install)
 
-(require 'ace-window)
-(global-set-key (kbd "M-p") 'ace-window)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-;; setup yasnippet  ---------------------------------------------------------
 ;; HAD TO MOVE THE NEXT 2 LINES INTO THE SYSTEM FILE FOR EACH SYSTEM
 ;;(require 'yasnippet)
 ;;(yas-global-mode 1)
@@ -170,50 +150,15 @@
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
 
-;; Deft config for nvALT files with md extension ----------------------------
-(setq deft-extension "md")
-(setq deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
-(setq deft-text-mode 'markdown-mode)
-(setq deft-use-filename-as-title 1)
-(global-set-key [f8] 'deft)
-(global-set-key [S-f8] 'deft-new-file-named)
-
-;; gcman Deft mode hook -----------------------------------------------------
-;; Turn off evil-mode in a deft buffer
-(defun gcman-deft-mode-hook ()
-  "deft-mode-hook"
-  (turn-off-evil-mode))
-(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook))) 
-
-;; gcman Markdown mode hook -------------------------------------------------
-;; Stop markdown-mode interfeering with yasnippet
-(defun gcman-markdown-mode-hook ()
-  "markdown-mode-hook"
-  (define-key markdown-mode-map (kbd "<tab>") nil))
-(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
-
-;; Unset Arrow keys, this should help force me to learn the Emacs keys!
-;; (global-unset-key (kbd "<left>"))
-;; (global-unset-key (kbd "<right>"))
-;; (global-unset-key (kbd "<up>"))
-;; (global-unset-key (kbd "<down>"))
-
-;; Save place in file when I exit
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concatenate 'string custom-system-path "places"))
 
-;; set bookmarking keys
 (setq bm-repository-file (concatenate 'string custom-system-path ".bm-repository"))
 (setq-default bm-restore-repository-on-load t)
 (require 'bm)
-(global-set-key (kbd "<C-f7>") 'bm-next)
-(global-set-key (kbd "<f7>")   'bm-toggle)
-(global-set-key (kbd "<S-f7>") 'bm-previous)
-(global-set-key (kbd "<M-f7>") 'bm-show-all)
-;; make bookmarks persistent as default
-(setq-default bm-buffer-persistence t)
- 
+(setq-default bm-buffer-persistence t)       ; make bookmarks persistent as default
+
 ;; Loading the repository from file when on start up.
 (add-hook' after-init-hook 'bm-repository-load)
  
@@ -229,6 +174,55 @@
 (add-hook 'kill-emacs-hook '(lambda nil
                               (bm-buffer-save-all)
                               (bm-repository-save)))
+
+(setq deft-extension "md")
+(setq deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
+(setq deft-text-mode 'markdown-mode)
+(setq deft-use-filename-as-title 1)
+
+(defun gcman-deft-mode-hook ()
+  "deft-mode-hook"
+  (turn-off-evil-mode))
+(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook)))
+
+(global-set-key (kbd "C-c h") 'helm-projectile)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "<f9>") 'recentf-open-files)
+(global-set-key (kbd "M-p") 'ace-window)
+(global-set-key [f8] 'deft)
+(global-set-key [S-f8] 'deft-new-file-named)
+
+;; set bookmarking keys
+(global-set-key (kbd "<C-f7>") 'bm-next)
+(global-set-key (kbd "<f7>")   'bm-toggle)
+(global-set-key (kbd "<S-f7>") 'bm-previous)
+(global-set-key (kbd "<M-f7>") 'bm-show-all)
+
+(global-linum-mode t)                        ; add line numbers on the left
+(setq scroll-bar-mode -1)                    ; hide scroll bars
+(setq org-src-fonfify-natively t)            ; fontify code in code blocks
+(org-src-fontify-buffer)
+
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+
+(setq user-full-name "Gary Cheeseman"
+      user-mail-address "gary@cheeseman.me.uk")
+
+;; gcman Markdown mode hook -------------------------------------------------
+;; Stop markdown-mode interfeering with yasnippet
+(defun gcman-markdown-mode-hook ()
+  "markdown-mode-hook"
+  (define-key markdown-mode-map (kbd "<tab>") nil))
+(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
+
+;; Unset Arrow keys, this should help force me to learn the Emacs keys!
+;; (global-unset-key (kbd "<left>"))
+;; (global-unset-key (kbd "<right>"))
+;; (global-unset-key (kbd "<up>"))
+;; (global-unset-key (kbd "<down>"))
+
+ 
 
 ;; Setup GLOBAL keys --------------------------------------------------------
 
