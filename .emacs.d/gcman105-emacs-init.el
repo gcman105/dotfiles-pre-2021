@@ -144,6 +144,8 @@
 (require 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
+(evil-mode t)
+
 (require 'evil-surround)
 
 (require 'evil-exchange)
@@ -160,6 +162,10 @@
   ;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
+
+(require 'rcodetools)
+(require 'ruby-mode)
+(require 'ruby-mode-expansions)
 
 (require 'saveplace)
 (setq-default save-place t)
@@ -263,7 +269,7 @@
 
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
-(add-hook 'org-mode 'org-src-fontify-buffer)
+;;(add-hook 'org-mode 'org-src-fontify-buffer)
 
 (global-set-key (kbd "C-c h") 'helm-projectile)
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -362,15 +368,24 @@
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-mode 1)
 
+(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
+
 (global-evil-matchit-mode)
 (global-ace-isearch-mode)
 (global-auto-complete-mode)
 (global-font-lock-mode)                      ; activate font-lock mode (syntax coloring)
 (global-linum-mode)                          ; add line numbers on the left
 (global-visual-line-mode)                    ; wrap long lines
-(setq-default rainbow-mode t)
+(global-hl-line-mode)                        ; highlight current line
+(setq-default linum-format "%7d ")
+(setq-default rainbow-mode t)                ; highlight color codes
 (setq-default scroll-bar-mode -1)            ; hide scroll bar
-(setq-default org-src-fonfify-natively t)    ; fontify code in code blocks
+(setq-default org-src-fontify-natively t)    ; fontify code in code blocks
+
+(setq inhibit-startup-screen t)
+(setq max-specpdl-size 1800)
+(show-paren-mode t)
 
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
@@ -471,10 +486,6 @@
   (insert (format "%s" system-type))
   )
 
-(evil-mode t)
-(setq inhibit-startup-screen t)
-(setq max-specpdl-size 1800)
-(show-paren-mode t)
 
 ;; key bindings
 (when (eq system-type 'darwin)               ; mac specific settings
@@ -483,23 +494,9 @@
   (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
   )
 
-;;(global-hl-line-mode)                      ; highlight current line
-(global-linum-mode t)                        ; add line numbers on the left
-(setq linum-format "%7d ")
-
-
-(evil-exchange-install)
-(evilnc-default-hotkeys)
-
 ;; garbage collection tuning
 (setq gc-cons-threshold 20000000)
 
-;; xmpfilter and rcodetools
-(require 'rcodetools)
-(require 'ruby-mode)
-(require 'ruby-mode-expansions)
-(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
-;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
 
 ;; setup theme --------------------------------------------------------------
 ;; load theme depening on window type
@@ -528,3 +525,6 @@
 (load custom-system-file)
 
 ;;; init.el ends here
+
+;; These last lines are to see why they don't seem to work further up the file
+(setq-default scroll-bar-mode -1)            ; hide scroll bar
