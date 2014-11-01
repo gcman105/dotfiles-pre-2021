@@ -1,15 +1,15 @@
 
-(defvar grc-emacs-init-file "~/.emacs.d/init.el")
-(defvar grc-backups-folder "~/backups/")
-(defvar grc-dropbox-folder "~/Dropbox/")
-(defvar grc-emacs-config-dir
-  (file-name-directory grc-emacs-init-file))
+(defvar gcman105-emacs-init-file "~/.emacs.d/init.el")
+(defvar gcman105-backups-folder "~/backups/")
+(defvar gcman105-dropbox-folder "~/Dropbox/")
+(defvar gcman105-emacs-config-dir
+  (file-name-directory gcman105-emacs-init-file))
 
-(setq user-emacs-directory grc-emacs-config-dir)
+(setq user-emacs-directory gcman105-emacs-config-dir)
 (setq backup-directory-alist
-      (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
+      (list (cons "." (expand-file-name "emacs" gcman105-backups-folder))))
 
-(setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
+(setq custom-system-file (expand-file-name system-name gcman105-emacs-config-dir))
 (setq custom-system-path (file-name-as-directory custom-system-file))
 
 (require 'cl)
@@ -72,14 +72,29 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-(defun scroll-down-in-place (n)
+(defun gcman105/scroll-down-in-place (n)
   (interactive "p")
   (previous-line n)
   (scroll-down n))
-(defun scroll-up-in-place (n)
+
+(defun gcman105/scroll-up-in-place (n)
   (interactive "p")
   (next-line n)
   (scroll-up n))
+
+;; Get current system's name
+(defun gcman105/insert-system-name()
+  (interactive)
+  "Get current system's name"
+  (insert (format "%s" system-name))
+  )
+
+;; Get current system type
+(defun gcman105/insert-system-type()
+  (interactive)
+  "Get current system type"
+  (insert (format "%s" system-type))
+  )
 
 (require 'flx-ido)
 (ido-mode 1)
@@ -193,7 +208,7 @@
                               (bm-repository-save)))
 
 (setq deft-extension "md")
-(setq deft-directory (expand-file-name "MarkDown" grc-dropbox-folder))
+(setq deft-directory (expand-file-name "MarkDown" gcman105-dropbox-folder))
 (setq deft-text-mode 'markdown-mode)
 (setq deft-use-filename-as-title 1)
 
@@ -209,14 +224,16 @@
 
 (require 'rainbow-mode)
 
+(setq scss-compile-at-save nil)
+
 ;; Set to the location of your Org files on your local system
-(setq org-directory (expand-file-name "org" grc-dropbox-folder))
+(setq org-directory (expand-file-name "org" gcman105-dropbox-folder))
 
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull (expand-file-name "flagged.org" org-directory))
 
 ;; Set to <your Dropbox root directory>/MobileOrg.
-(setq org-mobile-directory (expand-file-name "Apps/MobileOrg" grc-dropbox-folder))
+(setq org-mobile-directory (expand-file-name "Apps/MobileOrg" gcman105-dropbox-folder))
 
 ;;(setq remember-data-file (expand-file-name "journal.org" org-directory))
 (setq org-default-notes-file (expand-file-name "journal.org" org-directory))
@@ -257,15 +274,15 @@
                                "~/Dropbox/org/emails.org"
                                "~/Dropbox/org/finances.org")))
 
-(defun gcman-deft-mode-hook ()
+(defun gcman105/deft-mode-hook ()
   "deft-mode-hook"
   (turn-off-evil-mode))
-(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook)))
+(add-hook 'deft-mode-hook '(lambda() (gcman105/deft-mode-hook)))
 
-(defun gcman-markdown-mode-hook ()
+(defun gcman105/markdown-mode-hook ()
   "markdown-mode-hook"
   (define-key markdown-mode-map (kbd "<tab>") nil))
-(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
+(add-hook 'markdown-mode-hook '(lambda() (gcman105/markdown-mode-hook)))
 
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
@@ -322,8 +339,8 @@
 ;; (global-unset-key (kbd "<down>"))
 
 ;; set custom function keys
-(global-set-key [M-up] 'scroll-down-in-place)
-(global-set-key [M-down] 'scroll-up-in-place)
+(global-set-key [M-up] 'gcman105/scroll-down-in-place)
+(global-set-key [M-down] 'gcman105/scroll-up-in-place)
 
 (add-hook 'org-mode-hook
     (lambda ()
@@ -387,6 +404,19 @@
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
 
+(setq blink-cursor-mode 1)                   ; I like my cursor to blink
+(setq x-stretch-cursor t)                    ; I also like my cursor to stretch
+(setq evil-default-cursor 1)
+(set-cursor-color "orange")                  ; I want an orange cursor
+
+(setq column-number-mode 1)                  ; show column numbers
+
+(setq gc-cons-threshold 20000000)            ; garbage collection tuning
+(setq-default flyspell-mode nil)             ; turn off flyspell
+(setq x-select-enable-clipboard t)           ; use the clipboard, so that copy/paste works
+
+(setq echo-keystrokes 0.1)                   ; show keystrokes in progress
+
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
@@ -422,34 +452,14 @@
 (add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Vagrantfile$" . ruby-mode))
 
-;; SCSS options
-(setq scss-compile-at-save nil)
-
 ;; setup if we are using a graphic display ----------------------------------
 (if (display-graphic-p)
   (setq xterm-mouse-mode nil)
   (setq server-mode nil))
 
-;; I like my cursor to blink and stretch
-(setq blink-cursor-mode 1)
-(setq x-stretch-cursor t)
-
-;; show column numbers
-(setq column-number-mode 1)
-
 (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
   (setenv "PATH" path-from-shell)
   (setq exec-path (split-string path-from-shell path-separator)))
-
-
-
-(setq evil-default-cursor 1)
-(set-cursor-color "orange")
-
-
-
-;; Turn off flyspell
-(setq-default flyspell-mode nil)
 
 ;; if its not a mac, do these things
 (unless (string-match "apple-darwin" system-configuration)
@@ -466,26 +476,6 @@
   (setq mac-option-modifier nil)
   (menu-bar-mode t))
 
-;; Use the clipboard, pretty please, so that copy/paste "works"
-(setq x-select-enable-clipboard t)
-
-;; Show keystrokes in progress
-(setq echo-keystrokes 0.1)
-
-;; Get current system's name
-(defun insert-system-name()
-  (interactive)
-  "Get current system's name"
-  (insert (format "%s" system-name))
-  )
-
-;; Get current system type
-(defun insert-system-type()
-  (interactive)
-  "Get current system type"
-  (insert (format "%s" system-type))
-  )
-
 
 ;; key bindings
 (when (eq system-type 'darwin)               ; mac specific settings
@@ -493,9 +483,6 @@
   (setq mac-command-modifier 'meta)
   (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
   )
-
-;; garbage collection tuning
-(setq gc-cons-threshold 20000000)
 
 
 ;; setup theme --------------------------------------------------------------
@@ -518,7 +505,7 @@
   )
 
 ;; Set up 'custom' emacs ----------------------------------------------------
-(setq custom-file (expand-file-name "emacs-customizations.el" grc-emacs-config-dir))
+(setq custom-file (expand-file-name "emacs-customizations.el" gcman105-emacs-config-dir))
 (load custom-file)
 
 ;; Load 'custom' system file ------------------------------------------------
@@ -527,4 +514,4 @@
 ;;; init.el ends here
 
 ;; These last lines are to see why they don't seem to work further up the file
-(setq-default scroll-bar-mode -1)            ; hide scroll bar
+(scroll-bar-mode -1)            ; hide scroll bar

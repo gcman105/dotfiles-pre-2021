@@ -43,7 +43,7 @@
       (defvar resize-minibuffer-window-max-height 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq deft-directory (expand-file-name "markdown" grc-dropbox-folder))
+(setq deft-directory (expand-file-name "markdown" gcman105-dropbox-folder))
 
 ;; HAD TO MOVE THE NEXT 2 LINES OUT FROM THE init.el FILE
 (require 'yasnippet)
