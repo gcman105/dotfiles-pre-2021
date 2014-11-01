@@ -2,16 +2,11 @@
 #+OPTIONS: toc:4 h:4
 
 * Configuration
-
+  
 ** About this file
 <<babel-init>>
 
-Inspired by the [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Sacha Chua's config]], I set up my configuration file
-using Org-babel. This file is saved as gcman105-emacs-init.org in
-my =~/.emacs.d= directory to have it automatically load.
-You could load it with =(org-babel-load-file "/path/to/file")=,
-changing the path appropriately, but you'll probably want to tweak it
-extensively first.
+Inspired by the [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Sacha Chua's config]], I set up my configuration file using Org-babel. This file is saved as gcman105-emacs-init.org in my =~/.emacs.d= directory to have it automatically load.
 
 [[https://github.com/gcman105/dotfiles/blob/master/.emacs.d/gcman105-emacs-init.org][This File]] on Github
 
@@ -44,19 +39,9 @@ extensively first.
 ;;; init.el ends here
 #+end_src
 
-If you're new to Emacs Lisp, you probably don't want to copy and paste
-large chunks of this code. Instead, copy small parts of it (always
-making sure to copy a complete set of parentheses) into your
-=*scratch*= buffer or some other buffer in =emacs-lisp-mode=. Use =M-x
-eval-buffer= to evaluate the code and see if you like the way that
-Emacs behaves. See [[https://www.gnu.org/software/emacs/manual/html_mono/eintr.html][An Introduction to Programming in Emacs Lisp]] for more details on Emacs Lisp. You can also find the manual by using =C-h i= (=info=) and choosing "Emacs Lisp Intro".
+If you're new to Emacs Lisp, you probably don't want to copy and paste large chunks of this code. Instead, copy small parts of it (always making sure to copy a complete set of parentheses) into your =*scratch*= buffer or some other buffer in =emacs-lisp-mode=. Use =M-x eval-buffer= to evaluate the code and see if you like the way that Emacs behaves. See [[https://www.gnu.org/software/emacs/manual/html_mono/eintr.html][An Introduction to Programming in Emacs Lisp]] for more details on Emacs Lisp. You can also find the manual by using =C-h i= (=info=) and choosing "Emacs Lisp Intro". 
 
-I've installed a lot of packages. See the [[*Add%20package%20sources][package sources]] section to
-add the repositories to your configuration. When you see =use-package=
-and a package name you might like, you can use =M-x package-install=
-to install the package of that name. Note that use-package is itself
-provided by a package, so you'll probably want to install that and
-=bind-key=.
+I've installed a lot of packages. See the [[*Add%20package%20sources][package sources]] section to add the repositories to your configuration. When you see =use-package= and a package name you might like, you can use =M-x package-install= to install the package of that name. Note that use-package is itself provided by a package, so you'll probably want to install that and =bind-ke=.
 
 If you're viewing the Org file, you can open source code blocks (those are the ones in begin_src) in a separate buffer by moving your point inside them and typing C-c ' (=org-edit-special=). This opens another buffer in =emacs-lisp-mode=, so you can use =M-x eval-buffer= to load the changes. If you want to explore how functions work, use =M-x edebug-defun= to set up debugging for that function, and then call it. You can learn more about edebug in the [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html][Emacs Lisp]] manual.
 
@@ -84,7 +69,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
 (setq custom-system-path (file-name-as-directory custom-system-file))
-(setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
 #+end_src
 
 ** Package management
@@ -183,9 +167,15 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
-(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
-               "*Messages*" "Async Shell Command" "*Compile-Log*"
-               "*Customize"))
+;; (setq-default ido-ignore-buffers '(
+;;                "^ "
+;;                "*Completions*"
+;;                "*Shell Command Output*"
+;;                "*Messages*"
+;;                "Async Shell Command"
+;;                "*Compile-Log*"
+;;                "*Customize"))
+
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
@@ -252,13 +242,11 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
-(global-auto-complete-mode 1)
 #+end_src
 
 *** ace-isearch
 #+begin_src emacs-lisp
 (require 'ace-isearch)
-(global-ace-isearch-mode +1)
 #+end_src
 
 *** ace-window
@@ -267,10 +255,14 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 #+end_src
 
+*** evil-mode
+#+begin_src emacs-lisp
+(evil-mode t)
+#+end_src
+    
 *** evil-surround
 #+begin_src emacs-lisp
 (require 'evil-surround)
-(global-evil-matchit-mode 1)
 #+end_src
 
 *** evil-exchange
@@ -292,6 +284,13 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   ;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
+#+end_src
+    
+*** rcodetools and xmpfilter
+#+begin_src emacs-lisp
+(require 'rcodetools)
+(require 'ruby-mode)
+(require 'ruby-mode-expansions)
 #+end_src
     
 *** saveplace
@@ -358,6 +357,64 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (require 'eredis)
 #+end_src
 
+*** rainbow
+#+begin_src emacs-lisp
+(require 'rainbow-mode)
+#+end_src
+    
+** Org Package
+
+*** setup org directories
+#+begin_src emacs-lisp
+;; Set to the location of your Org files on your local system
+(setq org-directory (expand-file-name "org" grc-dropbox-folder))
+
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull (expand-file-name "flagged.org" org-directory))
+
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory (expand-file-name "Apps/MobileOrg" grc-dropbox-folder))
+
+;;(setq remember-data-file (expand-file-name "journal.org" org-directory))
+(setq org-default-notes-file (expand-file-name "journal.org" org-directory))
+
+;;(setq remember-annotation-functions '(org-remember-annotation))
+;;(setq remember-handler-functions '(org-remember-handler))
+;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
+
+'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1) 
+           ((expand-file-name "someday.org" org-directory) :level . 2))))
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
+   ;;"* TODO %^{Brief Description} %^g\n%?\nAdded: %U")
+   "* TODO %^{Brief Description} %^g\n  %?\n  %i\n  Added: %U")
+        ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+   "* %?\nEntered on %U\n  %i\n  %a")))
+
+;; (setq org-remember-templates
+;;       '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/Dropbox/org/gtd.org" "Tasks")
+;;  ("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
+;;  ("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
+;;  ("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
+;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
+;;          "~/Dropbox/org/journal.org")
+;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
+;;          "~/Dropbox/org/journal.org")
+;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
+;;          "~/Dropbox/org/journal.org")
+;;  ("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
+;;  ("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")
+;;  )
+;;       )
+
+(setq org-agenda-files (quote (
+                               "~/Dropbox/org/birthday.org"
+                               "~/Dropbox/org/gtd.org"
+                               "~/Dropbox/org/emails.org"
+                               "~/Dropbox/org/finances.org")))
+#+end_src
+    
 ** Hooks
 
 *** deft mode hook
@@ -367,6 +424,25 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   "deft-mode-hook"
   (turn-off-evil-mode))
 (add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook))) 
+#+end_src
+
+*** markdown-mode hook
+    Stop markdown-mode interfeering with yasnippet
+#+begin_src emacs-lisp
+(defun gcman-markdown-mode-hook ()
+  "markdown-mode-hook"
+  (define-key markdown-mode-map (kbd "<tab>") nil))
+(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
+#+end_src
+
+*** html-mode hook
+#+begin_src emacs-lisp
+(add-hook 'html-mode-hook 'turn-off-auto-fill)
+#+end_src
+
+*** org-mode hook
+#+begin_src emacs-lisp
+;;(add-hook 'org-mode 'org-src-fontify-buffer)
 #+end_src
 
 ** Key bindings
@@ -451,14 +527,70 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     )
 #+end_src
 
-** Global defaults
+**** evil-mode
+#+begin_src emacs-lisp
+(evilnc-default-hotkeys)
+#+end_src
+     
+***** evil-leader-mode
+#+begin_src emacs-lisp
+(global-evil-leader-mode)
+(evil-leader/set-leader ",")
+(evil-leader/set-key
+  "f" 'helm-find-files
+  "y" 'helm-show-kill-ring
+  "o" 'helm-occur
+  "v" 'helm-projectile
+  "h" 'helm-man-woman
+  "," 'helm-resume
+  "." 'helm-calcul-expression
+  "d" 'helm-descbinds
+  "m" 'helm-mini
+  "i" 'helm-semantic-or-imenu
+  "p" 'ffap
+  "j" 'ace-jump-mode
+  "b" 'helm-buffers-list
+  "k" 'kill-buffer)
+#+end_src
 
+***** evil-normal-state
+#+begin_src emacs-lisp
+(define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)
+#+end_src
+      
+***** evil-insert-state
+#+begin_src emacs-lisp
+;;Exit insert mode by pressing j and then j quickly
+(setq key-chord-two-keys-delay 0.4)
+(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+(key-chord-mode 1)
+#+end_src
+      
+**** ruby-mode
+#+begin_src emacs-lisp
+(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
+#+end_src
+     
+** Global defaults
 *** Sensible defaults
 #+begin_src emacs-lisp
-(global-linum-mode t)                        ; add line numbers on the left
-(setq scroll-bar-mode -1)                    ; hide scroll bars
-(setq org-src-fonfify-natively t)            ; fontify code in code blocks
-(org-src-fontify-buffer)
+(global-evil-matchit-mode)
+(global-ace-isearch-mode)
+(global-auto-complete-mode)
+(global-font-lock-mode)                      ; activate font-lock mode (syntax coloring)
+(global-linum-mode)                          ; add line numbers on the left
+(global-visual-line-mode)                    ; wrap long lines
+(global-hl-line-mode)                        ; highlight current line
+(setq-default linum-format "%7d ")
+(setq-default rainbow-mode t)                ; highlight color codes
+(setq-default scroll-bar-mode -1)            ; hide scroll bar
+(setq-default org-src-fontify-natively t)    ; fontify code in code blocks
+
+(setq inhibit-startup-screen t)
+(setq max-specpdl-size 1800)
+(show-paren-mode t)
 #+end_src
 
 *** Tabs and Indents
@@ -473,73 +605,26 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
         user-mail-address "gary@cheeseman.me.uk")
 #+end_src
 
-* My old configuration
-  *I will move stuff from here to the correct place above as needed*
+** System specific configuration
 
+*** Apple Mac
+    On OS X Emacs doesn't use the shell PATH if it's not started from the shell. If you're using homebrew modifying the PATH is essential. Also allow hash to be entered
 #+begin_src emacs-lisp
-;; gcman Markdown mode hook -------------------------------------------------
-;; Stop markdown-mode interfeering with yasnippet
-(defun gcman-markdown-mode-hook ()
-  "markdown-mode-hook"
-  (define-key markdown-mode-map (kbd "<tab>") nil))
-(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
-
-;; org-mode settings --------------------------------------------------------
-
-;; Set to the location of your Org files on your local system
-(setq org-directory (expand-file-name "org" grc-dropbox-folder))
-;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull (expand-file-name "flagged.org" org-directory))
-;; Set to <your Dropbox root directory>/MobileOrg.
-(setq org-mobile-directory (expand-file-name "Apps/MobileOrg" grc-dropbox-folder))
-;;(setq remember-data-file (expand-file-name "journal.org" org-directory))
-(setq org-default-notes-file (expand-file-name "journal.org" org-directory))
-;;(setq remember-annotation-functions '(org-remember-annotation))
-;;(setq remember-handler-functions '(org-remember-handler))
-;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
-
-'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1) 
-           ((expand-file-name "someday.org" org-directory) :level . 2))))
-
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
-   ;;"* TODO %^{Brief Description} %^g\n%?\nAdded: %U")
-   "* TODO %^{Brief Description} %^g\n  %?\n  %i\n  Added: %U")
-        ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-   "* %?\nEntered on %U\n  %i\n  %a")))
-
-;; (setq org-remember-templates
-;;       '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/Dropbox/org/gtd.org" "Tasks")
-;;  ("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
-;;  ("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
-;;  ("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
-;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
-;;          "~/Dropbox/org/journal.org")
-;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
-;;          "~/Dropbox/org/journal.org")
-;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
-;;          "~/Dropbox/org/journal.org")
-;;  ("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
-;;  ("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")
-;;  )
-;;       )
-
-(setq org-agenda-files (quote ("~/Dropbox/org/birthday.org" "~/Dropbox/org/gtd.org" "~/Dropbox/org/emails.org" "~/Dropbox/org/finances.org")))
-
-(setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
-
-;; On OS X Emacs doesn't use the shell PATH if it's not started from
-;; the shell. If you're using homebrew modifying the PATH is essential.
-;; Also allow hash to be entered
 (if (eq system-type 'darwin)
     (progn
       (push "/usr/local/bin" exec-path)
       (setq osx-pseudo-daemon-mode t)
       (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))))
+#+end_src
 
 
-;; Minor Mode Hooks
-(add-hook 'html-mode-hook 'turn-off-auto-fill)
+**** 
+* My old configuration
+  *I will move stuff from here to the correct place above as needed*
+
+#+begin_src emacs-lisp
+(setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
+
 
 ;; Flymake
 ;; (require 'flymake)
@@ -580,37 +665,11 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   (setenv "PATH" path-from-shell)
   (setq exec-path (split-string path-from-shell path-separator)))
 
-(evilnc-default-hotkeys)
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
-(evil-leader/set-key
-  "f" 'helm-find-files
-  "y" 'helm-show-kill-ring
-  "o" 'helm-occur
-  "v" 'helm-projectile
-  "h" 'helm-man-woman
-  "," 'helm-resume
-  "." 'helm-calcul-expression
-  "d" 'helm-descbinds
-  "m" 'helm-mini
-  "i" 'helm-semantic-or-imenu
-  "p" 'ffap
-  "j" 'ace-jump-mode
-  "b" 'helm-buffers-list
-  "k" 'kill-buffer)
 
-;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
-;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
-(define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)
 
 (setq evil-default-cursor 1)
 (set-cursor-color "orange")
 
-;;Exit insert mode by pressing j and then j quickly
-(setq key-chord-two-keys-delay 0.4)
-(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-(key-chord-mode 1)
 
 
 ;; Turn off flyspell
@@ -651,10 +710,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   (insert (format "%s" system-type))
   )
 
-(evil-mode t)
-(setq inhibit-startup-screen t)
-(setq max-specpdl-size 1800)
-(show-paren-mode t)
 
 ;; key bindings
 (when (eq system-type 'darwin)               ; mac specific settings
@@ -663,25 +718,9 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
   )
 
-;;(global-hl-line-mode)                      ; highlight current line
-(global-linum-mode t)                        ; add line numbers on the left
-(setq linum-format "%7d ")
-
-(require 'rainbow-mode)
-(rainbow-mode t)
-
-(evil-exchange-install)
-(evilnc-default-hotkeys)
-
 ;; garbage collection tuning
 (setq gc-cons-threshold 20000000)
 
-;; xmpfilter and rcodetools
-(require 'rcodetools)
-(require 'ruby-mode)
-(require 'ruby-mode-expansions)
-(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
-;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
 
 ;; setup theme --------------------------------------------------------------
 ;; load theme depening on window type

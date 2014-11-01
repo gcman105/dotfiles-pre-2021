@@ -1,4 +1,17 @@
 
+(defvar grc-emacs-init-file "~/.emacs.d/init.el")
+(defvar grc-backups-folder "~/backups/")
+(defvar grc-dropbox-folder "~/Dropbox/")
+(defvar grc-emacs-config-dir
+  (file-name-directory grc-emacs-init-file))
+
+(setq user-emacs-directory grc-emacs-config-dir)
+(setq backup-directory-alist
+      (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
+
+(setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
+(setq custom-system-path (file-name-as-directory custom-system-file))
+
 (require 'cl)
 (require 'package)
 (dolist (repo '(("elpa"    . "http://tromey.com/elpa/")
@@ -59,27 +72,28 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-(defvar grc-emacs-init-file "~/.emacs.d/init.el")
-(defvar grc-backups-folder "~/backups/")
-(defvar grc-dropbox-folder "~/Dropbox/")
-(defvar grc-emacs-config-dir
-  (file-name-directory grc-emacs-init-file))
-
-(setq user-emacs-directory grc-emacs-config-dir)
-(setq backup-directory-alist
-      (list (cons "." (expand-file-name "emacs" grc-backups-folder))))
-
-(setq custom-system-file (expand-file-name system-name grc-emacs-config-dir))
-(setq custom-system-path (file-name-as-directory custom-system-file))
-(setq ede-project-placeholder-cache-file (concatenate 'string custom-system-path "ede-projects.el"))
+(defun scroll-down-in-place (n)
+  (interactive "p")
+  (previous-line n)
+  (scroll-down n))
+(defun scroll-up-in-place (n)
+  (interactive "p")
+  (next-line n)
+  (scroll-up n))
 
 (require 'flx-ido)
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
-(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
-               "*Messages*" "Async Shell Command" "*Compile-Log*"
-               "*Customize"))
+;; (setq-default ido-ignore-buffers '(
+;;                "^ "
+;;                "*Completions*"
+;;                "*Shell Command Output*"
+;;                "*Messages*"
+;;                "Async Shell Command"
+;;                "*Compile-Log*"
+;;                "*Customize"))
+
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
@@ -124,16 +138,13 @@
 (setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
-(global-auto-complete-mode 1)
 
 (require 'ace-isearch)
-(global-ace-isearch-mode +1)
 
 (require 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 (require 'evil-surround)
-(global-evil-matchit-mode 1)
 
 (require 'evil-exchange)
 (setq evil-exchange-key (kbd "zx"))
@@ -180,110 +191,30 @@
 (setq deft-text-mode 'markdown-mode)
 (setq deft-use-filename-as-title 1)
 
-(defun gcman-deft-mode-hook ()
-  "deft-mode-hook"
-  (turn-off-evil-mode))
-(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook)))
-
-(global-set-key (kbd "C-c h") 'helm-projectile)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "<f9>") 'recentf-open-files)
-(global-set-key (kbd "M-p") 'ace-window)
-(global-set-key [f8] 'deft)
-(global-set-key [S-f8] 'deft-new-file-named)
-
-;; set bookmarking keys
-(global-set-key (kbd "<C-f7>") 'bm-next)
-(global-set-key (kbd "<f7>")   'bm-toggle)
-(global-set-key (kbd "<S-f7>") 'bm-previous)
-(global-set-key (kbd "<M-f7>") 'bm-show-all)
-
-(global-linum-mode t)                        ; add line numbers on the left
-(setq scroll-bar-mode -1)                    ; hide scroll bars
-(setq org-src-fonfify-natively t)            ; fontify code in code blocks
-(org-src-fontify-buffer)
-
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-
-(setq user-full-name "Gary Cheeseman"
-      user-mail-address "gary@cheeseman.me.uk")
-
-;; gcman Markdown mode hook -------------------------------------------------
-;; Stop markdown-mode interfeering with yasnippet
-(defun gcman-markdown-mode-hook ()
-  "markdown-mode-hook"
-  (define-key markdown-mode-map (kbd "<tab>") nil))
-(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
-
-;; Unset Arrow keys, this should help force me to learn the Emacs keys!
-;; (global-unset-key (kbd "<left>"))
-;; (global-unset-key (kbd "<right>"))
-;; (global-unset-key (kbd "<up>"))
-;; (global-unset-key (kbd "<down>"))
-
- 
-
-;; Setup GLOBAL keys --------------------------------------------------------
-
-;; move text
 (require 'move-text)
 ;;(move-text-default-bindings)
-;; set block bubble keys
-(global-set-key (kbd "<S-f6>") 'move-text-up)
-(global-set-key (kbd "<C-f6>") 'move-text-down)
 
-;; set keys for multi-term
 (require 'multi-term)
-(global-set-key (kbd "C-c m") 'multi-term)
 
-;; set keys for multiple-cursors.el
 (require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-;; set keys for text scaling
-(global-set-key (kbd "C-x +") 'text-scale-increase)
-(global-set-key (kbd "C-x _") 'text-scale-decrease)
+;;(add-to-list 'load-path "~/.emacs.d/elpa/eredis*")
+(require 'eredis)
 
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C--") 'er/contract-region)
-
-;; set keys for spliting window
-(global-set-key (kbd "C-\\") 'split-window-below)
-(global-set-key (kbd "C-|") 'split-window-right)
-
-;; org-mode settings --------------------------------------------------------
-
-;; Useful key bindings for org-mode
-(add-hook 'org-mode-hook
-    (lambda ()
-      (local-unset-key "\C-c")
-      (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
-      (local-set-key "\C-cs" 'org-toodledo-sync)
-      )
-    )
-(add-hook 'org-agenda-mode-hook
-    (lambda ()
-      (local-unset-key "\C-c")
-      (local-set-key "\C-cd" 'org-toodledo-agenda-mark-task-deleted)
-      )
-    )
-
-(define-key global-map "\C-ct" 'org-capture)
-(define-key global-map "\C-ca" 'org-agenda)
+(require 'rainbow-mode)
 
 ;; Set to the location of your Org files on your local system
 (setq org-directory (expand-file-name "org" grc-dropbox-folder))
+
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull (expand-file-name "flagged.org" org-directory))
+
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory (expand-file-name "Apps/MobileOrg" grc-dropbox-folder))
+
 ;;(setq remember-data-file (expand-file-name "journal.org" org-directory))
 (setq org-default-notes-file (expand-file-name "journal.org" org-directory))
+
 ;;(setq remember-annotation-functions '(org-remember-annotation))
 ;;(setq remember-handler-functions '(org-remember-handler))
 ;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
@@ -314,29 +245,147 @@
 ;;  )
 ;;       )
 
-(setq org-agenda-files (quote ("~/Dropbox/org/birthday.org" "~/Dropbox/org/gtd.org" "~/Dropbox/org/emails.org" "~/Dropbox/org/finances.org")))
+(setq org-agenda-files (quote (
+                               "~/Dropbox/org/birthday.org"
+                               "~/Dropbox/org/gtd.org"
+                               "~/Dropbox/org/emails.org"
+                               "~/Dropbox/org/finances.org")))
 
-(setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
+(defun gcman-deft-mode-hook ()
+  "deft-mode-hook"
+  (turn-off-evil-mode))
+(add-hook 'deft-mode-hook '(lambda() (gcman-deft-mode-hook)))
 
-;; setup eredis ---------------------------------------------------------------
-(add-to-list 'load-path "~/.emacs.d/elpa/eredis*")
-(require 'eredis)
+(defun gcman-markdown-mode-hook ()
+  "markdown-mode-hook"
+  (define-key markdown-mode-map (kbd "<tab>") nil))
+(add-hook 'markdown-mode-hook '(lambda() (gcman-markdown-mode-hook)))
 
-;; On OS X Emacs doesn't use the shell PATH if it's not started from
-;; the shell. If you're using homebrew modifying the PATH is essential.
-;; Also allow hash to be entered
+(add-hook 'html-mode-hook 'turn-off-auto-fill)
+
+(add-hook 'org-mode 'org-src-fontify-buffer)
+
+(global-set-key (kbd "C-c h") 'helm-projectile)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "<f9>") 'recentf-open-files)
+(global-set-key (kbd "M-p") 'ace-window)
+(global-set-key [f8] 'deft)
+(global-set-key [S-f8] 'deft-new-file-named)
+(global-set-key [C-return] 'emmet-expand-line)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "<f2>") 'ispell-word)
+
+;; set bookmarking keys
+(global-set-key (kbd "<C-f7>") 'bm-next)
+(global-set-key (kbd "<f7>")   'bm-toggle)
+(global-set-key (kbd "<S-f7>") 'bm-previous)
+(global-set-key (kbd "<M-f7>") 'bm-show-all)
+
+;; set move-text block bubble keys
+(global-set-key (kbd "<S-f6>") 'move-text-up)
+(global-set-key (kbd "<C-f6>") 'move-text-down)
+
+(global-set-key (kbd "C-c m") 'multi-term)
+
+;; set multiple-cursors.el keys
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; set keys for text scaling
+(global-set-key (kbd "C-x +") 'text-scale-increase)
+(global-set-key (kbd "C-x _") 'text-scale-decrease)
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C--") 'er/contract-region)
+
+;; set keys for spliting window
+(global-set-key (kbd "C-\\") 'split-window-below)
+(global-set-key (kbd "C-|") 'split-window-right)
+
+;; set org-mode global keys
+(define-key global-map "\C-ct" 'org-capture)
+(define-key global-map "\C-ca" 'org-agenda)
+
+;; Unset Arrow keys, this should help force me to learn the Emacs keys!
+;; (global-unset-key (kbd "<left>"))
+;; (global-unset-key (kbd "<right>"))
+;; (global-unset-key (kbd "<up>"))
+;; (global-unset-key (kbd "<down>"))
+
+;; set custom function keys
+(global-set-key [M-up] 'scroll-down-in-place)
+(global-set-key [M-down] 'scroll-up-in-place)
+
+(add-hook 'org-mode-hook
+    (lambda ()
+      (local-unset-key "\C-c")
+      (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
+      (local-set-key "\C-cs" 'org-toodledo-sync)
+      )
+    )
+
+(add-hook 'org-agenda-mode-hook
+    (lambda ()
+      (local-unset-key "\C-c")
+      (local-set-key "\C-cd" 'org-toodledo-agenda-mark-task-deleted)
+      )
+    )
+
+(evilnc-default-hotkeys)
+
+(global-evil-leader-mode)
+(evil-leader/set-leader ",")
+(evil-leader/set-key
+  "f" 'helm-find-files
+  "y" 'helm-show-kill-ring
+  "o" 'helm-occur
+  "v" 'helm-projectile
+  "h" 'helm-man-woman
+  "," 'helm-resume
+  "." 'helm-calcul-expression
+  "d" 'helm-descbinds
+  "m" 'helm-mini
+  "i" 'helm-semantic-or-imenu
+  "p" 'ffap
+  "j" 'ace-jump-mode
+  "b" 'helm-buffers-list
+  "k" 'kill-buffer)
+
+(define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)
+
+;;Exit insert mode by pressing j and then j quickly
+(setq key-chord-two-keys-delay 0.4)
+(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+(key-chord-mode 1)
+
+(global-evil-matchit-mode)
+(global-ace-isearch-mode)
+(global-auto-complete-mode)
+(global-font-lock-mode)                      ; activate font-lock mode (syntax coloring)
+(global-linum-mode)                          ; add line numbers on the left
+(global-visual-line-mode)                    ; wrap long lines
+(setq-default rainbow-mode t)
+(setq-default scroll-bar-mode -1)            ; hide scroll bar
+(setq-default org-src-fonfify-natively t)    ; fontify code in code blocks
+
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+
+(setq user-full-name "Gary Cheeseman"
+      user-mail-address "gary@cheeseman.me.uk")
+
 (if (eq system-type 'darwin)
     (progn
       (push "/usr/local/bin" exec-path)
       (setq osx-pseudo-daemon-mode t)
       (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))))
 
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
 
-(define-key global-map (kbd "<f2>") 'ispell-word)
-
-;; Minor Mode Hooks
-(add-hook 'html-mode-hook 'turn-off-auto-fill)
 
 ;; Flymake
 ;; (require 'flymake)
@@ -377,52 +426,12 @@
   (setenv "PATH" path-from-shell)
   (setq exec-path (split-string path-from-shell path-separator)))
 
-(evilnc-default-hotkeys)
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
-(evil-leader/set-key
-  "f" 'helm-find-files
-  "y" 'helm-show-kill-ring
-  "o" 'helm-occur
-  "v" 'helm-projectile
-  "h" 'helm-man-woman
-  "," 'helm-resume
-  "." 'helm-calcul-expression
-  "d" 'helm-descbinds
-  "m" 'helm-mini
-  "i" 'helm-semantic-or-imenu
-  "p" 'ffap
-  "j" 'ace-jump-mode
-  "b" 'helm-buffers-list
-  "k" 'kill-buffer)
 
-;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
-;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
-(define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)
 
 (setq evil-default-cursor 1)
 (set-cursor-color "orange")
 
-;;Exit insert mode by pressing j and then j quickly
-(setq key-chord-two-keys-delay 0.4)
-(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-(key-chord-mode 1)
 
-(defun scroll-down-in-place (n)
-  (interactive "p")
-  (previous-line n)
-  (scroll-down n))
-
-(defun scroll-up-in-place (n)
-  (interactive "p")
-  (next-line n)
-  (scroll-up n))
-
-(global-set-key [M-up] 'scroll-down-in-place)
-(global-set-key [M-down] 'scroll-up-in-place)
-
-(global-set-key [C-return] 'emmet-expand-line)
 
 ;; Turn off flyspell
 (setq-default flyspell-mode nil)
@@ -478,8 +487,6 @@
 (global-linum-mode t)                        ; add line numbers on the left
 (setq linum-format "%7d ")
 
-(require 'rainbow-mode)
-(rainbow-mode t)
 
 (evil-exchange-install)
 (evilnc-default-hotkeys)
