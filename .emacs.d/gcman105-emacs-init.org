@@ -2,7 +2,6 @@
 #+OPTIONS: toc:4 h:4
 
 * Configuration
-  
 ** About this file
 <<babel-init>>
 
@@ -630,7 +629,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
-(menu-bar-mode -1))
+(menu-bar-mode -1)
 
 (setq blink-cursor-mode 1)                   ; I like my cursor to blink
 (setq x-stretch-cursor t)                    ; I also like my cursor to stretch
@@ -700,7 +699,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   (setq exec-path (split-string path-from-shell path-separator)))
 
 ;; if its not a mac, do these things
-(unless (string-match "apple-darwin" system-configuration)
+;;(unless (string-match "apple-darwin" system-configuration)
   ;; on mac, there's always a menu bar drown, don't have it empty
 
 ;; setup theme --------------------------------------------------------------
@@ -737,7 +736,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 * My old configuration
   *I will move stuff from here to the correct place above as needed*
 
-#+begin_src emacs-lisp  :tangle no
+#+begin_src emacs-lisp
 
 ;; Flymake
 ;; (require 'flymake)

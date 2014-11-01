@@ -288,6 +288,16 @@
 
 ;;(add-hook 'org-mode 'org-src-fontify-buffer)
 
+(add-to-list 'auto-mode-alist '("\.rake$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\.gemspec$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\.ru$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile$" . ruby-mode))
+
+(setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
+
 (global-set-key (kbd "C-c h") 'helm-projectile)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "<f9>") 'recentf-open-files)
@@ -403,6 +413,7 @@
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
+(menu-bar-mode -1)
 
 (setq blink-cursor-mode 1)                   ; I like my cursor to blink
 (setq x-stretch-cursor t)                    ; I also like my cursor to stretch
@@ -429,28 +440,22 @@
       (setq osx-pseudo-daemon-mode t)
       (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))))
 
-(setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
+;; under mac, have Command as Meta and keep Option for localized input
+(when (string-match "apple-darwin" system-configuration)
+  (setq mac-allow-anti-aliasing t)
+  (setq mac-option-key-is-meta nil)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (set-keyboard-coding-system nil)
+  (setq mac-option-modifier nil)
+  (menu-bar-mode t))
 
-
-;; Flymake
-;; (require 'flymake)
-;; (global-set-key [C-f3] 'flymake-display-err-menu-for-current-line)
-;; (global-set-key [C-f4] 'flymake-goto-next-error)
-;; (setq flymake-log-level 3)
-
-;; Flycheck mode
-;; Enable flymake for all files
-;;(require 'flycheck)
-;;(add-hook 'find-file-hook 'flycheck-mode)
-
-;; Rake files are ruby, too, as are gemspecs, rackup files, etc.
-(add-to-list 'auto-mode-alist '("\.rake$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\.gemspec$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\.ru$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Vagrantfile$" . ruby-mode))
+;; key bindings
+(when (eq system-type 'darwin)               ; mac specific settings
+  (setq mac-option-modifier 'alt)
+  (setq mac-command-modifier 'meta)
+  (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
+  )
 
 ;; setup if we are using a graphic display ----------------------------------
 (if (display-graphic-p)
@@ -462,28 +467,8 @@
   (setq exec-path (split-string path-from-shell path-separator)))
 
 ;; if its not a mac, do these things
-(unless (string-match "apple-darwin" system-configuration)
+;;(unless (string-match "apple-darwin" system-configuration)
   ;; on mac, there's always a menu bar drown, don't have it empty
-  (menu-bar-mode -1))
-
-;; under mac, have Command as Meta and keep Option for localized input
-(when (string-match "apple-darwin" system-configuration)
-  (setq mac-allow-anti-aliasing t)
-  (setq mac-option-key-is-meta nil)
-  (setq mac-command-key-is-meta t)
-  (setq mac-command-modifier 'meta)
-  (set-keyboard-coding-system nil)
-  (setq mac-option-modifier nil)
-  (menu-bar-mode t))
-
-
-;; key bindings
-(when (eq system-type 'darwin)               ; mac specific settings
-  (setq mac-option-modifier 'alt)
-  (setq mac-command-modifier 'meta)
-  (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
-  )
-
 
 ;; setup theme --------------------------------------------------------------
 ;; load theme depening on window type
@@ -504,14 +489,24 @@
 ;;  (load-theme 'subatomic256 t)
   )
 
-;; Set up 'custom' emacs ----------------------------------------------------
 (setq custom-file (expand-file-name "emacs-customizations.el" gcman105-emacs-config-dir))
 (load custom-file)
 
-;; Load 'custom' system file ------------------------------------------------
 (load custom-system-file)
+
+;; Flymake
+;; (require 'flymake)
+;; (global-set-key [C-f3] 'flymake-display-err-menu-for-current-line)
+;; (global-set-key [C-f4] 'flymake-goto-next-error)
+;; (setq flymake-log-level 3)
+
+;; Flycheck mode
+;; Enable flymake for all files
+;;(require 'flycheck)
+;;(add-hook 'find-file-hook 'flycheck-mode)
+
+;; Load 'custom' system file ------------------------------------------------
 
 ;;; init.el ends here
 
-;; These last lines are to see why they don't seem to work further up the file
-(scroll-bar-mode -1)            ; hide scroll bar
+;; Any lines below are for testing
