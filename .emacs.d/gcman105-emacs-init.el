@@ -18,13 +18,12 @@
                 ("melpa"   . "http://melpa.milkbox.net/packages/")))
   (add-to-list 'package-archives repo))
 
-(package-initialize)
-
 (defvar packages-list
   '(evil evil-leader evil-numbers
    evil-matchit evil-nerd-commenter
    evil-exchange evil-visualstar
    evil-surround
+   org
    key-chord deft markdown-mode markdown-mode+
    ample-zen-theme subatomic256-theme
    color-theme-solarized
@@ -178,6 +177,7 @@
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
 
+(add-to-list 'load-path "~/.emacs.d/gcman105")
 (require 'rcodetools)
 (require 'ruby-mode)
 (require 'ruby-mode-expansions)
@@ -274,6 +274,13 @@
                                "~/Dropbox/org/emails.org"
                                "~/Dropbox/org/finances.org")))
 
+(require 'org-octopress)
+(setq org-octopress-directory-top       "~/Dropbox/gcman105-blog/source")
+(setq org-octopress-directory-posts     "~/Dropbox/gcman105-blog/source/_posts")
+(setq org-octopress-directory-org-top   "~/Dropbox/gcman105-blog/source")
+(setq org-octopress-directory-org-posts "~/Dropbox/gcman105-blog/source/blog")
+(setq org-octopress-setup-file          "~/Dropbox/gcman105-blog/org-sty/setupfile.org")
+
 (defun gcman105/deft-mode-hook ()
   "deft-mode-hook"
   (turn-off-evil-mode))
@@ -286,7 +293,7 @@
 
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
-;;(add-hook 'org-mode 'org-src-fontify-buffer)
+(add-hook 'org-mode-hook 'org-src-fontify-buffer)
 
 (add-to-list 'auto-mode-alist '("\.rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\.gemspec$" . ruby-mode))
@@ -407,13 +414,17 @@
 (global-hl-line-mode)                        ; highlight current line
 (setq-default linum-format "%7d ")
 (setq-default rainbow-mode t)                ; highlight color codes
-(setq-default scroll-bar-mode -1)            ; hide scroll bar
 (setq-default org-src-fontify-natively t)    ; fontify code in code blocks
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
+(toggle-scroll-bar -1)
+(scroll-bar-mode -1)                         ; hide scroll bar
 
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
-(menu-bar-mode -1)
 
 (setq blink-cursor-mode 1)                   ; I like my cursor to blink
 (setq x-stretch-cursor t)                    ; I also like my cursor to stretch
@@ -429,6 +440,7 @@
 (setq echo-keystrokes 0.1)                   ; show keystrokes in progress
 
 (setq-default tab-width 2)
+(setq-default standard-indent 2)
 (setq-default indent-tabs-mode nil)
 
 (setq user-full-name "Gary Cheeseman"
@@ -510,3 +522,4 @@
 ;;; init.el ends here
 
 ;; Any lines below are for testing
+;;(menu-bar-mode -1)

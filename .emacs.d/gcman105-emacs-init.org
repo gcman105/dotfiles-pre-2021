@@ -29,7 +29,7 @@ Inspired by the [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Sa
        (load-path (append (list org-dir org-contrib-dir)
                           (or load-path nil))))
   ;; load up Org-mode and Org-babel
-  (require 'org-install)
+  (require 'ox-install)
   (require 'ob-tangle))
 
 ;; load up all literate org-mode files in this directory
@@ -80,8 +80,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (dolist (repo '(("elpa"    . "http://tromey.com/elpa/")
                 ("melpa"   . "http://melpa.milkbox.net/packages/")))
   (add-to-list 'package-archives repo))
-
-(package-initialize)
 #+end_src
 
 *** Guarantee these packages are installed on start
@@ -92,6 +90,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
    evil-matchit evil-nerd-commenter
    evil-exchange evil-visualstar
    evil-surround
+   org
    key-chord deft markdown-mode markdown-mode+
    ample-zen-theme subatomic256-theme
    color-theme-solarized
@@ -303,6 +302,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     
 *** rcodetools and xmpfilter
 #+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/gcman105")
 (require 'rcodetools)
 (require 'ruby-mode)
 (require 'ruby-mode-expansions)
@@ -435,6 +435,16 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
                                "~/Dropbox/org/finances.org")))
 #+end_src
     
+*** org-mode with octopress
+#+begin_src emacs-lisp
+(require 'org-octopress)
+(setq org-octopress-directory-top       "~/Dropbox/gcman105-blog/source")
+(setq org-octopress-directory-posts     "~/Dropbox/gcman105-blog/source/_posts")
+(setq org-octopress-directory-org-top   "~/Dropbox/gcman105-blog/source")
+(setq org-octopress-directory-org-posts "~/Dropbox/gcman105-blog/source/blog")
+(setq org-octopress-setup-file          "~/Dropbox/gcman105-blog/org-sty/setupfile.org")
+#+end_src
+
 ** Hooks
 
 *** deft mode hook
@@ -462,7 +472,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 *** org-mode hook
 #+begin_src emacs-lisp
-;;(add-hook 'org-mode 'org-src-fontify-buffer)
+(add-hook 'org-mode-hook 'org-src-fontify-buffer)
 #+end_src
 
 ** associate file types with mode
@@ -623,13 +633,17 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (global-hl-line-mode)                        ; highlight current line
 (setq-default linum-format "%7d ")
 (setq-default rainbow-mode t)                ; highlight color codes
-(setq-default scroll-bar-mode -1)            ; hide scroll bar
 (setq-default org-src-fontify-natively t)    ; fontify code in code blocks
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
+(toggle-scroll-bar -1)
+(scroll-bar-mode -1)                         ; hide scroll bar
 
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
 (show-paren-mode t)
-(menu-bar-mode -1)
 
 (setq blink-cursor-mode 1)                   ; I like my cursor to blink
 (setq x-stretch-cursor t)                    ; I also like my cursor to stretch
@@ -648,6 +662,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 *** Tabs and Indents
 #+begin_src emacs-lisp
 (setq-default tab-width 2)
+(setq-default standard-indent 2)
 (setq-default indent-tabs-mode nil)
 #+end_src
 
@@ -754,4 +769,5 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;;; init.el ends here
 
 ;; Any lines below are for testing
+;;(menu-bar-mode -1)
 #+end_src
