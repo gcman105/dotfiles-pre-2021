@@ -77,8 +77,9 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (require 'cl)
 (require 'package)
-(dolist (repo '(("elpa"    . "http://tromey.com/elpa/")
-                ("melpa"   . "http://melpa.milkbox.net/packages/")))
+(dolist (repo '(("melpa"        . "http://melpa.milkbox.net/packages/")
+                ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+                ("org"          . "http://orgmode.org/elpa/")))
   (add-to-list 'package-archives repo))
 #+end_src
 
@@ -86,42 +87,78 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 #+begin_src emacs-lisp
 (defvar packages-list
-  '(evil evil-leader evil-numbers
-   evil-matchit evil-nerd-commenter
-   evil-exchange evil-visualstar
-   evil-surround
-   org
-   key-chord deft markdown-mode markdown-mode+
-   ample-zen-theme subatomic256-theme
-   color-theme-solarized
-   magit multi-term
-   flx flx-ido
-   move-text
-   http-post-simple eredis projectile
-   helm
-   helm-ag helm-css-scss helm-emmet helm-rails helm-rb
-   helm-bm helm-dash helm-helm-commands helm-projectile
-   helm-swoop helm-descbinds helm-dictionary
-   heroku
-   coffee-mode js3-mode slim-mode haml-mode feature-mode
-   emmet-mode auto-complete
-   yaml-mode
-   ag ac-emmet ac-helm ac-ispell
-   multiple-cursors
-   php-mode ruby-mode
-   xclip yasnippet
-   ace-jump-mode ace-isearch ace-window
-   guide-key
-   smartparens
-   bm scss-mode
-   expand-region
-   rainbow-mode
-   fill-column-indicator
-   clojure-mode
-   handlebars-mode
-   cursor-chg
-   highlight-symbol
-   rvm)
+  '(
+    ac-emmet
+    ac-helm
+    ac-ispell
+    ace-isearch
+    ace-jump-mode
+    ace-window
+    ag
+    ample-zen-theme
+    auto-complete
+    bm
+    clojure-mode
+    coffee-mode
+    color-theme-solarized
+    cursor-chg
+    deft
+    emmet-mode
+    eredis
+    evil
+    evil-exchange
+    evil-leader
+    evil-matchit
+    evil-nerd-commenter
+    evil-numbers
+    evil-surround
+    evil-visualstar
+    expand-region
+    feature-mode
+    fill-column-indicator
+    flx
+    flx-ido
+    guide-key
+    haml-mode
+    handlebars-mode
+    helm
+    helm-ag
+    helm-bm
+    helm-css-scss
+    helm-dash
+    helm-descbinds
+    helm-dictionary
+    helm-emmet
+    helm-helm-commands  ;
+    helm-projectile
+    helm-rails
+    helm-rb
+    helm-swoop
+    heroku
+    highlight-symbol
+    http-post-simple
+    js3-mode
+    key-chord
+    magit
+    markdown-mode
+    markdown-mode+
+    move-text
+    multi-term
+    multiple-cursors
+    org
+    php-mode
+    projectile
+    rainbow-mode
+    ruby-mode
+    rvm
+    scss-mode
+    slim-mode
+    smartparens
+    subatomic256-theme
+    xclip
+    yaml-mode
+    yasnippet
+)
   "List of packages needs to be installed at launch")
 #+end_src
 
@@ -472,7 +509,12 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 *** org-mode hook
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'org-src-fontify-buffer)
+;;(add-hook 'org-mode-hook 'org-src-fontify-buffer)
+(defun gcman105/org-mode-hook ()
+  "org-mode-hook"
+  (org-src-fontify-buffer)
+  (turn-off-smartparens-mode))
+(add-hook 'org-mode-hook '(lambda() (gcman105/org-mode-hook)))
 #+end_src
 
 ** associate file types with mode
@@ -494,7 +536,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
 #+end_src
 ** Key bindings
-
 *** global key bindings
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c h") 'helm-projectile)
@@ -582,23 +623,23 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
      
 ***** evil-leader-mode
 #+begin_src emacs-lisp
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
-(evil-leader/set-key
-  "f" 'helm-find-files
-  "y" 'helm-show-kill-ring
-  "o" 'helm-occur
-  "v" 'helm-projectile
-  "h" 'helm-man-woman
-  "," 'helm-resume
-  "." 'helm-calcul-expression
-  "d" 'helm-descbinds
-  "m" 'helm-mini
-  "i" 'helm-semantic-or-imenu
-  "p" 'ffap
-  "j" 'ace-jump-mode
-  "b" 'helm-buffers-list
-  "k" 'kill-buffer)
+  (global-evil-leader-mode)
+  (evil-leader/set-leader ",")
+  (evil-leader/set-key
+    "f" 'helm-find-files
+    "y" 'helm-show-kill-ring
+    "o" 'helm-occur
+    "v" 'helm-projectile
+    "h" 'helm-man-woman
+    "," 'helm-resume
+    "." 'helm-calcul-expression
+    "d" 'helm-descbinds
+    "m" 'helm-mini
+    "i" 'helm-semantic-or-imenu
+    "p" 'ffap
+    "j" 'ace-jump-mode
+    "b" 'helm-buffers-list
+    "k" 'kill-buffer)
 #+end_src
 
 ***** evil-normal-state
@@ -640,6 +681,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (tooltip-mode -1)
 (toggle-scroll-bar -1)
 (scroll-bar-mode -1)                         ; hide scroll bar
+(size-indication-mode t)
 
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
@@ -664,6 +706,16 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq-default tab-width 2)
 (setq-default standard-indent 2)
 (setq-default indent-tabs-mode nil)
+#+end_src
+
+*** Use UTF-8 everywhere
+#+begin_src emacs-lisp
+(set-language-environment 'UTF-8)
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8-unix)
 #+end_src
 
 ** Personal information

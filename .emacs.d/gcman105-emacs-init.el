@@ -14,47 +14,84 @@
 
 (require 'cl)
 (require 'package)
-(dolist (repo '(("elpa"    . "http://tromey.com/elpa/")
-                ("melpa"   . "http://melpa.milkbox.net/packages/")))
+(dolist (repo '(("melpa"        . "http://melpa.milkbox.net/packages/")
+                ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+                ("org"          . "http://orgmode.org/elpa/")))
   (add-to-list 'package-archives repo))
 
 (defvar packages-list
-  '(evil evil-leader evil-numbers
-   evil-matchit evil-nerd-commenter
-   evil-exchange evil-visualstar
-   evil-surround
-   org
-   key-chord deft markdown-mode markdown-mode+
-   ample-zen-theme subatomic256-theme
-   color-theme-solarized
-   magit multi-term
-   flx flx-ido
-   move-text
-   http-post-simple eredis projectile
-   helm
-   helm-ag helm-css-scss helm-emmet helm-rails helm-rb
-   helm-bm helm-dash helm-helm-commands helm-projectile
-   helm-swoop helm-descbinds helm-dictionary
-   heroku
-   coffee-mode js3-mode slim-mode haml-mode feature-mode
-   emmet-mode auto-complete
-   yaml-mode
-   ag ac-emmet ac-helm ac-ispell
-   multiple-cursors
-   php-mode ruby-mode
-   xclip yasnippet
-   ace-jump-mode ace-isearch ace-window
-   guide-key
-   smartparens
-   bm scss-mode
-   expand-region
-   rainbow-mode
-   fill-column-indicator
-   clojure-mode
-   handlebars-mode
-   cursor-chg
-   highlight-symbol
-   rvm)
+  '(
+    ac-emmet
+    ac-helm
+    ac-ispell
+    ace-isearch
+    ace-jump-mode
+    ace-window
+    ag
+    ample-zen-theme
+    auto-complete
+    bm
+    clojure-mode
+    coffee-mode
+    color-theme-solarized
+    cursor-chg
+    deft
+    emmet-mode
+    eredis
+    evil
+    evil-exchange
+    evil-leader
+    evil-matchit
+    evil-nerd-commenter
+    evil-numbers
+    evil-surround
+    evil-visualstar
+    expand-region
+    feature-mode
+    fill-column-indicator
+    flx
+    flx-ido
+    guide-key
+    haml-mode
+    handlebars-mode
+    helm
+    helm-ag
+    helm-bm
+    helm-css-scss
+    helm-dash
+    helm-descbinds
+    helm-dictionary
+    helm-emmet
+    helm-helm-commands  ;
+    helm-projectile
+    helm-rails
+    helm-rb
+    helm-swoop
+    heroku
+    highlight-symbol
+    http-post-simple
+    js3-mode
+    key-chord
+    magit
+    markdown-mode
+    markdown-mode+
+    move-text
+    multi-term
+    multiple-cursors
+    org
+    php-mode
+    projectile
+    rainbow-mode
+    ruby-mode
+    rvm
+    scss-mode
+    slim-mode
+    smartparens
+    subatomic256-theme
+    xclip
+    yaml-mode
+    yasnippet
+)
   "List of packages needs to be installed at launch")
 
 (defun has-package-not-installed ()
@@ -293,7 +330,12 @@
 
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
 
-(add-hook 'org-mode-hook 'org-src-fontify-buffer)
+;;(add-hook 'org-mode-hook 'org-src-fontify-buffer)
+(defun gcman105/org-mode-hook ()
+  "org-mode-hook"
+  (org-src-fontify-buffer)
+  (turn-off-smartparens-mode))
+(add-hook 'org-mode-hook '(lambda() (gcman105/org-mode-hook)))
 
 (add-to-list 'auto-mode-alist '("\.rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\.gemspec$" . ruby-mode))
@@ -421,6 +463,7 @@
 (tooltip-mode -1)
 (toggle-scroll-bar -1)
 (scroll-bar-mode -1)                         ; hide scroll bar
+(size-indication-mode t)
 
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
@@ -442,6 +485,13 @@
 (setq-default tab-width 2)
 (setq-default standard-indent 2)
 (setq-default indent-tabs-mode nil)
+
+(set-language-environment 'UTF-8)
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8-unix)
 
 (setq user-full-name "Gary Cheeseman"
       user-mail-address "gary@cheeseman.me.uk")
