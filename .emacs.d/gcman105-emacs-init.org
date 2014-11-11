@@ -650,13 +650,14 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     "h" 'helm-man-woman
     "i" 'helm-semantic-or-imenu
     "j" 'ace-jump-mode
-    "k" 'kill-buffer)
+    "k" 'kill-buffer
     "m" 'helm-mini
     "o" 'helm-occur
     "p" 'ffap
     "v" 'helm-projectile
     "w" 'ace-window
     "y" 'helm-show-kill-ring
+    )
 #+end_src
 
 ***** evil-normal-state
