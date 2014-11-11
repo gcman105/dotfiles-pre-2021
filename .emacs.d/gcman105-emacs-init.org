@@ -103,6 +103,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     color-theme-solarized
     cursor-chg
     deft
+    diminish
     emmet-mode
     eredis
     evil
@@ -118,6 +119,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     fill-column-indicator
     flx
     flx-ido
+    flycheck
     guide-key
     haml-mode
     handlebars-mode
@@ -129,6 +131,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     helm-descbinds
     helm-dictionary
     helm-emmet
+    helm-flycheck
     helm-helm-commands  ;
     helm-projectile
     helm-rails
@@ -146,13 +149,17 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     multi-term
     multiple-cursors
     org
+    org-plus-contrib
+    org-octopress
     php-mode
     projectile
     rainbow-mode
     ruby-mode
     rvm
+    sass-mode
     scss-mode
     slim-mode
+    smart-mode-line
     smartparens
     subatomic256-theme
     xclip
@@ -181,7 +188,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 ** Custom Functions
-
+   
 *** my custom functions
 #+begin_src emacs-lisp
 (defun gcman105/scroll-down-in-place (n)
@@ -218,15 +225,8 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
-;; (setq-default ido-ignore-buffers '(
-;;                "^ "
-;;                "*Completions*"
-;;                "*Shell Command Output*"
-;;                "*Messages*"
-;;                "Async Shell Command"
-;;                "*Compile-Log*"
-;;                "*Customize"))
-
+(iswitchb-mode t)
+;;(setq-default ido-ignore-buffers '("\\` "))
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
@@ -289,10 +289,15 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 *** auto-complete
 #+begin_src emacs-lisp
+(require 'auto-complete)
 (require 'auto-complete-config)
 (setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
+(defun auto-complete-mode-maybe ()
+  "No maybe for you. Only AC!"
+  (unless (minibufferp (current-buffer))
+    (auto-complete-mode 1)))
 #+end_src
 
 *** ace-isearch
@@ -417,6 +422,12 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 *** scss-mode
 #+begin_src emacs-lisp
 (setq scss-compile-at-save nil)
+#+end_src
+
+*** flycheck
+#+begin_src emacs-lisp
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 #+end_src
 
 ** Org Package
@@ -616,6 +627,11 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     )
 #+end_src
 
+**** key-chord
+##+begin_src emacs-lisp
+
+#+end_src
+
 **** evil-mode
 #+begin_src emacs-lisp
 (evilnc-default-hotkeys)
@@ -626,20 +642,21 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   (global-evil-leader-mode)
   (evil-leader/set-leader ",")
   (evil-leader/set-key
-    "f" 'helm-find-files
-    "y" 'helm-show-kill-ring
-    "o" 'helm-occur
-    "v" 'helm-projectile
-    "h" 'helm-man-woman
     "," 'helm-resume
     "." 'helm-calcul-expression
-    "d" 'helm-descbinds
-    "m" 'helm-mini
-    "i" 'helm-semantic-or-imenu
-    "p" 'ffap
-    "j" 'ace-jump-mode
     "b" 'helm-buffers-list
+    "d" 'helm-descbinds
+    "f" 'helm-find-files
+    "h" 'helm-man-woman
+    "i" 'helm-semantic-or-imenu
+    "j" 'ace-jump-mode
     "k" 'kill-buffer)
+    "m" 'helm-mini
+    "o" 'helm-occur
+    "p" 'ffap
+    "v" 'helm-projectile
+    "w" 'ace-window
+    "y" 'helm-show-kill-ring
 #+end_src
 
 ***** evil-normal-state
@@ -667,11 +684,12 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (global-evil-matchit-mode)
 (global-ace-isearch-mode)
-(global-auto-complete-mode)
+(global-auto-complete-mode t)
 (global-font-lock-mode)                      ; activate font-lock mode (syntax coloring)
 (global-linum-mode)                          ; add line numbers on the left
 (global-visual-line-mode)                    ; wrap long lines
 (global-hl-line-mode)                        ; highlight current line
+;;(global-prettify-symbols-mode t)
 (setq-default linum-format "%7d ")
 (setq-default rainbow-mode t)                ; highlight color codes
 (setq-default org-src-fontify-natively t)    ; fontify code in code blocks
@@ -681,7 +699,9 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (tooltip-mode -1)
 (toggle-scroll-bar -1)
 (scroll-bar-mode -1)                         ; hide scroll bar
-(size-indication-mode t)
+;;(size-indication-mode t)
+
+(transient-mark-mode 0)
 
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
@@ -699,6 +719,54 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq x-select-enable-clipboard t)           ; use the clipboard, so that copy/paste works
 
 (setq echo-keystrokes 0.1)                   ; show keystrokes in progress
+#+end_src
+
+*** Mode line format
+
+Display a more compact mode line
+
+#+begin_src emacs-lisp
+(setq-default mode-line-format
+              '("%e" mode-line-front-space
+                ;; Standard info about the current buffer
+                mode-line-mule-info
+                mode-line-client
+                mode-line-modified
+                mode-line-remote
+                mode-line-frame-identification
+                mode-line-buffer-identification " " mode-line-position
+                ;; Some specific information about the current buffer:
+                gcman105-projectile-mode-line ; Project information
+                (vc-mode gcman105-vc-mode-line) ; VC information
+                (flycheck-mode flycheck-mode-line) ; Flycheck status
+                (multiple-cursors-mode mc/mode-line) ; Number of cursors
+                ;; Misc information, notably battery state and function name
+                " "
+                mode-line-misc-info
+                ;; And the modes, which I don't really care for anyway
+                " " mode-line-modes mode-line-end-spaces))
+#+end_src
+
+Hide minor modes I care less about:
+
+#+begin_src emacs-lisp
+(require 'diminish)
+(eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+(eval-after-load "guide-key" '(diminish 'guide-key-mode))
+(eval-after-load "smartparens" '(diminish 'smartparens-mode))
+(eval-after-load "guide-key" '(diminish 'guide-key-mode))
+(eval-after-load "eldoc" '(diminish 'eldoc-mode))
+(diminish 'visual-line-mode)
+(diminish 'rainbow-mode)
+#+end_src
+
+*** Change "yes or no" to "y or n"
+
+Lazy people like me never want to type "yes" when "y" will suffice.
+
+#+begin_src emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)   
 #+end_src
 
 *** Tabs and Indents
@@ -781,11 +849,9 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
   )
 (when (eq window-system nil)
   (load-theme 'ample-zen t)
-;;  (load-theme 'solarized-light t)
   (global-hl-line-mode)                      ; highlight current line
   (blink-cursor-mode)
   (setq x-stretch-cursor t)
-;;  (load-theme 'subatomic256 t)
   )
 #+end_src
 

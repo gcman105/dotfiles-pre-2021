@@ -1,24 +1,91 @@
+#+TITLE: gcman105's Emacs configuration
+#+OPTIONS: toc:4 h:4
 
+* Configuration
+** About this file
+<<babel-init>>
+
+Inspired by the [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Sacha Chua's config]], I set up my configuration file using Org-babel. This file is saved as gcman105-emacs-init.org in my =~/.emacs.d= directory to have it automatically load.
+
+[[https://github.com/gcman105/dotfiles/blob/master/.emacs.d/gcman105-emacs-init.org][This File]] on Github
+
+#+begin_src emacs-lisp  :tangle no
+;;; init.el --- Where all the magic begins
+;;
+;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
+;; embedded in literate Org-mode files.
+
+;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
+(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
+
+(let* ((org-dir (expand-file-name
+                 "lisp" (expand-file-name
+                         "org" (expand-file-name
+                                "src" dotfiles-dir))))
+       (org-contrib-dir (expand-file-name
+                         "lisp" (expand-file-name
+                                 "contrib" (expand-file-name
+                                            ".." org-dir))))
+       (load-path (append (list org-dir org-contrib-dir)
+                          (or load-path nil))))
+  ;; load up Org-mode and Org-babel
+  (require 'ox-install)
+  (require 'ob-tangle))
+
+;; load up all literate org-mode files in this directory
+(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
+
+;;; init.el ends here
+#+end_src
+
+If you're new to Emacs Lisp, you probably don't want to copy and paste large chunks of this code. Instead, copy small parts of it (always making sure to copy a complete set of parentheses) into your =*scratch*= buffer or some other buffer in =emacs-lisp-mode=. Use =M-x eval-buffer= to evaluate the code and see if you like the way that Emacs behaves. See [[https://www.gnu.org/software/emacs/manual/html_mono/eintr.html][An Introduction to Programming in Emacs Lisp]] for more details on Emacs Lisp. You can also find the manual by using =C-h i= (=info=) and choosing "Emacs Lisp Intro". 
+
+I've installed a lot of packages. See the [[*Add%20package%20sources][package sources]] section to add the repositories to your configuration. When you see =use-package= and a package name you might like, you can use =M-x package-install= to install the package of that name. Note that use-package is itself provided by a package, so you'll probably want to install that and =bind-ke=.
+
+If you're viewing the Org file, you can open source code blocks (those are the ones in begin_src) in a separate buffer by moving your point inside them and typing C-c ' (=org-edit-special=). This opens another buffer in =emacs-lisp-mode=, so you can use =M-x eval-buffer= to load the changes. If you want to explore how functions work, use =M-x edebug-defun= to set up debugging for that function, and then call it. You can learn more about edebug in the [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html][Emacs Lisp]] manual.
+
+I like using =(setq ...)= more than Customize because I can neatly organize my configuration that way. 
+
+** Setup directories
+
+*** Define vars
+#+begin_src emacs-lisp
 (defvar gcman105-emacs-init-file "~/.emacs.d/init.el")
 (defvar gcman105-backups-folder "~/backups/")
 (defvar gcman105-dropbox-folder "~/Dropbox/")
 (defvar gcman105-emacs-config-dir
   (file-name-directory gcman105-emacs-init-file))
+#+end_src
 
+*** Set directories
+#+begin_src emacs-lisp
 (setq user-emacs-directory gcman105-emacs-config-dir)
 (setq backup-directory-alist
       (list (cons "." (expand-file-name "emacs" gcman105-backups-folder))))
+#+end_src
 
+*** Set system specific directories
+#+begin_src emacs-lisp
 (setq custom-system-file (expand-file-name system-name gcman105-emacs-config-dir))
 (setq custom-system-path (file-name-as-directory custom-system-file))
+#+end_src
 
+** Package management
+
+*** Setup package management
+    
+#+begin_src emacs-lisp
 (require 'cl)
 (require 'package)
 (dolist (repo '(("melpa"        . "http://melpa.milkbox.net/packages/")
                 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                 ("org"          . "http://orgmode.org/elpa/")))
   (add-to-list 'package-archives repo))
+#+end_src
 
+*** Guarantee these packages are installed on start
+
+#+begin_src emacs-lisp
 (defvar packages-list
   '(
     ac-emmet
@@ -36,7 +103,6 @@
     color-theme-solarized
     cursor-chg
     deft
-    diminish
     emmet-mode
     eredis
     evil
@@ -52,7 +118,6 @@
     fill-column-indicator
     flx
     flx-ido
-    flycheck
     guide-key
     haml-mode
     handlebars-mode
@@ -64,7 +129,6 @@
     helm-descbinds
     helm-dictionary
     helm-emmet
-    helm-flycheck
     helm-helm-commands  ;
     helm-projectile
     helm-rails
@@ -82,17 +146,15 @@
     multi-term
     multiple-cursors
     org
-    org-plus-contrib
     org-octopress
+    org-plus-contrib
     php-mode
     projectile
     rainbow-mode
     ruby-mode
     rvm
-    sass-mode
     scss-mode
     slim-mode
-    smart-mode-line
     smartparens
     subatomic256-theme
     xclip
@@ -100,7 +162,11 @@
     yasnippet
 )
   "List of packages needs to be installed at launch")
+#+end_src
 
+*** Install packages if they are not already installed
+    
+#+begin_src emacs-lisp
 (defun has-package-not-installed ()
   (loop for p in packages-list
         when (not (package-installed-p p)) do (return t)
@@ -114,7 +180,12 @@
   (dolist (p packages-list)
     (when (not (package-installed-p p))
       (package-install p))))
+#+end_src
 
+** Custom Functions
+   
+*** my custom functions
+#+begin_src emacs-lisp
 (defun gcman105/scroll-down-in-place (n)
   (interactive "p")
   (previous-line n)
@@ -139,6 +210,12 @@
   (insert (format "%s" system-type))
   )
 
+#+end_src
+
+** Configure Packages
+
+*** flx-ido
+#+begin_src emacs-lisp
 (require 'flx-ido)
 (ido-mode 1)
 (ido-everywhere 1)
@@ -148,7 +225,10 @@
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
+#+end_src
 
+*** projectile
+#+begin_src emacs-lisp
 (setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
 (setq projectile-known-projects-file (concatenate 'string custom-system-path "projectile-bookmarks.eld"))
 (require 'projectile)
@@ -156,7 +236,10 @@
 (setq projectile-use-native-indexing t)
 (setq projectile-enable-caching t)
 (setq projectile-switch-project-action 'helm-projectile-find-file)
+#+end_src
 
+*** helm
+#+begin_src emacs-lisp
 (require 'helm-projectile)
 (helm-projectile-on)
 (require 'helm-config)
@@ -165,49 +248,78 @@
 (helm-descbinds-mode)
 
 (require 'helm-dictionary)
+#+end_src
 
+*** magit
+#+begin_src emacs-lisp
 (require 'magit)
 (global-set-key (kbd "C-c s") 'magit-status)
+#+end_src
 
+*** recentf
+#+begin_src emacs-lisp
 (require 'recentf)
 (setq recentf-load-file (concatenate 'string custom-system-path "recentf"))
 (setq recentf-save-file (concatenate 'string custom-system-path "recentf"))
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
+#+end_src
 
+*** smartparens
+    Highlights matching pairs
+#+begin_src emacs-lisp
 (require 'smartparens-config)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
+#+end_src
 
+*** guide-key
+#+begin_src emacs-lisp
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
 (setq guide-key/recursive-key-sequence-flag t)
 (guide-key-mode 1)                           ; Enable guide-key-mode
 (setq guide-key/highlight-command-regexp "rectangle")
+#+end_src
 
-(require 'auto-complete)
+*** auto-complete
+#+begin_src emacs-lisp
 (require 'auto-complete-config)
 (setq ac-comphist-file (concatenate 'string custom-system-path "ac-comphist.dat"))
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
-(defun auto-complete-mode-maybe ()
-  "No maybe for you. Only AC!"
-  (unless (minibufferp (current-buffer))
-    (auto-complete-mode 1)))
+#+end_src
 
+*** ace-isearch
+#+begin_src emacs-lisp
 (require 'ace-isearch)
+#+end_src
 
+*** ace-window
+#+begin_src emacs-lisp
 (require 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+#+end_src
 
+*** evil-mode
+#+begin_src emacs-lisp
 (evil-mode t)
-
+#+end_src
+    
+*** evil-surround
+#+begin_src emacs-lisp
 (require 'evil-surround)
+#+end_src
 
+*** evil-exchange
+#+begin_src emacs-lisp
 (require 'evil-exchange)
 (setq evil-exchange-key (kbd "zx"))
 (evil-exchange-install)
+#+end_src
 
+*** yasnippet
+#+begin_src emacs-lisp
 ;; HAD TO MOVE THE NEXT 2 LINES INTO THE SYSTEM FILE FOR EACH SYSTEM
 ;;(require 'yasnippet)
 ;;(yas-global-mode 1)
@@ -218,16 +330,27 @@
   ;;        "/path/to/some/othercollection/" ;; some more foo-mode and a complete baz-mode
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
-
+#+end_src
+    
+*** rcodetools and xmpfilter
+#+begin_src emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/gcman105")
 (require 'rcodetools)
 (require 'ruby-mode)
 (require 'ruby-mode-expansions)
-
+#+end_src
+    
+*** saveplace
+    Save place in file when I exit
+#+begin_src emacs-lisp
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concatenate 'string custom-system-path "places"))
+#+end_src
 
+*** bm
+    bookmarks
+#+begin_src emacs-lisp
 (setq bm-repository-file (concatenate 'string custom-system-path ".bm-repository"))
 (setq-default bm-restore-repository-on-load t)
 (require 'bm)
@@ -248,29 +371,53 @@
 (add-hook 'kill-emacs-hook '(lambda nil
                               (bm-buffer-save-all)
                               (bm-repository-save)))
+#+end_src
 
+*** deft
+    Deft config for nvALT files with md extension 
+#+begin_src emacs-lisp
 (setq deft-extension "md")
 (setq deft-directory (expand-file-name "MarkDown" gcman105-dropbox-folder))
 (setq deft-text-mode 'markdown-mode)
 (setq deft-use-filename-as-title 1)
+#+end_src
 
+*** move-text
+#+begin_src emacs-lisp
 (require 'move-text)
 ;;(move-text-default-bindings)
+#+end_src
 
+*** multi-term
+#+begin_src emacs-lisp
 (require 'multi-term)
+#+end_src
 
+*** multiple-cursors
+#+begin_src emacs-lisp
 (require 'multiple-cursors)
+#+end_src
 
+*** eredis
+#+begin_src emacs-lisp
 ;;(add-to-list 'load-path "~/.emacs.d/elpa/eredis*")
 (require 'eredis)
+#+end_src
 
+*** rainbow
+#+begin_src emacs-lisp
 (require 'rainbow-mode)
-
+#+end_src
+    
+*** scss-mode
+#+begin_src emacs-lisp
 (setq scss-compile-at-save nil)
+#+end_src
 
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+** Org Package
 
+*** setup org directories
+#+begin_src emacs-lisp
 ;; Set to the location of your Org files on your local system
 (setq org-directory (expand-file-name "org" gcman105-dropbox-folder))
 
@@ -318,33 +465,58 @@
                                "~/Dropbox/org/gtd.org"
                                "~/Dropbox/org/emails.org"
                                "~/Dropbox/org/finances.org")))
-
+#+end_src
+    
+*** org-mode with octopress
+#+begin_src emacs-lisp
 (require 'org-octopress)
 (setq org-octopress-directory-top       "~/Dropbox/gcman105-blog/source")
 (setq org-octopress-directory-posts     "~/Dropbox/gcman105-blog/source/_posts")
 (setq org-octopress-directory-org-top   "~/Dropbox/gcman105-blog/source")
 (setq org-octopress-directory-org-posts "~/Dropbox/gcman105-blog/source/blog")
 (setq org-octopress-setup-file          "~/Dropbox/gcman105-blog/org-sty/setupfile.org")
+#+end_src
 
+** Hooks
+
+*** deft mode hook
+    Turn off evil-mode in a deft buffer
+#+begin_src emacs-lisp
 (defun gcman105/deft-mode-hook ()
   "deft-mode-hook"
   (turn-off-evil-mode))
-(add-hook 'deft-mode-hook '(lambda() (gcman105/deft-mode-hook)))
+(add-hook 'deft-mode-hook '(lambda() (gcman105/deft-mode-hook))) 
+#+end_src
 
+*** markdown-mode hook
+    Stop markdown-mode interfeering with yasnippet
+#+begin_src emacs-lisp
 (defun gcman105/markdown-mode-hook ()
   "markdown-mode-hook"
   (define-key markdown-mode-map (kbd "<tab>") nil))
 (add-hook 'markdown-mode-hook '(lambda() (gcman105/markdown-mode-hook)))
+#+end_src
 
+*** html-mode hook
+#+begin_src emacs-lisp
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
+#+end_src
 
+*** org-mode hook
+#+begin_src emacs-lisp
 ;;(add-hook 'org-mode-hook 'org-src-fontify-buffer)
 (defun gcman105/org-mode-hook ()
   "org-mode-hook"
   (org-src-fontify-buffer)
   (turn-off-smartparens-mode))
 (add-hook 'org-mode-hook '(lambda() (gcman105/org-mode-hook)))
+#+end_src
 
+** associate file types with mode
+
+*** ruby-mode
+    Rake files are ruby, too, as are gemspecs, rackup files, etc.
+#+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\.rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\.gemspec$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\.ru$" . ruby-mode))
@@ -352,9 +524,15 @@
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Vagrantfile$" . ruby-mode))
+#+end_src
 
+*** php-mode
+#+begin_src emacs-lisp
 (setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
-
+#+end_src
+** Key bindings
+*** global key bindings
+#+begin_src emacs-lisp
 (global-set-key (kbd "C-c h") 'helm-projectile)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "<f9>") 'recentf-open-files)
@@ -408,7 +586,12 @@
 ;; set custom function keys
 (global-set-key [M-up] 'gcman105/scroll-down-in-place)
 (global-set-key [M-down] 'gcman105/scroll-up-in-place)
+#+end_src
+    
+*** set mode specific keys
 
+**** org-mode
+#+begin_src emacs-lisp
 (add-hook 'org-mode-hook
     (lambda ()
       (local-unset-key "\C-c")
@@ -416,53 +599,75 @@
       (local-set-key "\C-cs" 'org-toodledo-sync)
       )
     )
+#+end_src
 
+**** org-agenda-mode
+#+begin_src emacs-lisp
 (add-hook 'org-agenda-mode-hook
     (lambda ()
       (local-unset-key "\C-c")
       (local-set-key "\C-cd" 'org-toodledo-agenda-mark-task-deleted)
       )
     )
+#+end_src
 
+**** evil-mode
+#+begin_src emacs-lisp
 (evilnc-default-hotkeys)
+#+end_src
+     
+***** evil-leader-mode
+#+begin_src emacs-lisp
+  (global-evil-leader-mode)
+  (evil-leader/set-leader ",")
+  (evil-leader/set-key
+    "f" 'helm-find-files
+    "y" 'helm-show-kill-ring
+    "o" 'helm-occur
+    "v" 'helm-projectile
+    "h" 'helm-man-woman
+    "," 'helm-resume
+    "." 'helm-calcul-expression
+    "d" 'helm-descbinds
+    "m" 'helm-mini
+    "i" 'helm-semantic-or-imenu
+    "p" 'ffap
+    "j" 'ace-jump-mode
+    "b" 'helm-buffers-list
+    "k" 'kill-buffer)
+#+end_src
 
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
-(evil-leader/set-key
-  "f" 'helm-find-files
-  "y" 'helm-show-kill-ring
-  "o" 'helm-occur
-  "v" 'helm-projectile
-  "h" 'helm-man-woman
-  "," 'helm-resume
-  "." 'helm-calcul-expression
-  "d" 'helm-descbinds
-  "m" 'helm-mini
-  "i" 'helm-semantic-or-imenu
-  "p" 'ffap
-  "j" 'ace-jump-mode
-  "b" 'helm-buffers-list
-  "k" 'kill-buffer)
-
+***** evil-normal-state
+#+begin_src emacs-lisp
 (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)
-
+#+end_src
+      
+***** evil-insert-state
+#+begin_src emacs-lisp
 ;;Exit insert mode by pressing j and then j quickly
 (setq key-chord-two-keys-delay 0.4)
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-mode 1)
-
+#+end_src
+      
+**** ruby-mode
+#+begin_src emacs-lisp
 (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
 ;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
-
+#+end_src
+     
+** Global defaults
+*** Sensible defaults
+#+begin_src emacs-lisp
 (global-evil-matchit-mode)
 (global-ace-isearch-mode)
-(global-auto-complete-mode t)
+(global-auto-complete-mode)
 (global-font-lock-mode)                      ; activate font-lock mode (syntax coloring)
 (global-linum-mode)                          ; add line numbers on the left
 (global-visual-line-mode)                    ; wrap long lines
 (global-hl-line-mode)                        ; highlight current line
-;;(global-prettify-symbols-mode t)
+(global-prettify-symbols-mode t)
 (setq-default linum-format "%7d ")
 (setq-default rainbow-mode t)                ; highlight color codes
 (setq-default org-src-fontify-natively t)    ; fontify code in code blocks
@@ -473,8 +678,6 @@
 (toggle-scroll-bar -1)
 (scroll-bar-mode -1)                         ; hide scroll bar
 ;;(size-indication-mode t)
-
-(transient-mark-mode 0)
 
 (setq inhibit-startup-screen t)
 (setq max-specpdl-size 1800)
@@ -492,53 +695,36 @@
 (setq x-select-enable-clipboard t)           ; use the clipboard, so that copy/paste works
 
 (setq echo-keystrokes 0.1)                   ; show keystrokes in progress
+#+end_src
 
-(setq-default mode-line-format
-              '("%e" mode-line-front-space
-                ;; Standard info about the current buffer
-                mode-line-mule-info
-                mode-line-client
-                mode-line-modified
-                mode-line-remote
-                mode-line-frame-identification
-                mode-line-buffer-identification " " mode-line-position
-                ;; Some specific information about the current buffer:
-                gcman105-projectile-mode-line ; Project information
-                (vc-mode gcman105-vc-mode-line) ; VC information
-                (flycheck-mode flycheck-mode-line) ; Flycheck status
-                (multiple-cursors-mode mc/mode-line) ; Number of cursors
-                ;; Misc information, notably battery state and function name
-                " "
-                mode-line-misc-info
-                ;; And the modes, which I don't really care for anyway
-                " " mode-line-modes mode-line-end-spaces))
-
-(require 'diminish)
-(eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
-(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
-(eval-after-load "guide-key" '(diminish 'guide-key-mode))
-(eval-after-load "smartparens" '(diminish 'smartparens-mode))
-(eval-after-load "guide-key" '(diminish 'guide-key-mode))
-(eval-after-load "eldoc" '(diminish 'eldoc-mode))
-(diminish 'visual-line-mode)
-(diminish 'rainbow-mode)
-
-(fset 'yes-or-no-p 'y-or-n-p)
-
+*** Tabs and Indents
+#+begin_src emacs-lisp
 (setq-default tab-width 2)
 (setq-default standard-indent 2)
 (setq-default indent-tabs-mode nil)
+#+end_src
 
+*** Use UTF-8 everywhere
+#+begin_src emacs-lisp
 (set-language-environment 'UTF-8)
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8-unix)
+#+end_src
 
-(setq user-full-name "Gary Cheeseman"
-      user-mail-address "gary@cheeseman.me.uk")
+** Personal information
+#+begin_src emacs-lisp
+  (setq user-full-name "Gary Cheeseman"
+        user-mail-address "gary@cheeseman.me.uk")
+#+end_src
 
+** System specific configuration
+
+*** Apple Mac
+    On OS X Emacs doesn't use the shell PATH if it's not started from the shell. If you're using homebrew modifying the PATH is essential. Also allow hash to be entered
+#+begin_src emacs-lisp
 (if (eq system-type 'darwin)
     (progn
       (push "/usr/local/bin" exec-path)
@@ -561,7 +747,11 @@
   (setq mac-command-modifier 'meta)
   (global-set-key [kp-delete] 'delete-char)  ; sets fn-delete to be right-delete
   )
+#+end_src
 
+
+*** Themes
+#+begin_src emacs-lisp
 ;; setup if we are using a graphic display ----------------------------------
 (if (display-graphic-p)
   (setq xterm-mouse-mode nil)
@@ -587,15 +777,29 @@
   )
 (when (eq window-system nil)
   (load-theme 'ample-zen t)
+;;  (load-theme 'solarized-light t)
   (global-hl-line-mode)                      ; highlight current line
   (blink-cursor-mode)
   (setq x-stretch-cursor t)
+;;  (load-theme 'subatomic256 t)
   )
+#+end_src
 
+** Load the emacs-customizations.el file
+#+begin_src emacs-lisp
 (setq custom-file (expand-file-name "emacs-customizations.el" gcman105-emacs-config-dir))
 (load custom-file)
+#+end_src
 
+** Load the custom system file
+#+begin_src emacs-lisp
 (load custom-system-file)
+#+end_src
+
+* My old configuration
+  *I will move stuff from here to the correct place above as needed*
+
+#+begin_src emacs-lisp
 
 ;; Flymake
 ;; (require 'flymake)
@@ -614,3 +818,4 @@
 
 ;; Any lines below are for testing
 ;;(menu-bar-mode -1)
+#+end_src
