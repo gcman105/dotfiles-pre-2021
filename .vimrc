@@ -16,14 +16,75 @@ set cpoptions=ces$
 
 "Forget compatibility with Vi.
 set nocompatible
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+"Plugin 'vim-scripts/L9'
+Plugin 'clones/vim-l9'
+Plugin 'Shougo/neomru.vim'
+Plugin 'mattn/gist-vim'
+Plugin 'chriskempson/base16-vim'
+Plugin 'rizzatti/dash.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'rizzatti/funcoo.vim'
+Plugin 'othree/html5.vim'
+Plugin 'neocomplcache'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'klen/python-mode'
+Plugin 'Rykka/riv.vim'
+Plugin 'syntastic'
+Plugin 'davidoc/taskpaper.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'Shougo/unite.vim'
+Plugin 'tpope/vim-abolish'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tpope/vim-cucumber'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-haml'
+Plugin 'jonathanfilip/vim-lucius'
+Plugin 'groenewege/vim-less'
+Plugin 'tpope/vim-markdown'
+Plugin 'nelstrom/vim-markdown-folding'
+Plugin 'edsono/vim-matchit'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-rake'
+Plugin 'tpope/vim-repeat'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'Shougo/vimfiler.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'mattn/webapi-vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
 "add $ to end of change selection
 set cpoptions+=$
-
-"Pathogen
-filetype off
-call pathogen#incubate()
-call pathogen#helptags()   
 
 if has("autocmd")
   filetype plugin indent on
@@ -74,7 +135,7 @@ set ch=2
 let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]
 set stl+=\ %{fugitive#statusline()}
-set stl+=\ %{SyntasticStatuslineFlag()} 
+set stl+=\ %{SyntasticStatuslineFlag()}
 
 " sudo write this
 cmap W! w !sudo tee % >/dev/null
@@ -119,7 +180,7 @@ syntax enable
 "Set the color scheme.
 set background=dark
 set cul
-if has("gui_running")    
+if has("gui_running")
   let base16colorspace=256
   colorscheme base16-tomorrow
   if has("gui_macvim")
@@ -133,11 +194,11 @@ else
   autocmd InsertLeave * set cul
   autocmd InsertEnter * set nocul
   if exists('$TMUX')
-    colorscheme lucius
+    colorscheme base16-tomorrow
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
   else
-    colorscheme solarized
+    colorscheme lucius
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   endif
@@ -186,7 +247,7 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
-"Better line wrapping 
+"Better line wrapping
 set wrap
 set textwidth=79
 set formatoptions=qrn1
@@ -196,7 +257,7 @@ set smartindent
 set autoindent
 set shiftround
 
-"folding settings {{{2
+"folding settings
 set foldcolumn=3
 "set foldmethod=expr     "fold based on expression
 set foldmethod=indent    "fold based on indent
@@ -204,10 +265,10 @@ set foldnestmax=10      "deepest fold is 10 levels
 set foldlevel=0         "set the fold level
 set foldenable          "fold by default
 
-"Hide mouse when typing {{{2
+"Hide mouse when typing
 set mousehide
 
-"Show command in bottom right portion of the screen {{{2
+"Show command in bottom right portion of the screen
 set showcmd
 
 "Always show the status line
@@ -272,7 +333,7 @@ set dictionary+=$HOME/.vim/dict.txt
 nnoremap <leader>v <C-w>v<C-w>l
 
 "Split windows below the current window.
-set splitbelow              
+set splitbelow
 
 "Map escape key to jj -- much faster
 imap jj <esc>

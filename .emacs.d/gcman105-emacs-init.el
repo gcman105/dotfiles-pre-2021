@@ -1,4 +1,3 @@
-
 (defvar gcman105-emacs-init-file "~/.emacs.d/init.el")
 (defvar gcman105-backups-folder "~/backups/")
 (defvar gcman105-dropbox-folder "~/Dropbox/")
@@ -25,21 +24,22 @@
     ac-helm
     ac-ispell
     ace-isearch
+    ace-jump-buffer
+    ace-jump-helm-line
     ace-jump-mode
     ace-window
     ag
     ample-zen-theme
     auto-complete
-    bm
+    avy
     clojure-mode
     coffee-mode
     color-theme-solarized
+    color-theme
     cursor-chg
     deft
     diminish
-    emmet-mode
     eredis
-    evil
     evil-exchange
     evil-leader
     evil-matchit
@@ -47,54 +47,81 @@
     evil-numbers
     evil-surround
     evil-visualstar
+    evil
     expand-region
     feature-mode
     fill-column-indicator
-    flx
     flx-ido
-    flycheck
+    flx
+    goto-chg
     guide-key
-    haml-mode
     handlebars-mode
-    helm
     helm-ag
     helm-bm
+    bm
+    helm-c-yasnippet
     helm-css-scss
     helm-dash
     helm-descbinds
     helm-dictionary
     helm-emmet
+    emmet-mode
     helm-flycheck
-    helm-helm-commands  ;
+    flycheck
+    helm-helm-commands
     helm-projectile
     helm-rails
     helm-rb
+    helm-ag-r
     helm-swoop
     heroku
     highlight-symbol
     http-post-simple
+    hydra
+    inflections
     js3-mode
     key-chord
     magit
-    markdown-mode
+    git-commit
+    magit-popup
     markdown-mode+
+    markdown-mode
     move-text
     multi-term
     multiple-cursors
-    org
-    org-plus-contrib
     org-octopress
+    ctable
+    org-plus-contrib
+    orglue
+    org-mac-link
+    epic
+    htmlize
+    org
     php-mode
+    popup
+    popwin
     projectile
+    pkg-info
+    epl
     rainbow-mode
-    ruby-mode
     rvm
+    s
     sass-mode
+    haml-mode
     scss-mode
     slim-mode
     smart-mode-line
+    rich-minority
     smartparens
     subatomic256-theme
+    swiper-helm
+    helm
+    helm-core
+    swiper
+    undo-tree
+    with-editor
+    dash
+    async
     xclip
     yaml-mode
     yasnippet
@@ -148,6 +175,9 @@
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
+
+(require 'rvm)
+(rvm-use-default)
 
 (setq projectile-cache-file (concatenate 'string custom-system-path "projectile.cache"))
 (setq projectile-known-projects-file (concatenate 'string custom-system-path "projectile-bookmarks.eld"))
@@ -212,6 +242,11 @@
 ;;(require 'yasnippet)
 ;;(yas-global-mode 1)
 
+(require 'yasnippet)
+(require 'helm-c-yasnippet)
+(setq helm-yas-space-match-any-greedy t) ;[default: nil]
+(setq helm-yas-display-key-on-candidate t)
+
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets"            ;; personal snippets
   ;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
@@ -250,7 +285,7 @@
                               (bm-repository-save)))
 
 (setq deft-extension "md")
-(setq deft-directory (expand-file-name "MarkDown" gcman105-dropbox-folder))
+(setq deft-directory (expand-file-name "markdown" gcman105-dropbox-folder))
 (setq deft-text-mode 'markdown-mode)
 (setq deft-use-filename-as-title 1)
 
@@ -355,8 +390,6 @@
 
 (setq php-file-patterns (quote ("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'" "\\.php\\'")))
 
-(global-set-key (kbd "C-c h") 'helm-projectile)
-(global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "<f9>") 'recentf-open-files)
 (global-set-key (kbd "M-p") 'ace-window)
 (global-set-key [f8] 'deft)
@@ -409,6 +442,11 @@
 (global-set-key [M-up] 'gcman105/scroll-down-in-place)
 (global-set-key [M-down] 'gcman105/scroll-up-in-place)
 
+;; set helm keys
+(global-set-key (kbd "C-c h") 'helm-projectile)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-c y") 'helm-yas-complete)
+
 (add-hook 'org-mode-hook
     (lambda ()
       (local-unset-key "\C-c")
@@ -424,25 +462,29 @@
       )
     )
 
+
+
 (evilnc-default-hotkeys)
 
 (global-evil-leader-mode)
 (evil-leader/set-leader ",")
 (evil-leader/set-key
-  "f" 'helm-find-files
-  "y" 'helm-show-kill-ring
-  "o" 'helm-occur
-  "v" 'helm-projectile
-  "h" 'helm-man-woman
   "," 'helm-resume
   "." 'helm-calcul-expression
-  "d" 'helm-descbinds
-  "m" 'helm-mini
-  "i" 'helm-semantic-or-imenu
-  "p" 'ffap
-  "j" 'ace-jump-mode
   "b" 'helm-buffers-list
-  "k" 'kill-buffer)
+  "d" 'helm-descbinds
+  "f" 'helm-find-files
+  "h" 'helm-man-woman
+  "i" 'helm-semantic-or-imenu
+  "j" 'ace-jump-mode
+  "k" 'kill-buffer
+  "m" 'helm-mini
+  "o" 'helm-occur
+  "p" 'ffap
+  "v" 'helm-projectile
+  "w" 'ace-window
+  "y" 'helm-show-kill-ring
+  )
 
 (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)

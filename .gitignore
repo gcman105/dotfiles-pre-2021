@@ -61,3 +61,6 @@ en.utf-8.add.sql
 .emacs.d/**/ac-comphist.dat
 .emacs.d/**/places
 .emacs.d/**/recentf
+/.vim/bundle.zip
+/.emacs.d/gcman105-emacs-init.pdf
+/.emacs.d/gcman105-emacs-init.tex

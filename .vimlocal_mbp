@@ -1,0 +1,12 @@
+﻿"Set the initial window size
+set lines=74
+set columns=138
+
+"Example for adding abbreviations - triggered by the spacebar.
+iabbrev mysite http://gary.cheeseman.me.uk
+
+"Shortcut for logging into my server
+nmap <leader>server :Nread ftp://gcman105@192.168.1.30/public_html/CIt1/<cr>
+
+let g:github_user = "gcman105"
+let g:github_token = "23431922b6aaf989d264268df0c92f7a" 

@@ -1,5 +1,6 @@
 #+TITLE: gcman105's Emacs configuration
 #+OPTIONS: toc:4 h:4
+#+OPTIONS: ^:{}
 
 * Configuration
 ** About this file
@@ -92,21 +93,22 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     ac-helm
     ac-ispell
     ace-isearch
+    ace-jump-buffer
+    ace-jump-helm-line
     ace-jump-mode
     ace-window
     ag
     ample-zen-theme
     auto-complete
-    bm
+    avy
     clojure-mode
     coffee-mode
     color-theme-solarized
+    color-theme
     cursor-chg
     deft
     diminish
-    emmet-mode
     eredis
-    evil
     evil-exchange
     evil-leader
     evil-matchit
@@ -114,54 +116,81 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     evil-numbers
     evil-surround
     evil-visualstar
+    evil
     expand-region
     feature-mode
     fill-column-indicator
-    flx
     flx-ido
-    flycheck
+    flx
+    goto-chg
     guide-key
-    haml-mode
     handlebars-mode
-    helm
     helm-ag
     helm-bm
+    bm
+    helm-c-yasnippet
     helm-css-scss
     helm-dash
     helm-descbinds
     helm-dictionary
     helm-emmet
+    emmet-mode
     helm-flycheck
-    helm-helm-commands  ;
+    flycheck
+    helm-helm-commands
     helm-projectile
     helm-rails
     helm-rb
+    helm-ag-r
     helm-swoop
     heroku
     highlight-symbol
     http-post-simple
+    hydra
+    inflections
     js3-mode
     key-chord
     magit
-    markdown-mode
+    git-commit
+    magit-popup
     markdown-mode+
+    markdown-mode
     move-text
     multi-term
     multiple-cursors
-    org
-    org-plus-contrib
     org-octopress
+    ctable
+    org-plus-contrib
+    orglue
+    org-mac-link
+    epic
+    htmlize
+    org
     php-mode
+    popup
+    popwin
     projectile
+    pkg-info
+    epl
     rainbow-mode
-    ruby-mode
     rvm
+    s
     sass-mode
+    haml-mode
     scss-mode
     slim-mode
     smart-mode-line
+    rich-minority
     smartparens
     subatomic256-theme
+    swiper-helm
+    helm
+    helm-core
+    swiper
+    undo-tree
+    with-editor
+    dash
+    async
     xclip
     yaml-mode
     yasnippet
@@ -230,6 +259,12 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
+#+end_src
+
+*** rvm
+#+begin_src emacs-lisp
+(require 'rvm)
+(rvm-use-default)
 #+end_src
 
 *** projectile
@@ -334,6 +369,11 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;;(require 'yasnippet)
 ;;(yas-global-mode 1)
 
+(require 'yasnippet)
+(require 'helm-c-yasnippet)
+(setq helm-yas-space-match-any-greedy t) ;[default: nil]
+(setq helm-yas-display-key-on-candidate t)
+
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets"            ;; personal snippets
   ;;        "/path/to/some/collection/"      ;; just some foo-mode snippets
@@ -387,7 +427,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     Deft config for nvALT files with md extension 
 #+begin_src emacs-lisp
 (setq deft-extension "md")
-(setq deft-directory (expand-file-name "MarkDown" gcman105-dropbox-folder))
+(setq deft-directory (expand-file-name "markdown" gcman105-dropbox-folder))
 (setq deft-text-mode 'markdown-mode)
 (setq deft-use-filename-as-title 1)
 #+end_src
@@ -492,7 +532,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq org-octopress-directory-org-posts "~/Dropbox/gcman105-blog/source/blog")
 (setq org-octopress-setup-file          "~/Dropbox/gcman105-blog/org-sty/setupfile.org")
 #+end_src
-
 ** Hooks
 
 *** deft mode hook
@@ -549,8 +588,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ** Key bindings
 *** global key bindings
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c h") 'helm-projectile)
-(global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "<f9>") 'recentf-open-files)
 (global-set-key (kbd "M-p") 'ace-window)
 (global-set-key [f8] 'deft)
@@ -602,6 +639,12 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;; set custom function keys
 (global-set-key [M-up] 'gcman105/scroll-down-in-place)
 (global-set-key [M-down] 'gcman105/scroll-up-in-place)
+
+;; set helm keys
+(global-set-key (kbd "C-c h") 'helm-projectile)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-c y") 'helm-yas-complete)
+
 #+end_src
     
 *** set mode specific keys
@@ -628,7 +671,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 **** key-chord
-##+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
 #+end_src
 

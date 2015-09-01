@@ -1,15 +1,13 @@
-;;; package --- s430.radi8.com.el local settings
+;;; package --- mms.local local settings
 
 ;;; Commentary:
 
 ;;; Code:
 
-(setq multi-term-program "/bin/bash")
-
 (setq default-frame-alist
-      '((top . 1) (left . 32)
-        (width . 191) (height . 51)
-        (font . "Source Code Pro 10")))
+      '((top . 0) (left . 0)
+        (width . 176) (height . 57)
+        (font . "Input-12")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode
@@ -17,7 +15,7 @@
 (require 'ido)
 (ido-mode 'both) ;; for buffers and files
 (setq
- ido-save-directory-list-file "~/.emacs.d/s430.radi8/ido.last"
+ ido-save-directory-list-file "~/.emacs.d/Garys-MBP.home/ido.last"
   ido-ignore-buffers ;; ignore these guys
   '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
      "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
@@ -43,6 +41,8 @@
       (defvar resize-minibuffer-window-max-height 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq markdown-command "~/Markdown.pl")
+
 ;; HAD TO MOVE THE NEXT 2 LINES OUT FROM THE init.el FILE
 (require 'yasnippet)
 (yas-global-mode 1)
@@ -58,4 +58,4 @@
             (yas-minor-mode -1)
             ))
 
-;;; s430.radi8.com.el ends here
+;;; mms.local ends here
