@@ -111,8 +111,8 @@
     scss-mode
     slim-mode
     smart-mode-line
-    rich-minority
     smartparens
+    rich-minority
     subatomic256-theme
     swiper-helm
     helm
@@ -123,6 +123,7 @@
     dash
     async
     xclip
+    web-mode
     yaml-mode
     yasnippet
 )
@@ -170,7 +171,7 @@
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
-(iswitchb-mode t)
+;;(iswitchb-mode t)
 ;;(setq-default ido-ignore-buffers '("\\` "))
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
@@ -205,10 +206,6 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 
-(require 'smartparens-config)
-(smartparens-global-mode t)
-(show-smartparens-global-mode t)
-
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-h"))
 (setq guide-key/recursive-key-sequence-flag t)
@@ -238,6 +235,12 @@
 (setq evil-exchange-key (kbd "zx"))
 (evil-exchange-install)
 
+(require 'hydra)
+(defhydra hydra-zoom (global-map "C-<f2>")
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
+
 ;; HAD TO MOVE THE NEXT 2 LINES INTO THE SYSTEM FILE FOR EACH SYSTEM
 ;;(require 'yasnippet)
 ;;(yas-global-mode 1)
@@ -263,6 +266,8 @@
 (setq-default save-place t)
 (setq save-place-file (concatenate 'string custom-system-path "places"))
 
+(require 'smartparens-config)
+
 (setq bm-repository-file (concatenate 'string custom-system-path ".bm-repository"))
 (setq-default bm-restore-repository-on-load t)
 (require 'bm)
@@ -270,13 +275,13 @@
 
 ;; Loading the repository from file when on start up.
 (add-hook' after-init-hook 'bm-repository-load)
- 
+
 ;; Restoring bookmarks when on file find.
 (add-hook 'find-file-hooks 'bm-buffer-restore)
- 
+
 ;; Saving bookmark data on killing a buffer
 (add-hook 'kill-buffer-hook 'bm-buffer-save)
- 
+
 ;; Saving the repository to file when on exit.
 ;; kill-buffer-hook is not called when emacs is killed, so we
 ;; must save all bookmarks first.
@@ -306,6 +311,20 @@
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
+
+(setq web-mode-enable-engine-detection t)
+
 ;; Set to the location of your Org files on your local system
 (setq org-directory (expand-file-name "org" gcman105-dropbox-folder))
 
@@ -322,7 +341,7 @@
 ;;(setq remember-handler-functions '(org-remember-handler))
 ;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
 
-'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1) 
+'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1)
            ((expand-file-name "someday.org" org-directory) :level . 2))))
 
 (setq org-capture-templates
@@ -337,11 +356,11 @@
 ;;  ("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
 ;;  ("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
 ;;  ("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
-;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
+;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n"
 ;;          "~/Dropbox/org/journal.org")
-;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
+;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n"
 ;;          "~/Dropbox/org/journal.org")
-;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
+;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n"
 ;;          "~/Dropbox/org/journal.org")
 ;;  ("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
 ;;  ("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")

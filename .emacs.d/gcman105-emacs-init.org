@@ -1,4 +1,4 @@
-#+TITLE: gcman105's Emacs configuration
++TITLE: gcman105's Emacs configuration
 #+OPTIONS: toc:4 h:4
 #+OPTIONS: ^:{}
 
@@ -39,13 +39,13 @@ Inspired by the [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org][Sa
 ;;; init.el ends here
 #+end_src
 
-If you're new to Emacs Lisp, you probably don't want to copy and paste large chunks of this code. Instead, copy small parts of it (always making sure to copy a complete set of parentheses) into your =*scratch*= buffer or some other buffer in =emacs-lisp-mode=. Use =M-x eval-buffer= to evaluate the code and see if you like the way that Emacs behaves. See [[https://www.gnu.org/software/emacs/manual/html_mono/eintr.html][An Introduction to Programming in Emacs Lisp]] for more details on Emacs Lisp. You can also find the manual by using =C-h i= (=info=) and choosing "Emacs Lisp Intro". 
+If you're new to Emacs Lisp, you probably don't want to copy and paste large chunks of this code. Instead, copy small parts of it (always making sure to copy a complete set of parentheses) into your =*scratch*= buffer or some other buffer in =emacs-lisp-mode=. Use =M-x eval-buffer= to evaluate the code and see if you like the way that Emacs behaves. See [[https://www.gnu.org/software/emacs/manual/html_mono/eintr.html][An Introduction to Programming in Emacs Lisp]] for more details on Emacs Lisp. You can also find the manual by using =C-h i= (=info=) and choosing "Emacs Lisp Intro".
 
 I've installed a lot of packages. See the [[*Add%20package%20sources][package sources]] section to add the repositories to your configuration. When you see =use-package= and a package name you might like, you can use =M-x package-install= to install the package of that name. Note that use-package is itself provided by a package, so you'll probably want to install that and =bind-ke=.
 
 If you're viewing the Org file, you can open source code blocks (those are the ones in begin_src) in a separate buffer by moving your point inside them and typing C-c ' (=org-edit-special=). This opens another buffer in =emacs-lisp-mode=, so you can use =M-x eval-buffer= to load the changes. If you want to explore how functions work, use =M-x edebug-defun= to set up debugging for that function, and then call it. You can learn more about edebug in the [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html][Emacs Lisp]] manual.
 
-I like using =(setq ...)= more than Customize because I can neatly organize my configuration that way. 
+I like using =(setq ...)= more than Customize because I can neatly organize my configuration that way.
 
 ** Setup directories
 
@@ -74,7 +74,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ** Package management
 
 *** Setup package management
-    
+
 #+begin_src emacs-lisp
 (require 'cl)
 (require 'package)
@@ -180,8 +180,8 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     scss-mode
     slim-mode
     smart-mode-line
-    rich-minority
     smartparens
+    rich-minority
     subatomic256-theme
     swiper-helm
     helm
@@ -192,6 +192,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
     dash
     async
     xclip
+    web-mode
     yaml-mode
     yasnippet
 )
@@ -199,7 +200,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 *** Install packages if they are not already installed
-    
+
 #+begin_src emacs-lisp
 (defun has-package-not-installed ()
   (loop for p in packages-list
@@ -217,7 +218,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 ** Custom Functions
-   
+
 *** my custom functions
 #+begin_src emacs-lisp
 (defun gcman105/scroll-down-in-place (n)
@@ -254,7 +255,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
-(iswitchb-mode t)
+;;(iswitchb-mode t)
 ;;(setq-default ido-ignore-buffers '("\\` "))
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
@@ -305,14 +306,6 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (setq recentf-max-menu-items 25)
 #+end_src
 
-*** smartparens
-    Highlights matching pairs
-#+begin_src emacs-lisp
-(require 'smartparens-config)
-(smartparens-global-mode t)
-(show-smartparens-global-mode t)
-#+end_src
-
 *** guide-key
 #+begin_src emacs-lisp
 (require 'guide-key)
@@ -350,7 +343,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (evil-mode t)
 #+end_src
-    
+
 *** evil-surround
 #+begin_src emacs-lisp
 (require 'evil-surround)
@@ -361,6 +354,15 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (require 'evil-exchange)
 (setq evil-exchange-key (kbd "zx"))
 (evil-exchange-install)
+#+end_src
+
+*** hydra
+#+begin_src emacs-lisp
+(require 'hydra)
+(defhydra hydra-zoom (global-map "C-<f2>")
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
 #+end_src
 
 *** yasnippet
@@ -381,7 +383,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
         "~/.emacs.d/yasnippet-snippets"    ;; the default collection
         ))
 #+end_src
-    
+
 *** rcodetools and xmpfilter
 #+begin_src emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/gcman105")
@@ -389,13 +391,18 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (require 'ruby-mode)
 (require 'ruby-mode-expansions)
 #+end_src
-    
+
 *** saveplace
     Save place in file when I exit
 #+begin_src emacs-lisp
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concatenate 'string custom-system-path "places"))
+#+end_src
+
+*** smartparens
+#+begin_src emacs-lisp
+(require 'smartparens-config)
 #+end_src
 
 *** bm
@@ -408,13 +415,13 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 
 ;; Loading the repository from file when on start up.
 (add-hook' after-init-hook 'bm-repository-load)
- 
+
 ;; Restoring bookmarks when on file find.
 (add-hook 'find-file-hooks 'bm-buffer-restore)
- 
+
 ;; Saving bookmark data on killing a buffer
 (add-hook 'kill-buffer-hook 'bm-buffer-save)
- 
+
 ;; Saving the repository to file when on exit.
 ;; kill-buffer-hook is not called when emacs is killed, so we
 ;; must save all bookmarks first.
@@ -424,7 +431,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+end_src
 
 *** deft
-    Deft config for nvALT files with md extension 
+    Deft config for nvALT files with md extension
 #+begin_src emacs-lisp
 (setq deft-extension "md")
 (setq deft-directory (expand-file-name "markdown" gcman105-dropbox-folder))
@@ -458,7 +465,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (require 'rainbow-mode)
 #+end_src
-    
+
 *** scss-mode
 #+begin_src emacs-lisp
 (setq scss-compile-at-save nil)
@@ -468,6 +475,23 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+#+end_src
+
+*** web-mode
+#+begin_src emacs-lisp
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
+
+(setq web-mode-enable-engine-detection t)
 #+end_src
 
 ** Org Package
@@ -490,7 +514,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;;(setq remember-handler-functions '(org-remember-handler))
 ;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
 
-'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1) 
+'(org-refile-targets (quote (((expand-file-name "gtd.org" org-directory) :maxlevel . 1)
            ((expand-file-name "someday.org" org-directory) :level . 2))))
 
 (setq org-capture-templates
@@ -505,11 +529,11 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 ;;  ("Journal"   ?j "** %^{Head Line} %U %^g\n%i%?"  "~/Dropbox/org/journal.org")
 ;;  ("Clipboard" ?c "** %^{Head Line} %U %^g\n%c\n%?"  "~/Dropbox/org/journal.org")
 ;;  ("Receipt"   ?r "** %^{BriefDesc} %U %^g\n%?"   "~/Dropbox/org/finances.org")
-;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n" 
+;;  ("Book" ?b "** %^{Book Title} %t :BOOK: \n%[~/Dropbox/org/.book_template.txt]\n"
 ;;          "~/Dropbox/org/journal.org")
-;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n" 
+;;  ("Film" ?f "** %^{Film Title} %t :FILM: \n%[~/Dropbox/org/.film_template.txt]\n"
 ;;          "~/Dropbox/org/journal.org")
-;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n" 
+;;  ("Daily Review" ?a "** %t :COACH: \n%[~/Dropbox/org/.daily_review.txt]\n"
 ;;          "~/Dropbox/org/journal.org")
 ;;  ("Someday"   ?s "** %^{Someday Heading} %U\n%?\n"  "~/Dropbox/org/someday.org")
 ;;  ("Vocab"   ?v "** %^{Word?}\n%?\n"  "~/Dropbox/org/vocab.org")
@@ -522,7 +546,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
                                "~/Dropbox/org/emails.org"
                                "~/Dropbox/org/finances.org")))
 #+end_src
-    
+
 *** org-mode with octopress
 #+begin_src emacs-lisp
 (require 'org-octopress)
@@ -540,7 +564,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (defun gcman105/deft-mode-hook ()
   "deft-mode-hook"
   (turn-off-evil-mode))
-(add-hook 'deft-mode-hook '(lambda() (gcman105/deft-mode-hook))) 
+(add-hook 'deft-mode-hook '(lambda() (gcman105/deft-mode-hook)))
 #+end_src
 
 *** markdown-mode hook
@@ -646,7 +670,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (global-set-key (kbd "C-c y") 'helm-yas-complete)
 
 #+end_src
-    
+
 *** set mode specific keys
 
 **** org-mode
@@ -679,7 +703,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 #+begin_src emacs-lisp
 (evilnc-default-hotkeys)
 #+end_src
-     
+
 ***** evil-leader-mode
 #+begin_src emacs-lisp
   (global-evil-leader-mode)
@@ -708,7 +732,7 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt)
 #+end_src
-      
+
 ***** evil-insert-state
 #+begin_src emacs-lisp
 ;;Exit insert mode by pressing j and then j quickly
@@ -716,13 +740,13 @@ I like using =(setq ...)= more than Customize because I can neatly organize my c
 (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 (key-chord-mode 1)
 #+end_src
-      
+
 **** ruby-mode
 #+begin_src emacs-lisp
 (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
 ;;(add-hook 'ruby-mode-hook (lambda () (local-set-key "C-c C-c" 'xmp)))
 #+end_src
-     
+
 ** Global defaults
 *** Sensible defaults
 #+begin_src emacs-lisp
@@ -810,7 +834,7 @@ Hide minor modes I care less about:
 Lazy people like me never want to type "yes" when "y" will suffice.
 
 #+begin_src emacs-lisp
-(fset 'yes-or-no-p 'y-or-n-p)   
+(fset 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
 *** Tabs and Indents

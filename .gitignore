@@ -13,12 +13,13 @@
 **/projectile.cache
 **/projectile-bookmarks.eld
 **/pg_hba.conf
-**/#*#
+**/#*.*#
 **/.yas-compiled-snippets.el
 **/ac-comphist.dat
 
 # top level ------------------------------
 
+**/.config/**/
 tmp/*
 alfred/
 dash/
@@ -37,6 +38,7 @@ en.utf-8.add.sql
 .vim/dict.txt
 .vim/bundle/
 .vim/colors/
+**/.vim/plugged/
 
 # .emacs.d directory ---------------------
 
@@ -61,6 +63,9 @@ en.utf-8.add.sql
 .emacs.d/**/ac-comphist.dat
 .emacs.d/**/places
 .emacs.d/**/recentf
+
+# individual files -----------------------
+
 /.vim/bundle.zip
 /.emacs.d/gcman105-emacs-init.pdf
 /.emacs.d/gcman105-emacs-init.tex
