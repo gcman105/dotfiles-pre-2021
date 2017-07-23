@@ -1,5 +1,4 @@
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
+" Specify a directory for plugins For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 
 "-----------------------------------------------------------------------------
@@ -8,12 +7,16 @@
 " Make sure you use single quotes
 
 call plug#begin('~/.vim/plugged')
+Plug 'Shougo/denite.nvim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete-zsh'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+"Plug 'Shougo/neosnippet'
+"Plug 'Shougo/neosnippet-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'Shougo/neoinclude.vim'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -25,6 +28,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'hkupty/iron.nvim'
+Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
+Plug 'mhartington/nvim-typescript'
+Plug 'easymotion/vim-easymotion'
+Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
 call plug#end()
 " }}} end of vim-plug plugins ------------------------------------------------
@@ -37,6 +45,7 @@ let mapleader = ","
 
 set incsearch           " Set incremental searching"
 set hlsearch            " Highlight searching
+set wildmenu            " Command line completion
 
 set cmdheight=2
 set autoindent
@@ -59,6 +68,8 @@ set relativenumber      " Make line numbers relative
 set laststatus=2        " Always show the status line
 set clipboard=unnamed
 set showmatch           " Show matching brackets.
+set cpoptions+=$        " Show $ at the end of a change command
+set virtualedit=all     " Allow cursor into places it cant normally go
 
 set splitbelow          " More natural split below
 set splitright          " More natural split right
@@ -119,12 +130,19 @@ noremap <silent> <C-s> :w<CR>
 inoremap <silent> <C-s> <Esc>:w<CR>a
 vnoremap <silent> <C-s> <C-c>:update<CR>
 
-" Neosnippet settings
-" Plugin key-mappings.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" UltiSnips setup and key bindings {{{2 ------------------
+let g:UltiSnipsExpandTrigger="<C-k>"
+let g:UltiSnipsJumpForwardTrigger="<C-b>"
+let g:UltiSnipsJumpBackwardTrigger="<C-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+" }}} end of UltiSnips setup and key bindings ------------
+
+" Easymotion setup and key bindings {{{2 -----------------
+map <leader>    <Plug>(easymotion-prefix)
+" }}} end of Easymotion setup and key bindings -----------
+
 " }}} end of Keyboard mapping stuff ------------------------------------------
 
 " Airline stuff {{{2 -------------------------------------
@@ -134,10 +152,53 @@ let g:airline_solarized_bg='dark'
 
 " Disable Python 2 support:
 let g:loaded_python_provider = 1
-let g:python3_host_prog = '/Users/gcman105_mbp/.virtualenvs/py3neovim/bin/python'
+let g:python3_host_prog = '/home/gcman105/.virtualenvs/py3neovim/bin/python3'
 
 " Enable deoplete
 let g:deoplete#enable_at_startup = 1
 
+" Enable vimfiler as default explorer
+:let g:vimfiler_as_default_explorer = 1
+
+" FZF stuff {{{2 -----------------------------------------
+" Open files in horizontal split
+nnoremap <silent> <Leader>s :call fzf#run({
+\   'down': '40%',
+\   'sink': 'botright split' })<CR>
+
+" Open files in vertical horizontal split
+nnoremap <silent> <Leader>v :call fzf#run({
+\   'right': winwidth('.') / 2,
+\   'sink':  'vertical botright split' })<CR>
+
+nnoremap <silent> <Leader>C :call fzf#run({
+\   'source':
+\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+\   'sink':    'colo',
+\   'options': '+m',
+\   'left':    30
+\ })<CR>
+
+" Open buffer
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\ })<CR>
+
 nnoremap <C-p> :FZF<CR>
+" }}} end of FZF stuff -----------------------------------
 
