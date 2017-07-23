@@ -156,9 +156,6 @@ let g:loaded_python_provider = 1
 " Enable deoplete
 let g:deoplete#enable_at_startup = 1
 
-" Enable vimfiler as default explorer
-:let g:vimfiler_as_default_explorer = 1
-
 " FZF stuff {{{2 -----------------------------------------
 " Open files in horizontal split
 nnoremap <silent> <Leader>s :call fzf#run({
