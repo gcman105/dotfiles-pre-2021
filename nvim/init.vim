@@ -152,7 +152,6 @@ let g:airline_solarized_bg='dark'
 
 " Disable Python 2 support:
 let g:loaded_python_provider = 1
-let g:python3_host_prog = '/home/gcman105/.virtualenvs/py3neovim/bin/python3'
 
 " Enable deoplete
 let g:deoplete#enable_at_startup = 1
