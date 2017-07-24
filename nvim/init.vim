@@ -34,6 +34,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'hkupty/iron.nvim'
 Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
 Plug 'mhartington/nvim-typescript'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
