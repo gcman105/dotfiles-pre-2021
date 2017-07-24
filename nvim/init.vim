@@ -13,10 +13,13 @@ Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete-zsh'
 "Plug 'Shougo/neosnippet'
 "Plug 'Shougo/neosnippet-snippets'
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'Shougo/neoinclude.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'scrooloose/nerdcommenter'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -43,6 +46,15 @@ call plug#end()
 "Want a different map leader than \
 let mapleader = ","
 
+"Enable filetypes
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
+
+"Write the old file out when switching between files.
+set autowrite
+
 set incsearch           " Set incremental searching"
 set hlsearch            " Highlight searching
 set wildmenu            " Command line completion
@@ -53,11 +65,27 @@ set autoindent
 set spelllang=en_gb     " Set region to British English
 
 set scrolloff=3         " Keep the cursor 3 lines off of bottom when scrolling
-set timeoutlen=1200     " A little bit more time for macros
+set timeoutlen=800     " A little bit more time for macros
 set ttimeoutlen=50      " Make Esc work faster
 
 " When completing by tag, show the whole tag, not just the function name
 set showfulltag
+
+"Syntax coloring lines that are too long just slows down the world
+"set synmaxcol=2048
+set synmaxcol=512
+
+" Don't update the display while executing macros
+set lazyredraw
+
+"Switch between buffers without saving
+set hidden
+
+"command tabo, which makes the current tab the only tab
+autocmd BufWinEnter,BufNewFile * silent tabo
+
+"Allow backspacing over indent, eol, and the start of an insert
+set backspace=2
 
 " I'm happy to type the case of things.  I tried the ignorecase, smartcase
 " thing but it just wasn't working out for me
@@ -110,6 +138,11 @@ cmap jj <esc>
 "Saves time; maps the spacebar to colon
 nmap <space> :
 
+" Gist keyboard mappings
+noremap <leader>gl    :Gist -l<CR>
+noremap <leader>gp    :Gist<CR>
+vnoremap <leader>gv   :'<,'>Gist<CR>
+
 " Press F2 to toggle showing white space on/off
 nmap <F2> :set list!<CR>
 
@@ -130,11 +163,34 @@ noremap <silent> <C-s> :w<CR>
 inoremap <silent> <C-s> <Esc>:w<CR>a
 vnoremap <silent> <C-s> <C-c>:update<CR>
 
-" UltiSnips setup and key bindings {{{2 ------------------
-let g:UltiSnipsExpandTrigger="<C-k>"
-let g:UltiSnipsJumpForwardTrigger="<C-b>"
-let g:UltiSnipsJumpBackwardTrigger="<C-z>"
+"Bubble single lines (kicks butt)
+"http://vimcasts.org/episodes/bubbling-text/
+nmap <C-Up> ddkP
+nmap <C-Down> ddp
 
+"Bubble multiple lines
+vmap <C-Up> xkP`[V`]
+vmap <C-Down> xp`[V`]
+
+"Better line wrapping
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+
+"Indent stuff
+set smartindent
+set autoindent
+set shiftround
+
+" sudo write this
+cmap W! w !sudo tee % >/dev/null
+
+" UltiSnips setup and key bindings {{{2 ------------------
+"let g:UltiSnipsExpandTrigger             =  "<tab>"
+"let g:UltiSnipsListSnippets              =  "<c-tab>"
+"let g:UltiSnipsJumpForwardTrigger        =  "<tab>"
+"let g:UltiSnipsJumpBackwardTrigger       =  "<c-tab>"
+inoremap <c-x><c-k> <c-x><c-k>
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 " }}} end of UltiSnips setup and key bindings ------------
@@ -142,6 +198,17 @@ let g:UltiSnipsEditSplit="vertical"
 " Easymotion setup and key bindings {{{2 -----------------
 map <leader>    <Plug>(easymotion-prefix)
 " }}} end of Easymotion setup and key bindings -----------
+
+" NERDTree setup and key bindings {{{2 -------------------
+nmap <leader>nt :NERDTreeToggle<cr>
+
+"Show hidden files in NerdTree
+let NERDTreeShowHidden=1
+
+" Hide certain files
+let NERDTreeIgnore = ['\.pyc$', '__pycache__', '.git', '.cache', '.idea', '.vscode', '.DS_Store', '.projectile', '.noseids']
+
+" }}} end of NERDTree setup and key bindings -------------
 
 " }}} end of Keyboard mapping stuff ------------------------------------------
 
