@@ -7,12 +7,10 @@
 " Make sure you use single quotes
 
 call plug#begin('~/.vim/plugged')
-Plug 'Shougo/denite.nvim'
+Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete-zsh'
-"Plug 'Shougo/neosnippet'
-"Plug 'Shougo/neosnippet-snippets'
 Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
 Plug 'SirVer/ultisnips'
@@ -26,7 +24,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-commentary'
+Plug 'rizzatti/dash.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -38,6 +36,19 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
+
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release
+    else
+      !cargo build --release --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+
 call plug#end()
 " }}} end of vim-plug plugins ------------------------------------------------
 
@@ -197,11 +208,11 @@ let g:UltiSnipsEditSplit="vertical"
 " }}} end of UltiSnips setup and key bindings ------------
 
 " Easymotion setup and key bindings {{{2 -----------------
-map <leader>    <Plug>(easymotion-prefix)
+map <leader><leader>    <Plug>(easymotion-prefix)
 " }}} end of Easymotion setup and key bindings -----------
 
 " NERDTree setup and key bindings {{{2 -------------------
-nmap <leader>nt :NERDTreeToggle<cr>
+nnoremap <leader>n         :NERDTreeToggle<cr>
 
 "Show hidden files in NerdTree
 let NERDTreeShowHidden=1
@@ -225,6 +236,7 @@ let g:loaded_python_provider = 1
 let g:deoplete#enable_at_startup = 1
 
 " FZF stuff {{{2 -----------------------------------------
+set rtp+=/usr/local/opt/fzf
 " Open files in horizontal split
 nnoremap <silent> <Leader>s :call fzf#run({
 \   'down': '40%',
@@ -263,6 +275,7 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
 \   'down':    len(<sid>buflist()) + 2
 \ })<CR>
 
-nnoremap <C-p> :FZF<CR>
+nnoremap <C-p> :GFiles<CR>
+
 " }}} end of FZF stuff -----------------------------------
 
