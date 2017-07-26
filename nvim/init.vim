@@ -25,6 +25,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'rizzatti/dash.vim'
+Plug 'kshenoy/vim-signature'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -120,6 +121,7 @@ set tabstop=2           " Render TABs using this many spaces.
 set shiftwidth=2        " Indentation amount for < and > commands.
 
 set foldlevel=1         " Set the opening fold level
+set foldcolumn=3        " Set the fold gutter width
 set foldmethod=marker
 set foldopen+=jump
 
@@ -138,7 +140,11 @@ vnoremap <c-e> ,
 
 " Shortcut for editing  vimrc file in a new tab
 nmap <leader>ev :edit $MYVIMRC<CR>
+nmap <leader>et :edit ~/.tmux.conf<CR>
+nmap <leader>ez :edit ~/.zshrc<CR>
 nmap <leader>sv :so $MYVIMRC<CR>
+nmap <leader>st :so ~/.tmux.conf<CR>
+nmap <leader>sz :so ~/.zshrc<CR>
 
 " Toggle spell checking on and off
 nmap <silent> <F3> :set spell!<CR>
@@ -194,10 +200,13 @@ set smartindent
 set autoindent
 set shiftround
 
+" A way to iter through buffers
+nnoremap <C-b> :buffers<CR>:buffer<Space>
+
 " sudo write this
 cmap W! w !sudo tee % >/dev/null
 
-" UltiSnips setup and key bindings {{{2 ------------------
+" ultisnips setup and key bindings {{{2 ------------------
 "let g:UltiSnipsExpandTrigger             =  "<tab>"
 "let g:UltiSnipsListSnippets              =  "<c-tab>"
 "let g:UltiSnipsJumpForwardTrigger        =  "<tab>"
@@ -218,7 +227,7 @@ nnoremap <leader>n         :NERDTreeToggle<cr>
 let NERDTreeShowHidden=1
 
 " Hide certain files
-let NERDTreeIgnore = ['\.pyc$', '__pycache__', '.git', '.cache', '.idea', '.vscode', '.DS_Store', '.projectile', '.noseids']
+let NERDTreeIgnore = ['\.pyc$', '__pycache__', '.git', '.cache', '.idea', '.vscode', '.DS_Store', '.projectile', '.noseids', 'htmlcov', 'node_modules']
 
 " }}} end of NERDTree setup and key bindings -------------
 
