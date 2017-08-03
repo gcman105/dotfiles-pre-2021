@@ -171,7 +171,7 @@ nmap <F2> :set list!<CR>
 imap <c-l> <space>=><space>
 
 " Emmet expandtab
-imap ee <C-y>,
+"imap ee <C-y>,
 
 " Align selected lines
 vnoremap <leader>ib :!align<cr>
