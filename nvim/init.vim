@@ -24,6 +24,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
+Plug 'mhartington/nvim-typescript'
+Plug 'leafgarland/typescript-vim'
 Plug 'rizzatti/dash.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'vim-airline/vim-airline'
@@ -171,7 +173,7 @@ nmap <F2> :set list!<CR>
 imap <c-l> <space>=><space>
 
 " Emmet expandtab
-"imap ee <C-y>,
+imap <C-e><C-e> <C-y>,
 
 " Align selected lines
 vnoremap <leader>ib :!align<cr>
@@ -205,6 +207,13 @@ nnoremap <C-b> :buffers<CR>:buffer<Space>
 
 " sudo write this
 cmap W! w !sudo tee % >/dev/null
+
+" typescript setup and key bindings {{{2 ------------------
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_debug = 1
+let g:deoplete#enable_profile = 1
+call deoplete#enable_logging('DEBUG', '/Users/gcman105_mbp/.deoplete/deoplete.log')
+" }}} end of typescript setup and key bindings ------------
 
 " ultisnips setup and key bindings {{{2 ------------------
 "let g:UltiSnipsExpandTrigger             =  "<tab>"
