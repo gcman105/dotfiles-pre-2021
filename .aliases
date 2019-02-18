@@ -16,6 +16,7 @@ alias pamm="php artisan make:model "
 alias pamc="php artisan make:controller "
 alias pamg="php artisan make:migration "
 alias pamr="php artisan make:resource "
+alias pamf="php artisan make:factory "
 alias pams="php artisan make:seeder "
 alias pamt="php artisan make:test "
 
