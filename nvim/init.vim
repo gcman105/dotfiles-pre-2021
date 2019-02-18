@@ -11,6 +11,7 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete-zsh'
+Plug 'mhinz/vim-startify'
 Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
 Plug 'SirVer/ultisnips'
@@ -74,6 +75,7 @@ set incsearch           " Set incremental searching"
 set hlsearch            " Highlight searching
 set wildmenu            " Command line completion
 
+set mouse=a
 set cmdheight=2
 set autoindent
 
@@ -126,6 +128,8 @@ set foldlevel=1         " Set the opening fold level
 set foldcolumn=3        " Set the fold gutter width
 set foldmethod=marker
 set foldopen+=jump
+
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175
 
 set termguicolors
 set background=dark     " or light
@@ -212,7 +216,7 @@ cmap W! w !sudo tee % >/dev/null
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_debug = 1
 let g:deoplete#enable_profile = 1
-call deoplete#enable_logging('DEBUG', '/Users/gcman105_mbp/.deoplete/deoplete.log')
+call deoplete#enable_logging('DEBUG', '/Users/gcman105/dotfiles/nvim/.deoplete/deoplete.log')
 " }}} end of typescript setup and key bindings ------------
 
 " ultisnips setup and key bindings {{{2 ------------------
