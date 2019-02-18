@@ -11,6 +11,7 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete-zsh'
+Plug 'kassio/neoterm'
 Plug 'mhinz/vim-startify'
 Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
