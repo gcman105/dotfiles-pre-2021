@@ -16,7 +16,6 @@
 **/#*.*#
 **/.yas-compiled-snippets.el
 **/ac-comphist.dat
-
 # top level ------------------------------
 
 **/.config/**/
@@ -30,6 +29,7 @@ dash/
 en.utf-8.add
 en.utf-8.add.sql
 .vim-fuf-data/
+nvim/.deoplete/deoplete.log
 
 # .vim directory -------------------------
 
