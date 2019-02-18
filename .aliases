@@ -1,2 +1,28 @@
+# git aliases ----------------------------------------
 alias gs="git status"
+alias ga="git add "
+alias gaa="git add ."
+alias gl="git log --oneline --graph --histogram"
+alias gc="git commit -m "
+alias gp="git push "
 
+# artisan aliases ------------------------------------
+alias pa="php artisan "
+alias pat="php artisan tinker"
+alias par="php artisan route:list"
+alias pag="php artisan migrate"
+alias pags="php artisan migrate:status"
+alias pamm="php artisan make:model "
+alias pamc="php artisan make:controller "
+alias pamg="php artisan make:migration "
+alias pamr="php artisan make:resource "
+alias pams="php artisan make:seeder "
+alias pamt="php artisan make:test "
+
+# composer aliases -----------------------------------
+alias cu="composer update"
+alias ci="composer install"
+alias cda="composer dump-autoload"
+
+# phpunit aliases ------------------------------------
+alias ut="phpunit "

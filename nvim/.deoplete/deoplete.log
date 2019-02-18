@@ -8330,3 +8330,7 @@
 2019-02-18 18:05:02,814 DEBUG    [53134] (deoplete.core) completion_begin (TextChangedP): 'nvim/.deoplete/deoplete.log'
 2019-02-18 18:05:02,817 DEBUG    [53134] (deoplete.core) do_complete (TextChangedP): 4 candidates, input=nvim/.deoplete/deoplete.log, complete_position=15, is_async=0
 2019-02-18 18:05:49,283 DEBUG    [53134] (deoplete.core) on_event: BufReadPost
+2019-02-18 18:10:07,962 INFO     [53717] (deoplete.logging) --- Deoplete Log Start ---
+2019-02-18 18:10:07,963 INFO     [53717] (deoplete.logging) NVIM v0.4.0-1317-g894f6be, Python 3.6.1, pynvim 0.3.2
+2019-02-18 18:12:17,447 INFO     [53859] (deoplete.logging) --- Deoplete Log Start ---
+2019-02-18 18:12:17,449 INFO     [53859] (deoplete.logging) NVIM v0.4.0-1317-g894f6be, Python 3.6.1, pynvim 0.3.2
