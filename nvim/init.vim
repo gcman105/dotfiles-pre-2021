@@ -7,19 +7,20 @@
 " Make sure you use single quotes
 
 call plug#begin('~/.vim/plugged')
-Plug 'Shougo/neomru.vim'
+"Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete-zsh'
-Plug 'kassio/neoterm'
+"Plug 'Shougo/denite.nvim'
+"Plug 'kassio/neoterm'
 Plug 'mhinz/vim-startify'
-Plug 'mattn/webapi-vim'
+"Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'Shougo/neoinclude.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'scrooloose/nerdcommenter'
+"Plug 'wincent/command-t'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -27,17 +28,17 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'mhartington/nvim-typescript'
-Plug 'leafgarland/typescript-vim'
-Plug 'rizzatti/dash.vim'
+"Plug 'leafgarland/typescript-vim'
+"Plug 'rizzatti/dash.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'hkupty/iron.nvim'
+"Plug 'hkupty/iron.nvim'
 Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
-Plug 'mhartington/nvim-typescript'
-Plug 'terryma/vim-multiple-cursors'
+"Plug 'mhartington/nvim-typescript'
+"Plug 'terryma/vim-multiple-cursors'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
@@ -184,9 +185,9 @@ imap <C-e><C-e> <C-y>,
 vnoremap <leader>ib :!align<cr>
 
 " Use CTRL-s for saving, also in instert mode
-noremap <silent> <C-s> :w<CR>
-inoremap <silent> <C-s> <Esc>:w<CR>a
-vnoremap <silent> <C-s> <C-c>:update<CR>
+"noremap <silent> <C-s> :w<CR>
+"inoremap <silent> <C-s> <Esc>:w<CR>a
+"vnoremap <silent> <C-s> <C-c>:update<CR>
 
 "Bubble single lines (kicks butt)
 "http://vimcasts.org/episodes/bubbling-text/
@@ -213,11 +214,17 @@ nnoremap <C-b> :buffers<CR>:buffer<Space>
 " sudo write this
 cmap W! w !sudo tee % >/dev/null
 
+" netrw setup and key bindings {{{2 ------------------
+let g:netrw_home = '$HOME/dotfiles'
+
+" bookmarks setup and key bindings {{{2 ------------------
+"map <leader>m g:netrw-mB 
+
 " typescript setup and key bindings {{{2 ------------------
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_debug = 1
 let g:deoplete#enable_profile = 1
-call deoplete#enable_logging('DEBUG', '/Users/gcman105/dotfiles/nvim/.deoplete/deoplete.log')
+call deoplete#enable_logging('DEBUG', 'deoplete.log')
 " }}} end of typescript setup and key bindings ------------
 
 " ultisnips setup and key bindings {{{2 ------------------
@@ -231,7 +238,7 @@ let g:UltiSnipsEditSplit="vertical"
 " }}} end of UltiSnips setup and key bindings ------------
 
 " Easymotion setup and key bindings {{{2 -----------------
-map <leader><leader>    <Plug>(easymotion-prefix)
+map <leader><leader> <Plug>(easymotion-prefix)
 " }}} end of Easymotion setup and key bindings -----------
 
 " NERDTree setup and key bindings {{{2 -------------------
@@ -291,7 +298,7 @@ function! s:bufopen(e)
   execute 'buffer' matchstr(a:e, '^[ 0-9]*')
 endfunction
 
-nnoremap <silent> <Leader><Enter> :call fzf#run({
+nnoremap <silent> <Leader>b :call fzf#run({
 \   'source':  reverse(<sid>buflist()),
 \   'sink':    function('<sid>bufopen'),
 \   'options': '+m',
