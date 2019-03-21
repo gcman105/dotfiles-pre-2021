@@ -26,4 +26,5 @@ alias ci="composer install"
 alias cda="composer dump-autoload"
 
 # phpunit aliases ------------------------------------
-alias ut="phpunit "
+alias phpunit="vendor/bin/phpunit "
+alias ut="phpunit"

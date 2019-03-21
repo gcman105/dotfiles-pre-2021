@@ -13,7 +13,7 @@ Plug 'Shougo/deoplete-zsh'
 "Plug 'Shougo/denite.nvim'
 "Plug 'kassio/neoterm'
 Plug 'mhinz/vim-startify'
-"Plug 'mattn/webapi-vim'
+Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -27,6 +27,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
+Plug 'posva/vim-vue'
+"Plug 'arnaud-lb/vim-php-namespace'
 Plug 'mhartington/nvim-typescript'
 "Plug 'leafgarland/typescript-vim'
 "Plug 'rizzatti/dash.vim'
@@ -41,7 +43,8 @@ Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
 "Plug 'terryma/vim-multiple-cursors'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
-Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'frankier/neovim-colors-solarized-truecolor-only',
+Plug 'herrbischoff/cobalt2.vim'
 
 function! BuildComposer(info)
   if a:info.status != 'unchanged' || a:info.force
@@ -214,6 +217,8 @@ nnoremap <C-b> :buffers<CR>:buffer<Space>
 " sudo write this
 cmap W! w !sudo tee % >/dev/null
 
+let g:gist_use_password_in_gitconfig = 1
+
 " netrw setup and key bindings {{{2 ------------------
 let g:netrw_home = '$HOME/dotfiles'
 
@@ -264,6 +269,9 @@ let g:loaded_python_provider = 1
 
 " Enable deoplete
 let g:deoplete#enable_at_startup = 1
+
+" PhpInsertUse stuff {{{2 -----------------------------------------
+" }}} end of PhpInsertUse stuff -------------------------------
 
 " FZF stuff {{{2 -----------------------------------------
 set rtp+=/usr/local/opt/fzf

@@ -16,6 +16,9 @@
 **/#*.*#
 **/.yas-compiled-snippets.el
 **/ac-comphist.dat
+**/.netrwhist
+**/deoplete.log
+
 # top level ------------------------------
 
 **/.config/**/
