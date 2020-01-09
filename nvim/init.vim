@@ -67,6 +67,8 @@ call plug#end()
 "Want a different map leader than \
 let mapleader = ","
 
+let g:python3_host_prog = expand('~/dotfiles/nvim/venv/bin/python')
+
 "Enable filetypes
 filetype on
 filetype plugin on
@@ -129,7 +131,7 @@ set expandtab           " Insert spaces when TAB is pressed.
 set tabstop=2           " Render TABs using this many spaces.
 set shiftwidth=2        " Indentation amount for < and > commands.
 
-set foldlevel=1         " Set the opening fold level
+set foldlevel=3         " Set the opening fold level
 set foldcolumn=3        " Set the fold gutter width
 set foldmethod=marker
 set foldopen+=jump
@@ -223,7 +225,7 @@ let g:gist_use_password_in_gitconfig = 1
 let g:netrw_home = '$HOME/dotfiles'
 
 " bookmarks setup and key bindings {{{2 ------------------
-"map <leader>m g:netrw-mB 
+"map <leader>m g:netrw-mB
 
 " typescript setup and key bindings {{{2 ------------------
 let g:deoplete#enable_at_startup = 1
@@ -233,10 +235,10 @@ call deoplete#enable_logging('DEBUG', 'deoplete.log')
 " }}} end of typescript setup and key bindings ------------
 
 " ultisnips setup and key bindings {{{2 ------------------
-"let g:UltiSnipsExpandTrigger             =  "<tab>"
-"let g:UltiSnipsListSnippets              =  "<c-tab>"
-"let g:UltiSnipsJumpForwardTrigger        =  "<tab>"
-"let g:UltiSnipsJumpBackwardTrigger       =  "<c-tab>"
+let g:UltiSnipsExpandTrigger             =  "<tab>"
+let g:UltiSnipsListSnippets              =  "<c-tab>"
+let g:UltiSnipsJumpForwardTrigger        =  "<tab>"
+let g:UltiSnipsJumpBackwardTrigger       =  "<c-tab>"
 inoremap <c-x><c-k> <c-x><c-k>
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
@@ -247,7 +249,7 @@ map <leader><leader> <Plug>(easymotion-prefix)
 " }}} end of Easymotion setup and key bindings -----------
 
 " NERDTree setup and key bindings {{{2 -------------------
-nnoremap <leader>n         :NERDTreeToggle<cr>
+nnoremap <leader>n :NERDTreeToggle<cr>
 
 "Show hidden files in NerdTree
 let NERDTreeShowHidden=1

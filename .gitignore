@@ -25,6 +25,7 @@
 tmp/*
 alfred/
 dash/
+nvim/venv/
 .authinfo
 .directory
 .gnus

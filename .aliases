@@ -1,3 +1,8 @@
+# vim aliases ----------------------------------------
+#alias vi="nvim"
+#alias vim="nvim"
+alias vv="vifm"
+
 # git aliases ----------------------------------------
 alias gs="git status"
 alias ga="git add "
@@ -5,6 +10,14 @@ alias gaa="git add ."
 alias gl="git log --oneline --graph --histogram"
 alias gc="git commit -m "
 alias gp="git push "
+alias gsu="git submodule update --remote --merge"
+
+# artisan aliases ------------------------------------
+alias pm="python manage.py "
+alias pmmm="python manage.py makemigrations"
+alias pmm="python manage.py migrate"
+alias pms="python manage.py shell"
+alias pmsa="python manage.py startapp"
 
 # artisan aliases ------------------------------------
 alias pa="php artisan "
@@ -28,3 +41,9 @@ alias cda="composer dump-autoload"
 # phpunit aliases ------------------------------------
 alias phpunit="vendor/bin/phpunit "
 alias ut="phpunit"
+
+# venv aliases ---------------------------------------
+alias cve="python3 -m venv venv && . venv/bin/activate"
+alias ave=". venv/bin/activate"
+alias dve="deactivate"
+
