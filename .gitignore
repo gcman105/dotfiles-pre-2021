@@ -45,12 +45,12 @@ nvim/.deoplete/deoplete.log
 
 # git submodules ------------------------
 
-dot-emacs/
-dot-nvim/
-dot-tmux/
-dot-vifm/
-dot-vim
-dot-zsh
+#dot-emacs/
+#dot-nvim/
+#dot-tmux/
+#dot-vifm/
+#dot-vim
+#dot-zsh
 
 # individual files -----------------------
 

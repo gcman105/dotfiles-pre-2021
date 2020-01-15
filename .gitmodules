@@ -1,3 +1,18 @@
 [submodule "dot-emacs"]
 	path = dot-emacs
 	url = git@github.com:gcman105/dot-emacs.git
+[submodule "dot-zsh"]
+	path = dot-zsh
+	url = git@gcman105:dot-zsh
+[submodule "dot-nvim"]
+	path = dot-nvim
+	url = git@gcman105:dot-nvim
+[submodule "dot-tmux"]
+	path = dot-tmux
+	url = git@gcman105:dot-tmux
+[submodule "dot-vifm"]
+	path = dot-vifm
+	url = git@gcman105:dot-vifm
+[submodule "dot-vim"]
+	path = dot-vim
+	url = git@gcman105:dot-vim
