@@ -1,4 +1,0 @@
-# name: it should have_index_for
-# key: ishi
-# --
-it { should have_index_for($1: 1)$2 }$0

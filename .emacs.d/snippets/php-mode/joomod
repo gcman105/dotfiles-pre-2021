@@ -1,6 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Joomla echo module
-# key: joomod
-# binding: direct-keybinding
-# --
-<?php echo $module->$1; ?>$0

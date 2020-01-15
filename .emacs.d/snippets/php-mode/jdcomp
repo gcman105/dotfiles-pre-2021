@@ -1,7 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: jdoc:include message and component
-# key: jdcomp
-# binding: direct-keybinding
-# --
-<jdoc:include type="message" />
-<jdoc:include type="component" />$0

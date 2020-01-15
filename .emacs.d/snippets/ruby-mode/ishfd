@@ -1,4 +1,0 @@
-# name: it should have_field with default
-# key: ishfd
-# --
-it { should have_field(:$1).of_type($2).with_default_value_of($3) }$0

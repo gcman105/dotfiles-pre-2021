@@ -25,7 +25,6 @@
 tmp/*
 alfred/
 dash/
-nvim/venv/
 .authinfo
 .directory
 .gnus
@@ -44,32 +43,15 @@ nvim/.deoplete/deoplete.log
 .vim/colors/
 **/.vim/plugged/
 
-# .emacs.d directory ---------------------
+# git submodules ------------------------
 
-.emacs.d/elpa/
-.emacs.d/auto-save-list/
-.emacs.d/backups/
-.emacs.d/cloned/
-.emacs.d/src/
-.emacs.d/el-get
-.emacs.d/yasnippet-snippets/
-.emacs.d/url/
-.emacs.d/eshell/
-.emacs.d/var/
-.emacs.d/tramp
-.emacs.d/ede-projects.el
-.emacs.d/.mc-lists.el
-.emacs.d/oauth2.plstore
-.emacs.d/**/.bm-repository
-.emacs.d/**/ido.last
-.emacs.d/**/projectile.cache
-.emacs.d/**/projectile-bookmarks.eld
-.emacs.d/**/ac-comphist.dat
-.emacs.d/**/places
-.emacs.d/**/recentf
+dot-emacs/
+dot-nvim/
+dot-tmux/
+dot-vifm/
+dot-vim
+dot-zsh
 
 # individual files -----------------------
 
 /.vim/bundle.zip
-/.emacs.d/gcman105-emacs-init.pdf
-/.emacs.d/gcman105-emacs-init.tex

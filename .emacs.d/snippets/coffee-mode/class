@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# contributor: Gary Cheeseman <gary@radi8.co.uk>
-# name: class
-# key: cc
-# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
-# --
-class $1
-  constructor: ($2) ->
-    $3
