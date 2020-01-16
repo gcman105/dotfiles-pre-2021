@@ -21,6 +21,7 @@
 
 # top level ------------------------------
 
+venv/
 **/.config/**/
 tmp/*
 alfred/
