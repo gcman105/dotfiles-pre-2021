@@ -16,3 +16,6 @@
 [submodule "dot-vim"]
 	path = dot-vim
 	url = git@gcman105:dot-vim
+[submodule "dot-muttmail"]
+	path = dot-muttmail
+	url = git@gcman105:dot-muttmail
