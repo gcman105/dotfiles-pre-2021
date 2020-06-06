@@ -1,5 +1,5 @@
 # paths
-set folder = ~/Mail
+set folder = ~/MuttMail/Mail
 set message_cachedir = ~/.mutt/cache/bodies
 set certificate_file = ~/dotfiles/office/certificates.crt
 set mailcap_path = ~/.mutt/mailcap
@@ -71,7 +71,7 @@ hdr_order from: to: cc: bcc: date: subject:
 alternative_order text/plain text/enriched text/html
 auto_view text/html
 
-# GPG/PGP 
+# GPG/PGP
 set pgp_sign_as = 2F283D0D
 set crypt_use_gpgme = yes
 set crypt_autosign = no
