@@ -15,4 +15,4 @@ fileext = ".vcf"
 type = "carddav"
 url = "https://dav.mailbox.org"
 username = "s.rademacker@mailbox.org"
-password.fetch = ["command", "~/dotfiles/office/getpassword.sh"]
+password.fetch = ["command", "~/dotfiles/dot-muttmail/getpassword.sh"]

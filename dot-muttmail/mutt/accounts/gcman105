@@ -1,0 +1,32 @@
+set from = "gary@gcman105.com"
+set sendmail = "/usr/local/bin/msmtp -a gcman105"
+
+# Set folders
+set spoolfile = "+gcman105/INBOX"
+set mbox = "+gcman105/archive"
+set postponed = "+gcman105/drafts"
+set record = "+gcman105/sent"
+set trash = "+gcman105/trash"
+
+# Alternate email addresses.
+
+# custom signaure
+set signature = ~/.mutt/signatures/default
+
+color status red default
+
+macro index o "<shell-escape>mbsync gcman105<enter>" "run mbsync to sync mail for this account"
+
+macro index,pager s \
+  "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
+  <tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
+  <save-message>+gcman105/junk<enter>" \
+  "mark as read and move to junk folder"
+
+macro index,pager a \
+  "<save-message>+gcman105/archive<enter>"  \
+  "move message to the archive"
+
+macro index,pager i \
+  "<save-message>+gcman105/INBOX<enter>"  \
+  "move message to the inbox"

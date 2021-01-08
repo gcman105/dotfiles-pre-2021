@@ -1,0 +1,32 @@
+set from = "info@ojofoto.com"
+set sendmail = "/usr/local/bin/msmtp -a ojofoto"
+
+# Set folders
+set spoolfile = "+ojofoto/INBOX"
+set mbox = "+ojofoto/archive"
+set postponed = "+ojofoto/drafts"
+set record = "+ojofoto/sent"
+set trash = "+ojofoto/trash"
+
+# Alternate email addresses.
+
+# custom signaure
+set signature = ~/.mutt/signatures/default
+
+color status red default
+
+macro index o "<shell-escape>mbsync ojofoto<enter>" "run mbsync to sync mail for this account"
+
+macro index,pager s \
+  "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
+  <tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
+  <save-message>+ojofoto/junk<enter>" \
+  "mark as read and move to junk folder"
+
+macro index,pager a \
+  "<save-message>+ojofoto/archive<enter>"  \
+  "move message to the archive"
+
+macro index,pager i \
+  "<save-message>+ojofoto/INBOX<enter>"  \
+  "move message to the inbox"
