@@ -14,7 +14,7 @@ click==7.1.2
 decorator==4.4.2
 defusedxml==0.6.0
 distlib==0.3.1
-Django==3.1.5
+Django==3.1.8
 django-stubs==1.7.0
 entrypoints==0.3
 filelock==3.0.12
